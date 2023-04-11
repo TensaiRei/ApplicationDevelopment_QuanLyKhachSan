@@ -20,6 +20,7 @@ public class UserInterface extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final JPanel UI_Phong = new UI_Phong();
 	private static UserInterface instance = new UserInterface();
 	
 	//Global Variable
@@ -93,7 +94,7 @@ public class UserInterface extends JFrame {
 		this.add(pnlCenter, BorderLayout.CENTER);
 		
 		//Initial Methods
-		showUI(new UI_Login());
+		showUI(UI_Phong);
 		disableFunctionalButton();
 	}
 	

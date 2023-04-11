@@ -24,8 +24,8 @@ public class ConnectDB {
 			
 			//Login by SQL Login
 				String url = "jdbc:sqlserver://localhost:1433;databaseName=HotelManagement";
-				String username = "Ravenyzled";
-				String password = "puribaru";
+				String username = "sa";
+				String password = "123456789";
 				
 			connect = DriverManager.getConnection(url, username, password);
 		} 
