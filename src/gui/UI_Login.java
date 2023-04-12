@@ -131,9 +131,9 @@ public class UI_Login extends JPanel implements ActionListener{
 			String password = String.valueOf(passwordValue);
 			
 			if(DAO_Account.kiemTraTaiKhoan(username, password)) {
-				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-				UserInterface ui = UserInterface.getUserInterfaceInstance();
-				ui.setVisible(true);
+					JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+					UserInterface ui = UserInterface.getUserInterfaceInstance();
+					ui.setVisible(true);
 			}
 			else
 			{
