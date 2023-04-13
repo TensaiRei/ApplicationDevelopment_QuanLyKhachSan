@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,11 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import dao.DAO_Account;
 
-public class UI_Login extends JFrame implements ActionListener{
+public class UI_Login extends JFrame implements ActionListener, KeyListener{
 	/*
 	 * 
 	 */
@@ -83,6 +86,7 @@ public class UI_Login extends JFrame implements ActionListener{
 		btnLogin.setIcon(new ImageIcon("img\\check_20x20_1_16x16.png"));
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnLogin.setBounds(90, 280, 100, 40);
+		btnLogin.setFocusPainted(false);
 		panel.add(btnLogin);
 		
 
@@ -90,6 +94,7 @@ public class UI_Login extends JFrame implements ActionListener{
 		btnReset.setIcon(new ImageIcon("img\\refresh.png"));
 		btnReset.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnReset.setBounds(230, 280, 100, 40);
+		btnReset.setFocusPainted(false);
 		panel.add(btnReset);
 		
 		textUsername = new JTextField();
@@ -114,6 +119,10 @@ public class UI_Login extends JFrame implements ActionListener{
 		//
 		btnLogin.addActionListener(this);
 		btnReset.addActionListener(this);
+		textUsername.addKeyListener(this);
+		passwordField.addKeyListener(this);
+		
+		//
 		this.setVisible(true);
 	}
 
@@ -140,13 +149,39 @@ public class UI_Login extends JFrame implements ActionListener{
 		else
 		{
 			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
-			passwordField.selectAll();
-			passwordField.requestFocus();
+			if(textUsername.getText().isBlank()) {
+				textUsername.requestFocus();
+			}
+			else {
+				passwordField.selectAll();
+				passwordField.requestFocus();
+			}
 		}
 	}
 	
 	public void xoaTrang() {
 		textUsername.setText("");
 		passwordField.setText("");
+		textUsername.requestFocus();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+			btnLogin.doClick();
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			btnReset.doClick();
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
