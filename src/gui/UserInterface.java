@@ -128,7 +128,6 @@ public class UserInterface extends JFrame {
 	public void setDecorateButton() {
 		for(JButton thisButton : functionalButton)
 			setDecorateOneButton(thisButton);
-		
 		btnDangXuat.setForeground(Color.decode("#222222"));
 		btnDangXuat.setBackground(Color.decode("#FF8080"));
 	}
