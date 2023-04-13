@@ -121,27 +121,32 @@ public class UI_Login extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		
-		if(o == btnLogin) {
-			String username = textUsername.getText();
-			char[] passwordValue = passwordField.getPassword();
-			String password = String.valueOf(passwordValue);
-			
-			if(DAO_Account.kiemTraTaiKhoan(username, password)) {
-					JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-					UserInterface ui = UserInterface.getUserInterfaceInstance();
-					ui.setVisible(true);
-			}
-			else
-			{
-				JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
-				passwordField.selectAll();
-				passwordField.requestFocus();
-			}
-			
+		if(o == btnLogin)
+			kiemTraDangNhap();
+		if(o == btnReset)
+			xoaTrang();
+	}
+	
+	public void kiemTraDangNhap() {
+		String username = textUsername.getText();
+		char[] passwordValue = passwordField.getPassword();
+		String password = String.valueOf(passwordValue);
+		
+		if(DAO_Account.kiemTraTaiKhoan(username, password)) {
+				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+				UserInterface ui = UserInterface.getUserInterfaceInstance();
+				ui.setVisible(true);
 		}
-		if(o == btnReset) {
-			textUsername.setText("");
-			passwordField.setText("");
-		}	
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
+			passwordField.selectAll();
+			passwordField.requestFocus();
+		}
+	}
+	
+	public void xoaTrang() {
+		textUsername.setText("");
+		passwordField.setText("");
 	}
 }
