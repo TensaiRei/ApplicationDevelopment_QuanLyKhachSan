@@ -20,7 +20,6 @@ public class UserInterface extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final JPanel UI_Phong = new UI_Phong();
 	private static UserInterface instance = new UserInterface();
 	
 	//Global Variable
@@ -94,9 +93,10 @@ public class UserInterface extends JFrame {
 		this.add(pnlCenter, BorderLayout.CENTER);
 		
 		//Initial Methods
-		showUI(UI_Phong);
-		disableFunctionalButton();
+		showUI(UI_Phong.getUI_PhongInstance());
 	}
+	
+	public static UserInterface getUserInterfaceInstance() {return instance;}
 	
 	public void showUI(JPanel panel) {
 		pnlTask.removeAll();
@@ -149,16 +149,6 @@ public class UserInterface extends JFrame {
 		button.setBorder(BorderFactory.createBevelBorder(
 				BevelBorder.RAISED, Color.white, Color.black));
 	}
-	public void enableFunctionalButton() {
-		for(JButton thisButton : functionalButton) {
-			thisButton.setEnabled(true);
-		}
-	}
-	public void disableFunctionalButton() {
-		for(JButton thisButton : functionalButton) {
-			thisButton.setEnabled(false);
-		}
-	}
 	public void addFunctionalButton() {
 		functionalButton.add(btnPhong);
 		functionalButton.add(btnDonDat);
@@ -168,5 +158,4 @@ public class UserInterface extends JFrame {
 		functionalButton.add(btnThongKe);
 		
 	}
-	public static UserInterface getUserInterfaceInstance() {return instance;}
 }
