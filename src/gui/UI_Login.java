@@ -29,9 +29,22 @@ public class UI_Login extends JFrame implements ActionListener{
 	private JPasswordField passwordField;
 	private JButton btnLogin = new JButton("  Login");
 	private JButton btnReset = new JButton("  Reset");
+	public JFrame frmLogin;
 
 	public UI_Login() {
 		//Panel
+<<<<<<< HEAD
+		frmLogin = new JFrame();
+		frmLogin.setResizable(false);
+		frmLogin.getContentPane().setMinimumSize(new Dimension(620, 500));
+		frmLogin.setMinimumSize(new Dimension(840, 400));
+		frmLogin.setTitle("Paradise Hotel'Login");
+		frmLogin.setBounds(100, 100, 640, 368);
+		frmLogin.setDefaultCloseOperation(
+				JFrame.EXIT_ON_CLOSE);
+		frmLogin.setLocationRelativeTo(null);
+		frmLogin.getContentPane().setLayout(null);
+=======
 		this.setResizable(false);
 		this.getContentPane().setMinimumSize(new Dimension(620, 500));
 		this.setMinimumSize(new Dimension(840, 400));
@@ -40,6 +53,7 @@ public class UI_Login extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setLayout(null);
+>>>>>>> main
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 410, 360);
@@ -121,6 +135,26 @@ public class UI_Login extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		
+<<<<<<< HEAD
+		if(o == btnLogin) {
+			String username = textUsername.getText();
+			char[] passwordValue = passwordField.getPassword();
+			String password = String.valueOf(passwordValue);
+			
+			if(DAO_Account.kiemTraTaiKhoan(username, password)) {
+					JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+					UserInterface ui = UserInterface.getUserInterfaceInstance();
+					ui.setVisible(true);
+					frmLogin.dispose();
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
+				passwordField.selectAll();
+				passwordField.requestFocus();
+			}
+			
+=======
 		if(o == btnLogin)
 			kiemTraDangNhap();
 		if(o == btnReset)
@@ -136,6 +170,7 @@ public class UI_Login extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
 				UserInterface ui = UserInterface.getUserInterfaceInstance();
 				ui.setVisible(true);
+>>>>>>> main
 		}
 		else
 		{

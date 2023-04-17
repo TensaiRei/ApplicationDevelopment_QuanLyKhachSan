@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +12,9 @@ import entity.DichVu;
 import entity.DichVu.enum_LoaiDV;
 
 public class DAO_DichVu {
+	private ArrayList<DichVu> list;
 	public DAO_DichVu() {
-		// TODO Auto-generated constructor stub
+		list = new ArrayList<>();
 	}
 	
 	/**
@@ -41,6 +43,9 @@ public class DAO_DichVu {
 				}
 				if (loaiDV.equals("Drinks")) {
 					loaiDichVu = enum_LoaiDV.Drinks;
+				}
+				if (loaiDV.equals("Others")) {
+					loaiDichVu = enum_LoaiDV.Others;
 				}
 				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
@@ -111,6 +116,38 @@ public class DAO_DichVu {
 				
 				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, enum_LoaiDV.Drinks);
+				listDV.add(dv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listDV;
+	}
+	
+	/**
+	 * ham lay danh sach cac dich vu khac
+	 * @return ArrayList
+	 */
+	public ArrayList<DichVu> getDSDichVuConLai() {
+		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
+		
+		try {
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
+			String sql = "select * from DichVu where LoaiDichVu like 'Others'";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				String maDV = rs.getString("MaDichVu");
+				String tenDV = rs.getString("TenDichVu");
+				double donGia = rs.getDouble("DonGia");
+				String loaiDV = rs.getString("LoaiDichVu");
+				
+				
+				
+				DichVu dv = new DichVu(maDV, tenDV, donGia, enum_LoaiDV.Others);
 				listDV.add(dv);
 			}
 		} catch (SQLException e) {
