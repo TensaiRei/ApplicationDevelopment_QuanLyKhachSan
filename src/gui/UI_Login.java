@@ -3,13 +3,10 @@ package gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,11 +19,12 @@ import javax.swing.SwingConstants;
 
 import dao.DAO_Account;
 
-public class UI_Login extends JPanel implements ActionListener{
+public class UI_Login extends JFrame implements ActionListener{
 	/*
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	private JTextField textUsername;
 	private JPasswordField passwordField;
 	private JButton btnLogin = new JButton("  Login");
@@ -35,6 +33,7 @@ public class UI_Login extends JPanel implements ActionListener{
 
 	public UI_Login() {
 		//Panel
+<<<<<<< HEAD
 		frmLogin = new JFrame();
 		frmLogin.setResizable(false);
 		frmLogin.getContentPane().setMinimumSize(new Dimension(620, 500));
@@ -45,10 +44,20 @@ public class UI_Login extends JPanel implements ActionListener{
 				JFrame.EXIT_ON_CLOSE);
 		frmLogin.setLocationRelativeTo(null);
 		frmLogin.getContentPane().setLayout(null);
+=======
+		this.setResizable(false);
+		this.getContentPane().setMinimumSize(new Dimension(620, 500));
+		this.setMinimumSize(new Dimension(840, 400));
+		this.setTitle("Paradise Hotel'Login");
+		this.setBounds(100, 100, 640, 368);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.getContentPane().setLayout(null);
+>>>>>>> main
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 410, 360);
-		frmLogin.getContentPane().add(panel_1);
+		this.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblSideBackgroundLabel = new JLabel("");
@@ -63,7 +72,7 @@ public class UI_Login extends JPanel implements ActionListener{
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 255, 255));
 		panel.setBounds(410, 0, 410, 360);
-		frmLogin.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("Username:");
@@ -119,13 +128,14 @@ public class UI_Login extends JPanel implements ActionListener{
 		//
 		btnLogin.addActionListener(this);
 		btnReset.addActionListener(this);
-		frmLogin.setVisible(true);
+		this.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		
+<<<<<<< HEAD
 		if(o == btnLogin) {
 			String username = textUsername.getText();
 			char[] passwordValue = passwordField.getPassword();
@@ -144,10 +154,34 @@ public class UI_Login extends JPanel implements ActionListener{
 				passwordField.requestFocus();
 			}
 			
+=======
+		if(o == btnLogin)
+			kiemTraDangNhap();
+		if(o == btnReset)
+			xoaTrang();
+	}
+	
+	public void kiemTraDangNhap() {
+		String username = textUsername.getText();
+		char[] passwordValue = passwordField.getPassword();
+		String password = String.valueOf(passwordValue);
+		
+		if(DAO_Account.kiemTraTaiKhoan(username, password)) {
+				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+				UserInterface ui = UserInterface.getUserInterfaceInstance();
+				ui.setVisible(true);
+>>>>>>> main
 		}
-		if(o == btnReset) {
-			textUsername.setText("");
-			passwordField.setText("");
-		}	
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
+			passwordField.selectAll();
+			passwordField.requestFocus();
+		}
+	}
+	
+	public void xoaTrang() {
+		textUsername.setText("");
+		passwordField.setText("");
 	}
 }
