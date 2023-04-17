@@ -6,15 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import connectDB.ConnectDB;
+import entity.TaiKhoan;
 
 public class DAO_TaiKhoan {
-	public static void getTaiKhoan() {
-		
+	private static TaiKhoan taiKhoanHienHanh;
+	private static void setTaiKhoanHienHanh(String maTaiKhoan, String tenTenKhoan) {
+		taiKhoanHienHanh = new TaiKhoan(maTaiKhoan, maTaiKhoan);
 	}
+	public static TaiKhoan getTaiKhoanHienHanh() {return taiKhoanHienHanh;}
 	public static boolean kiemTraTaiKhoan(String username, String password) {
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
-		int rowCounter = 0;
+		boolean tonTai = false;
 		try {
 			String sql = ""
 					+ "SELECT * "
@@ -25,7 +28,10 @@ public class DAO_TaiKhoan {
 			prpStm.setString(2, password);
 			ResultSet result = prpStm.executeQuery();
 			
-			while(result.next()) {rowCounter++;}
+			if(result.next()) {
+				setTaiKhoanHienHanh(result.getString("MaTaiKhoan"), result.getString("TenTaiKhoan"));
+				tonTai=true;
+			}
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -33,9 +39,10 @@ public class DAO_TaiKhoan {
 		finally {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
-		if(rowCounter > 0 )
+		if(tonTai)
 			return true;
 		else
 			return false;
 	}
+	
 }
