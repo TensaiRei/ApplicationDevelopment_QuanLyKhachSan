@@ -134,8 +134,7 @@ public class UI_Login extends JFrame implements ActionListener{
 		
 		if(DAO_Account.kiemTraTaiKhoan(username, password)) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-				UserInterface ui = UserInterface.getUserInterfaceInstance();
-				ui.setVisible(true);
+				UI_Main.getUI_MainInstance().setVisible(true);
 		}
 		else
 		{
