@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import connectDB.ConnectDB;
 
-public class DAO_Account {
+public class DAO_TaiKhoan {
 	public static void getTaiKhoan() {
 		
 	}
@@ -18,8 +18,8 @@ public class DAO_Account {
 		try {
 			String sql = ""
 					+ "SELECT * "
-					+ "FROM Account "
-					+ "WHERE AccountUsername = ? AND CONVERT(varchar, DECRYPTBYPASSPHRASE('QUANLYKHACHSAN', AccountPassword)) = ?";
+					+ "FROM TaiKhoan "
+					+ "WHERE TenTaiKhoan = ? AND CONVERT(varchar, DECRYPTBYPASSPHRASE('QUANLYKHACHSAN', MatKhauTaiKhoan)) = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			prpStm.setString(1, username);
 			prpStm.setString(2, password);
