@@ -8,7 +8,7 @@ public class DichVu {
 	private double donGia;
 
 	public enum enum_LoaiDV {
-		Foods, Drinks
+		Foods, Drinks, Others
 	};
 
 	private enum_LoaiDV loaiDV;
@@ -23,7 +23,7 @@ public class DichVu {
 		setMaDichVu(maDichVu);
 		setTenDichVu(tenDichVu);
 		setLoaiDV(loaiDV);
-		this.loaiDV = loaiDV;
+		setDonGia(donGia);
 	}
 
 	public DichVu(String maDichVu) {

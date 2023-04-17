@@ -31,10 +31,11 @@ public class UI_Login extends JPanel implements ActionListener{
 	private JPasswordField passwordField;
 	private JButton btnLogin = new JButton("  Login");
 	private JButton btnReset = new JButton("  Reset");
+	public JFrame frmLogin;
 
 	public UI_Login() {
 		//Panel
-		JFrame frmLogin = new JFrame();
+		frmLogin = new JFrame();
 		frmLogin.setResizable(false);
 		frmLogin.getContentPane().setMinimumSize(new Dimension(620, 500));
 		frmLogin.setMinimumSize(new Dimension(840, 400));
@@ -134,6 +135,7 @@ public class UI_Login extends JPanel implements ActionListener{
 					JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
 					UserInterface ui = UserInterface.getUserInterfaceInstance();
 					ui.setVisible(true);
+					frmLogin.dispose();
 			}
 			else
 			{
