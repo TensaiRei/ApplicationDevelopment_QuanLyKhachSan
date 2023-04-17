@@ -73,6 +73,7 @@ public class UI_Main extends JFrame {
         setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(1200, 700));
         setSize(new java.awt.Dimension(1200, 700));
+        setLocationRelativeTo(null);
 
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setPreferredSize(new java.awt.Dimension(800, 50));

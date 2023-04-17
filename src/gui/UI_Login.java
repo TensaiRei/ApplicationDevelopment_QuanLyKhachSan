@@ -17,7 +17,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import dao.DAO_Account;
+import dao.DAO_TaiKhoan;
 
 public class UI_Login extends JFrame implements ActionListener{
 	/*
@@ -132,7 +132,7 @@ public class UI_Login extends JFrame implements ActionListener{
 		char[] passwordValue = passwordField.getPassword();
 		String password = String.valueOf(passwordValue);
 		
-		if(DAO_Account.kiemTraTaiKhoan(username, password)) {
+		if(DAO_TaiKhoan.kiemTraTaiKhoan(username, password)) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
 				UI_Main.getUI_MainInstance().setVisible(true);
 				this.setVisible(false);
