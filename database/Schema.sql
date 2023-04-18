@@ -29,7 +29,7 @@ CREATE TABLE KhachHang
 	HoDem			nvarchar(30) NOT NULL,
 	Ten				nvarchar(10) NOT NULL,
 	CCCD			varchar(15) NOT NULL,
-	SDT				char(12),
+	SDT				varchar(12),
 	QuocTich		nvarchar(20)
 )
 CREATE TABLE Phong
@@ -53,7 +53,7 @@ CREATE TABLE TiepTan
 	HoDem			nvarchar(30) NOT NULL,
 	Ten				nvarchar(10) NOT NULL,
 	CCCD			varchar(15),
-	SDT				char(12),
+	SDT				varchar(12),
 	MaTaiKhoan		varchar(10)
 )
 CREATE TABLE DichVu
@@ -125,7 +125,8 @@ ADD CONSTRAINT PK_KhachHang PRIMARY KEY (MaKhachHang),
 GO
 ALTER TABLE TiepTan
 ADD CONSTRAINT PK_TiepTan		PRIMARY KEY (MaTiepTan),
-	CONSTRAINT FK_MaTaiKhoan	FOREIGN KEY (MaTaiKhoan) REFERENCES TaiKhoan(MaTaiKhoan);
+	CONSTRAINT FK_MaTaiKhoan	FOREIGN KEY (MaTaiKhoan) REFERENCES TaiKhoan(MaTaiKhoan),
+	CONSTRAINT UN_TiepTan		UNIQUE (CCCD);
 
 GO
 ALTER TABLE DichVu

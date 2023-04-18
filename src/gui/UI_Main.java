@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -12,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-public class UI_Main extends JFrame {
+public class UI_Main extends JFrame implements ActionListener{
 	/**
 	 * 
 	 */
@@ -29,8 +31,8 @@ public class UI_Main extends JFrame {
     private javax.swing.JButton btnPhong;
     private javax.swing.JButton btnThongKe;
     private javax.swing.JButton btnTiepTan;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblHolder1;
+    private javax.swing.JLabel lblHolder2;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel pnlTask;
     private javax.swing.JPanel pnlTaskbar;
@@ -58,8 +60,8 @@ public class UI_Main extends JFrame {
         btnHoaDon = new javax.swing.JButton();
         btnThongKe = new javax.swing.JButton();
         btnTiepTan = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblHolder1 = new javax.swing.JLabel();
+        lblHolder2 = new javax.swing.JLabel();
         btnDangXuat = new javax.swing.JButton();
         pnlWork = new javax.swing.JPanel();
         pnlTask = new javax.swing.JPanel();
@@ -102,8 +104,8 @@ public class UI_Main extends JFrame {
 
         btnTiepTan.setText("Tiếp Tân");
         pnlTaskbar.add(btnTiepTan);
-        pnlTaskbar.add(jLabel2);
-        pnlTaskbar.add(jLabel3);
+        pnlTaskbar.add(lblHolder1);
+        pnlTaskbar.add(lblHolder2);
 
         btnDangXuat.setText("Đăng Xuất");
         pnlTaskbar.add(btnDangXuat);
@@ -195,7 +197,11 @@ public class UI_Main extends JFrame {
         getContentPane().add(pnlWork, java.awt.BorderLayout.CENTER);
 
         pack();
-    }// </editor-fold>
+        
+        //
+        btnPhong.addActionListener(this);
+        btnTiepTan.addActionListener(this);
+    }
     public void addFunctionalButton() {
 		functionalButton.add(btnPhong);
 		functionalButton.add(btnDonDat);
@@ -223,6 +229,9 @@ public class UI_Main extends JFrame {
 		if(panel instanceof UI_Phong) {
 			btnPhong.setBackground(Color.decode("#3333FF"));
 		}
+		if(panel instanceof UI_TiepTan) {
+			btnTiepTan.setBackground(Color.decode("#3333FF"));
+		}
 	}
     public void showUI(JPanel panel) {
 		pnlTask.removeAll();
@@ -231,5 +240,16 @@ public class UI_Main extends JFrame {
 		pnlTask.add(panel, BorderLayout.CENTER);
 		setDecorateButton();
 		checkPanelInstance(panel);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		
+		if(o == btnPhong) {
+			showUI(UI_Phong.getUI_PhongInstance());
+		}
+		if(o == btnTiepTan) {
+			showUI(UI_TiepTan.getUI_TiepTanInstance());
+		}
 	}
 }
