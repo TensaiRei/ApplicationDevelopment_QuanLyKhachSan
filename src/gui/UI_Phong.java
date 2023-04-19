@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 public class UI_Phong extends JPanel {
@@ -12,6 +14,6 @@ public class UI_Phong extends JPanel {
 	public static UI_Phong getUI_PhongInstance() {return instance;}
 	//
 	public UI_Phong() {
-		
+		this.setBackground(Color.red);
 	}
 }

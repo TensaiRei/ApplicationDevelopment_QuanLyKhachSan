@@ -236,6 +236,7 @@ public class UI_Main extends JFrame implements ActionListener{
     public void showUI(JPanel panel) {
 		pnlTask.removeAll();
 		pnlTask.revalidate();
+		pnlTask.repaint();
 		pnlTask.setLayout(new BorderLayout());
 		pnlTask.add(panel, BorderLayout.CENTER);
 		setDecorateButton();
