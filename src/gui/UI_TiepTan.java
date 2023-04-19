@@ -103,10 +103,11 @@ public class UI_TiepTan extends JPanel {
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         pnlTitle.setPreferredSize(new java.awt.Dimension(935, 50));
+        pnlTitle.setLayout(new java.awt.GridBagLayout());
 
-        lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitle.setText("Thông Tin Tiếp Tân");
-        pnlTitle.add(lblTitle);
+        pnlTitle.add(lblTitle, new java.awt.GridBagConstraints());
 
         add(pnlTitle, java.awt.BorderLayout.PAGE_START);
 
@@ -201,7 +202,7 @@ public class UI_TiepTan extends JPanel {
         pnlLMNV.setOpaque(false);
         pnlLMNV.setLayout(new javax.swing.BoxLayout(pnlLMNV, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblLMNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLMNV.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblLMNV.setForeground(new java.awt.Color(102, 102, 102));
         lblLMNV.setText("Mã Nhân Viên");
         pnlLMNV.add(lblLMNV);
@@ -211,7 +212,7 @@ public class UI_TiepTan extends JPanel {
         pnlIMNV.setOpaque(false);
         pnlIMNV.setLayout(new javax.swing.BoxLayout(pnlIMNV, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblIMNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblIMNV.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pnlIMNV.add(lblIMNV);
 
         pnlMaNV.add(pnlIMNV);
@@ -226,7 +227,7 @@ public class UI_TiepTan extends JPanel {
         pnlLHD.setOpaque(false);
         pnlLHD.setLayout(new javax.swing.BoxLayout(pnlLHD, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblLHD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLHD.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblLHD.setForeground(new java.awt.Color(102, 102, 102));
         lblLHD.setText("Họ Đệm");
         pnlLHD.add(lblLHD);
@@ -236,7 +237,7 @@ public class UI_TiepTan extends JPanel {
         pnlIHD.setOpaque(false);
         pnlIHD.setLayout(new javax.swing.BoxLayout(pnlIHD, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblIHD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblIHD.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pnlIHD.add(lblIHD);
 
         pnlHoDem.add(pnlIHD);
@@ -251,7 +252,7 @@ public class UI_TiepTan extends JPanel {
         pnlLT.setOpaque(false);
         pnlLT.setLayout(new javax.swing.BoxLayout(pnlLT, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblLT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLT.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblLT.setForeground(new java.awt.Color(102, 102, 102));
         lblLT.setText("Tên");
         pnlLT.add(lblLT);
@@ -261,7 +262,7 @@ public class UI_TiepTan extends JPanel {
         pnlIT.setOpaque(false);
         pnlIT.setLayout(new javax.swing.BoxLayout(pnlIT, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblIT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblIT.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pnlIT.add(lblIT);
 
         pnlTen.add(pnlIT);
@@ -276,9 +277,9 @@ public class UI_TiepTan extends JPanel {
         pnlLCCCD.setOpaque(false);
         pnlLCCCD.setLayout(new javax.swing.BoxLayout(pnlLCCCD, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblLCCCD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLCCCD.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblLCCCD.setForeground(new java.awt.Color(102, 102, 102));
-        lblLCCCD.setText("Số Căn Cược Công Dân");
+        lblLCCCD.setText("Số Căn Cước Công Dân");
         pnlLCCCD.add(lblLCCCD);
 
         pnlCCCD.add(pnlLCCCD);
@@ -286,7 +287,7 @@ public class UI_TiepTan extends JPanel {
         pnlICCCD.setOpaque(false);
         pnlICCCD.setLayout(new javax.swing.BoxLayout(pnlICCCD, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblICCCD.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblICCCD.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pnlICCCD.add(lblICCCD);
 
         pnlCCCD.add(pnlICCCD);
@@ -301,7 +302,7 @@ public class UI_TiepTan extends JPanel {
         pnlLSDT.setOpaque(false);
         pnlLSDT.setLayout(new javax.swing.BoxLayout(pnlLSDT, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblLSDT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLSDT.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblLSDT.setForeground(new java.awt.Color(102, 102, 102));
         lblLSDT.setText("Số Điện Thoại");
         pnlLSDT.add(lblLSDT);
@@ -311,7 +312,7 @@ public class UI_TiepTan extends JPanel {
         pnlISDT.setOpaque(false);
         pnlISDT.setLayout(new javax.swing.BoxLayout(pnlISDT, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblISDT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblISDT.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         pnlISDT.add(lblISDT);
 
         pnlSDT.add(pnlISDT);
