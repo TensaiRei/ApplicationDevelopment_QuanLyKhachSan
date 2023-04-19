@@ -1,5 +1,9 @@
+--
 GO
+DROP DATABASE HotelManagement
+
 --CREATE DATABASE
+GO
 CREATE DATABASE HotelManagement
 ON PRIMARY
 (
@@ -60,7 +64,8 @@ CREATE TABLE DichVu
 (
 	MaDichVu		varchar(7) NOT NULL,
 	TenDichVu		nvarchar(30),
-	DonGia			money
+	DonGia			money,
+	LoaiDichVu		nvarchar(20) NOT NULL
 )
 CREATE TABLE DonDatPhong
 (
@@ -131,7 +136,8 @@ ADD CONSTRAINT PK_TiepTan		PRIMARY KEY (MaTiepTan),
 GO
 ALTER TABLE DichVu
 ADD CONSTRAINT PK_DichVu		PRIMARY KEY (MaDichVu),
-	CONSTRAINT CK_DonGia_DV		CHECK (DonGia>=0);
+	CONSTRAINT CK_DonGia_DV		CHECK (DonGia>=0),
+	CONSTRAINT CK_LoaiDV		CHECK (LoaiDichVu in ('Foods', 'Drinks', 'Others'));
 
 GO
 ALTER TABLE DonDatPhong
