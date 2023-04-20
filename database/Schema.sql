@@ -1,5 +1,8 @@
 --
 GO
+use master
+
+GO
 DROP DATABASE HotelManagement
 
 --CREATE DATABASE
@@ -41,7 +44,7 @@ CREATE TABLE Phong
 	MaPhong			varchar(7) NOT NULL,
 	SoPhong			int,
 	SoTang			int,
-	TenPhong		nvarchar(12),
+	TenPhong		nvarchar(20),
 	TinhTrang		nvarchar(20),
 	MaLoaiPhong		varchar(7) NOT NULL
 )
