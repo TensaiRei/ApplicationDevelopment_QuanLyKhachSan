@@ -29,7 +29,7 @@ GO
 --CREATE TABLES (No constraint)
 CREATE TABLE KhachHang
 (
-	MaKhachHang		varchar(10) NOT NULL,
+	MaKhachHang		int NOT NULL IDENTITY(10000,1),
 	HoDem			nvarchar(30) NOT NULL,
 	Ten				nvarchar(10) NOT NULL,
 	CCCD			varchar(15) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE Phong
 	SoPhong			int,
 	SoTang			int,
 	TenPhong		nvarchar(12),
-	TinhTrang		nvarchar(12),
+	TinhTrang		nvarchar(20),
 	MaLoaiPhong		varchar(7) NOT NULL
 )
 CREATE TABLE LoaiPhong
@@ -70,7 +70,7 @@ CREATE TABLE DichVu
 CREATE TABLE DonDatPhong
 (
 	MaDonDat		varchar(10) NOT NULL,
-	MaKhachHang		varchar(10) NOT NULL,
+	MaKhachHang		int NOT NULL,
 	MaPhong			varchar(7) NOT NULL,
 	MaTiepTan		varchar(7) NOT NULL,
 	SoLuongKhach	int,
@@ -120,6 +120,7 @@ ALTER TABLE Phong
 ADD CONSTRAINT PK_Phong			PRIMARY KEY (MaPhong),
 	CONSTRAINT CK_SoPhong		CHECK(SoPhong>0),
 	CONSTRAINT CK_SoTang		CHECK(SoTang>0),
+	CONSTRAINT CK_TrangThai		CHECK(TinhTrang in ('Available', 'Booked', 'Not Available')),
 	CONSTRAINT FK_MaLoaiPhong	FOREIGN KEY (MaLoaiPhong) REFERENCES LoaiPhong(MaLoaiPhong);
 
 GO
@@ -167,4 +168,5 @@ ADD CONSTRAINT PK_HoaDon		PRIMARY KEY (MaHoaDon),
 	CONSTRAINT CK_PhuPhi_HD		CHECK (PhuPhi>=0),
 	CONSTRAINT CK_TTT_HD		CHECK (TongThanhTien>=0),
 	CONSTRAINT CK_NTP_NDP_HD	CHECK (NgayTraPhong > NgayDatPhong);
+GO
 
