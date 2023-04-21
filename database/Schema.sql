@@ -72,7 +72,7 @@ CREATE TABLE DichVu
 )
 CREATE TABLE DonDatPhong
 (
-	MaDonDat		varchar(10) NOT NULL,
+	MaDonDat		int NOT NULL IDENTITY(100000,1),
 	MaKhachHang		int NOT NULL,
 	MaPhong			varchar(7) NOT NULL,
 	MaTiepTan		varchar(7) NOT NULL,
@@ -82,19 +82,19 @@ CREATE TABLE DonDatPhong
 )
 CREATE TABLE DonDatPhong_Phong
 (
-	MaDonDat		varchar(10) NOT NULL,
+	MaDonDat		int NOT NULL,
 	MaPhong			varchar(7) NOT NULL
 )
 CREATE TABLE DonDatPhong_DichVu
 (
-	MaDonDat		varchar(10) NOT NULL,
+	MaDonDat		int NOT NULL,
 	MaDichVu		varchar(7) NOT NULL,
 	SoLuong			int
 )
 CREATE TABLE HoaDon
 (
-	MaHoaDon		varchar(10) NOT NULL,
-	MaDonDat		varchar(10) NOT NULL,
+	MaHoaDon		int NOT NULL IDENTITY(100000,1),
+	MaDonDat		int NOT NULL,
 	PhuPhi			money,
 	TongThanhTien	money,
 	NgayDatPhong	DateTime,
