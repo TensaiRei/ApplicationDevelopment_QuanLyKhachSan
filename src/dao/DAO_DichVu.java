@@ -1,6 +1,5 @@
 package dao;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +11,8 @@ import entity.DichVu;
 import entity.DichVu.enum_LoaiDV;
 
 public class DAO_DichVu {
-	private ArrayList<DichVu> list;
 	public DAO_DichVu() {
-		list = new ArrayList<>();
+		
 	}
 	
 	/**
@@ -52,7 +50,6 @@ public class DAO_DichVu {
 				listDV.add(dv);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listDV;
@@ -87,7 +84,6 @@ public class DAO_DichVu {
 				listDV.add(dv);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listDV;
@@ -113,13 +109,15 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
+				enum_LoaiDV loaiDichVu = null;
+				if (loaiDV.equals("Drinks")) {
+					loaiDichVu = enum_LoaiDV.Drinks;
+				}
 				
-				
-				DichVu dv = new DichVu(maDV, tenDV, donGia, enum_LoaiDV.Drinks);
+				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listDV;
@@ -145,13 +143,15 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
+				enum_LoaiDV loaiDichVu = null;
+				if (loaiDV.equals("Others")) {
+					loaiDichVu = enum_LoaiDV.Others;
+				}
 				
-				
-				DichVu dv = new DichVu(maDV, tenDV, donGia, enum_LoaiDV.Others);
+				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return listDV;

@@ -15,7 +15,6 @@ public class DichVu {
 
 	public DichVu() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public DichVu(String maDichVu, String tenDichVu, double donGia, enum_LoaiDV loaiDV) {

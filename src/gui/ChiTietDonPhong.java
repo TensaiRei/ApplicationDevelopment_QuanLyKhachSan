@@ -10,8 +10,6 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.SystemColor;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -19,8 +17,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,10 +31,13 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.ImageIcon;
-import javax.swing.DropMode;
 
 public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListener {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//
 	private JPanel contentPane;
 	private JTextField txtSoPhong;
 	private JPanel pnlRoomDetail;
@@ -60,7 +59,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 	private JTextField txtLoaiPhong;
 	private JTextField txtGia;
 	private JLabel lblQuocTich;
-	private JComboBox cboTypeOfServices;
+	private JComboBox<String> cboTypeOfServices;
 	
 	private JButton btnAddServices;
 
@@ -303,7 +302,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		panelServices.add(lblSort);
 		lblSort.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		cboTypeOfServices = new JComboBox();
+		cboTypeOfServices = new JComboBox<String>();
 		cboTypeOfServices.setMaximumRowCount(20);
 		cboTypeOfServices.setBounds(75, 230, 180, 30);
 		cboTypeOfServices.addItem("All Services");
