@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
@@ -48,9 +51,10 @@ public class UI_Main extends JFrame implements ActionListener{
         addFunctionalButton();
         setDecorateButton();
         showUI(UI_Phong.getUI_PhongInstance());
+        addActionPerform();
     }
 	//                         
-    private void initComponents() {
+	private void initComponents() {
 
         pnlTitle = new javax.swing.JPanel();
         lblTitle = new javax.swing.JLabel();
@@ -70,19 +74,19 @@ public class UI_Main extends JFrame implements ActionListener{
         borderLeft = new javax.swing.JPanel();
         borderRight = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Quản Lý Đặt Phòng Khách Sạn");
         setBackground(new java.awt.Color(153, 153, 153));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
+        setResizable(false);
         setSize(new java.awt.Dimension(1200, 700));
-        setLocationRelativeTo(null);
 
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setPreferredSize(new java.awt.Dimension(800, 50));
+        pnlTitle.setLayout(new java.awt.GridBagLayout());
 
-        lblTitle.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
         lblTitle.setText("Quản Lý Đặt Phòng Khách Sạn");
-        pnlTitle.add(lblTitle);
+        pnlTitle.add(lblTitle, new java.awt.GridBagConstraints());
 
         getContentPane().add(pnlTitle, java.awt.BorderLayout.PAGE_START);
 
@@ -121,11 +125,11 @@ public class UI_Main extends JFrame implements ActionListener{
         pnlTask.setLayout(pnlTaskLayout);
         pnlTaskLayout.setHorizontalGroup(
             pnlTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 950, Short.MAX_VALUE)
         );
         pnlTaskLayout.setVerticalGroup(
             pnlTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
         pnlWork.add(pnlTask, java.awt.BorderLayout.CENTER);
@@ -137,7 +141,7 @@ public class UI_Main extends JFrame implements ActionListener{
         borderTop.setLayout(borderTopLayout);
         borderTopLayout.setHorizontalGroup(
             borderTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         borderTopLayout.setVerticalGroup(
             borderTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +157,7 @@ public class UI_Main extends JFrame implements ActionListener{
         borderBot.setLayout(borderBotLayout);
         borderBotLayout.setHorizontalGroup(
             borderBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         borderBotLayout.setVerticalGroup(
             borderBotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,7 +177,7 @@ public class UI_Main extends JFrame implements ActionListener{
         );
         borderLeftLayout.setVerticalGroup(
             borderLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
         pnlWork.add(borderLeft, java.awt.BorderLayout.LINE_START);
@@ -189,7 +193,7 @@ public class UI_Main extends JFrame implements ActionListener{
         );
         borderRightLayout.setVerticalGroup(
             borderRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
         pnlWork.add(borderRight, java.awt.BorderLayout.LINE_END);
@@ -197,10 +201,6 @@ public class UI_Main extends JFrame implements ActionListener{
         getContentPane().add(pnlWork, java.awt.BorderLayout.CENTER);
 
         pack();
-        
-        //
-        btnPhong.addActionListener(this);
-        btnTiepTan.addActionListener(this);
     }
     public void addFunctionalButton() {
 		functionalButton.add(btnPhong);
@@ -242,6 +242,29 @@ public class UI_Main extends JFrame implements ActionListener{
 		setDecorateButton();
 		checkPanelInstance(panel);
 	}
+    public void addActionPerform() {
+		btnPhong.addActionListener(this);
+		btnTiepTan.addActionListener(this);
+		btnDangXuat.addActionListener(this);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int logOutPrompt = JOptionPane.showConfirmDialog(getUI_MainInstance(), "Xin hãy xác nhận đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
+				if(logOutPrompt == JOptionPane.YES_OPTION) {
+					UI_Login.getUI_LoginInstance().setVisible(true);
+					getUI_MainInstance().dispose();
+				}
+			}
+		});
+	}
+	public void logOut() {
+		int logOutPrompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
+		if(logOutPrompt == JOptionPane.YES_OPTION) {
+			UI_Login.getUI_LoginInstance().setVisible(true);
+			this.dispose();
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -251,6 +274,9 @@ public class UI_Main extends JFrame implements ActionListener{
 		}
 		if(o == btnTiepTan) {
 			showUI(UI_TiepTan.getUI_TiepTanInstance());
+		}
+		if(o == btnDangXuat) {
+			logOut();
 		}
 	}
 }
