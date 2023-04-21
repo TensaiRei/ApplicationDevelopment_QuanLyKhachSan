@@ -358,7 +358,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		JButton btnDelete = new JButton("Xoá đơn");
 		btnDelete.setBackground(new Color(245, 245, 245));
 		btnDelete.setForeground(new Color(0, 0, 0));
-		btnDelete.setIcon(new ImageIcon("T:\\HSK_QuanLyKS\\TeamProject_QuanLyKhachSan\\img\\delete-document.png"));
+		btnDelete.setIcon(new ImageIcon("img\\delete-document.png"));
 		btnDelete.setBounds(80, 13, 150, 40);
 		pnl_Functions.add(btnDelete);
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -367,7 +367,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		JButton btnTraPhong = new JButton("Trả phòng");
 		btnTraPhong.setBackground(new Color(245, 245, 245));
 		btnTraPhong.setForeground(new Color(0, 0, 0));
-		btnTraPhong.setIcon(new ImageIcon("T:\\HSK_QuanLyKS\\TeamProject_QuanLyKhachSan\\img\\file-export.png"));
+		btnTraPhong.setIcon(new ImageIcon("img\\file-export.png"));
 		btnTraPhong.setBounds(270, 13, 170, 40);
 		pnl_Functions.add(btnTraPhong);
 		btnTraPhong.setFont(new Font("Tahoma", Font.BOLD, 20));
