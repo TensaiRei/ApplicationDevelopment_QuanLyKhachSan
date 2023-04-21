@@ -325,7 +325,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		txtNumber.setColumns(10);
 		
 		btnAddServices = new JButton("THÊM");
-		btnAddServices.setIcon(new ImageIcon("T:\\HSK_QuanLyKS\\TeamProject_QuanLyKhachSan\\img\\add.png"));
+		btnAddServices.setIcon(new ImageIcon("img\\add.png"));
 		btnAddServices.setBounds(400, 230, 110, 30);
 		panelServices.add(btnAddServices);
 		btnAddServices.setFont(new Font("Tahoma", Font.BOLD, 14));
