@@ -3,7 +3,7 @@ GO
 use master
 
 GO
-DROP DATABASE HotelManagement
+--DROP DATABASE HotelManagement
 
 --CREATE DATABASE
 GO
@@ -77,7 +77,7 @@ CREATE TABLE DonDatPhong
 	MaTiepTan		varchar(7) NOT NULL,
 	SoLuongKhach	int,
 	HinhThucThue	nvarchar(20) NOT NULL,
-	NgayDatPhong	DateTime
+	NgayDatPhong	DateTime DEFAULT GETDATE()
 )
 CREATE TABLE DonDatPhong_Phong
 (
@@ -97,7 +97,7 @@ CREATE TABLE HoaDon
 	PhuPhi			money,
 	TongThanhTien	money,
 	NgayDatPhong	DateTime,
-	NgayTraPhong	DateTime
+	NgayTraPhong	DateTime DEFAULT GETDATE()
 )
 CREATE TABLE TaiKhoan
 (
