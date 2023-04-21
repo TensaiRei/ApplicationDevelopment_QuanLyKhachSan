@@ -7,32 +7,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
-import entity.TiepTan;
+import entity.KhachHang;
 
-public class DAO_TiepTan {
-	public DAO_TiepTan() {
+public class DAO_KhachHang {
+	public DAO_KhachHang() {
 		
 	}
-	public static ArrayList<TiepTan> getDanhSachTiepTan(){
-		ArrayList<TiepTan> listTT = new ArrayList<TiepTan>();
+	public static ArrayList<KhachHang> getDanhSachKhachHang(){
+		ArrayList<KhachHang> listKH = new ArrayList<KhachHang>();
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
 					+ "SELECT * "
-					+ "FROM TiepTan";
+					+ "FROM KhachHang";
 			Statement stm = connect.createStatement();
 			
 			ResultSet result = stm.executeQuery(sql);
 			while(result.next()) {
-				String maTiepTan = result.getString("MaTiepTan");
+				int maKhachHang = result.getInt("MaKhachHang");
 				String hoDem = result.getString("HoDem");
 				String ten = result.getString("Ten");
 				String cccd = result.getString("CCCD");
 				String sdt = result.getString("SDT");
-				String maTaiKhoan = result.getString("MaTaiKhoan");
-				TiepTan tempTiepTan = new TiepTan(maTiepTan, hoDem, ten, cccd, sdt, maTaiKhoan);
-				listTT.add(tempTiepTan);
+				String quocTich = result.getString("QuocTich");
+				KhachHang tempKhachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
+				listKH.add(tempKhachHang);
 			}
 		}
 		catch(SQLException e) {
@@ -41,15 +41,6 @@ public class DAO_TiepTan {
 		finally {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
-		return listTT;
-	}
-	public static TiepTan getTiepTanTheoMaTaiKhoan(String maTaiKhoan) {
-		ArrayList<TiepTan> listTT = getDanhSachTiepTan();
-		for(TiepTan thisTiepTan : listTT) {
-			if(thisTiepTan.getMaTaiKhoan().equals(maTaiKhoan)) {
-				return thisTiepTan;
-			}
-		}
-		return null;
+		return listKH;
 	}
 }
