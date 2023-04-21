@@ -1,4 +1,4 @@
---
+﻿--
 GO
 use master
 
@@ -74,7 +74,6 @@ CREATE TABLE DonDatPhong
 (
 	MaDonDat		int NOT NULL IDENTITY(100000,1),
 	MaKhachHang		int NOT NULL,
-	MaPhong			varchar(7) NOT NULL,
 	MaTiepTan		varchar(7) NOT NULL,
 	SoLuongKhach	int,
 	HinhThucThue	nvarchar(20) NOT NULL,
@@ -146,9 +145,9 @@ ADD CONSTRAINT PK_DichVu		PRIMARY KEY (MaDichVu),
 GO
 ALTER TABLE DonDatPhong
 ADD CONSTRAINT PK_DonDatPhong	PRIMARY KEY (MaDonDat),
-	CONSTRAINT FK_MaPhong		FOREIGN KEY (MaPhong)		REFERENCES Phong(MaPhong),
 	CONSTRAINT FK_MaKhachHang	FOREIGN KEY (MaKhachHang)	REFERENCES KhachHang(MaKhachHang),
 	CONSTRAINT FK_MaTiepTan		FOREIGN KEY (MaTiepTan)		REFERENCES TiepTan(MaTiepTan),
+	CONSTRAINT CK_HinhThucThue	CHECK (HinhThucThue in (N'Theo giờ', N'Theo ngày')),
 	CONSTRAINT CK_SoLuongKhach	CHECK (SoLuongKhach>0);
 
 GO
