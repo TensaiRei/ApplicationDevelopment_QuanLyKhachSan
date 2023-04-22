@@ -11,6 +11,10 @@ public class DonDatPhong {
 		Hours, Days
 	}
 	private enum_HinhThucThue hinhThucThue;
+	public enum enum_TrangThaiThanhToan{
+		Yet, Paid
+	}
+	private enum_TrangThaiThanhToan trangThaiThanhToan;
 	private Timestamp ngayDatPhong;
 	//
 	public int getMaDonDat() {
@@ -43,6 +47,12 @@ public class DonDatPhong {
 	public void setHinhThucThue(enum_HinhThucThue hinhThucThue) {
 		this.hinhThucThue = hinhThucThue;
 	}
+	public enum_TrangThaiThanhToan getTrangThaiThanhToan() {
+		return trangThaiThanhToan;
+	}
+	public void setTrangThaiThanhToan(enum_TrangThaiThanhToan trangThaiThanhToan) {
+		this.trangThaiThanhToan = trangThaiThanhToan;
+	}
 	public Timestamp getNgayDatPhong() {
 		return ngayDatPhong;
 	}
@@ -51,14 +61,15 @@ public class DonDatPhong {
 	}
 	//
 	public DonDatPhong(int maDonDat, int maKhachHang, String maTiepTan, int soLuongKhach,
-			enum_HinhThucThue hinhThucThue, Timestamp ngayDatPhong) {
+			enum_HinhThucThue hinhThucThue, enum_TrangThaiThanhToan trangThaiThanhToan, Timestamp ngayDatPhong) {
 		super();
-		setMaDonDat(maDonDat);
-		setMaKhachHang(maKhachHang);
-		setMaTiepTan(maTiepTan);
-		setSoLuongKhach(soLuongKhach);
-		setHinhThucThue(hinhThucThue);
-		setNgayDatPhong(ngayDatPhong);
+		this.maDonDat = maDonDat;
+		this.maKhachHang = maKhachHang;
+		this.maTiepTan = maTiepTan;
+		this.soLuongKhach = soLuongKhach;
+		this.hinhThucThue = hinhThucThue;
+		this.trangThaiThanhToan = trangThaiThanhToan;
+		this.ngayDatPhong = ngayDatPhong;
 	}
 	public DonDatPhong() {
 		super();
@@ -67,9 +78,10 @@ public class DonDatPhong {
 	@Override
 	public String toString() {
 		return "DonDatPhong [maDonDat=" + maDonDat + ", maKhachHang=" + maKhachHang + ", maTiepTan=" + maTiepTan
-				+ ", soLuongKhach=" + soLuongKhach + ", hinhThucThue=" + hinhThucThue + ", ngayDatPhong=" + ngayDatPhong
-				+ "]";
+				+ ", soLuongKhach=" + soLuongKhach + ", hinhThucThue=" + hinhThucThue + ", trangThaiThanhToan="
+				+ trangThaiThanhToan + ", ngayDatPhong=" + ngayDatPhong + "]";
 	}
+	//
 	@Override
 	public int hashCode() {
 		final int prime = 31;
