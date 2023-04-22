@@ -125,7 +125,7 @@ public class UI_ChiTietHoaDon extends JPanel {
         tblP = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(102, 102, 102));
-        setLayout(new java.awt.BorderLayout(5, 5));
+        setLayout(new java.awt.BorderLayout(3, 3));
 
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -311,6 +311,8 @@ public class UI_ChiTietHoaDon extends JPanel {
         pnlDV.setPreferredSize(new java.awt.Dimension(400, 225));
         pnlDV.setLayout(new java.awt.BorderLayout());
 
+        tblDV.setBackground(new java.awt.Color(245, 245, 245));
+        
         tblDV.setToolTipText("");
         scrDV.setViewportView(tblDV);
 
