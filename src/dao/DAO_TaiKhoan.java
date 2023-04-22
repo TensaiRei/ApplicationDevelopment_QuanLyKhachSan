@@ -10,8 +10,8 @@ import entity.TaiKhoan;
 
 public class DAO_TaiKhoan {
 	private static TaiKhoan taiKhoanHienHanh;
-	private static void setTaiKhoanHienHanh(String maTaiKhoan, String tenTenKhoan) {
-		taiKhoanHienHanh = new TaiKhoan(maTaiKhoan, maTaiKhoan);
+	private static void setTaiKhoanHienHanh(String maTaiKhoan, String tenTaiKhoan) {
+		taiKhoanHienHanh = new TaiKhoan(maTaiKhoan, tenTaiKhoan);
 	}
 	public static TaiKhoan getTaiKhoanHienHanh() {return taiKhoanHienHanh;}
 	public static boolean kiemTraTaiKhoan(String username, String password) {
@@ -27,7 +27,6 @@ public class DAO_TaiKhoan {
 			prpStm.setString(1, username);
 			prpStm.setString(2, password);
 			ResultSet result = prpStm.executeQuery();
-			
 			if(result.next()) {
 				setTaiKhoanHienHanh(result.getString("MaTaiKhoan"), result.getString("TenTaiKhoan"));
 				tonTai=true;

@@ -29,7 +29,10 @@ public class UI_ChiTietHoaDon extends JPanel {
 	private DefaultTableModel modelDV;
 	private DefaultTableModel modelP;
     //
-    public static UI_ChiTietHoaDon getUI_ChiTietHoaDonInstance() {return instance;}
+    public static UI_ChiTietHoaDon getUI_ChiTietHoaDonInstance() {
+    	new UI_ChiTietHoaDon();
+    	return instance;
+    }
     //
     private javax.swing.JLabel lblIHDMDD;
     private javax.swing.JLabel lblIHDND;
@@ -356,8 +359,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     	addThongTinKhachHang(khachHang);
     	addChiTietHoaDon(hoaDon);
     	addDanhSachDichVu(listDV, listDVD);
-    	addDanhSachPhong(listPhong);
-    	
+    	addDanhSachPhong(listPhong);  	
     }
     
     private void addThongTinKhachHang(KhachHang khachHang) {

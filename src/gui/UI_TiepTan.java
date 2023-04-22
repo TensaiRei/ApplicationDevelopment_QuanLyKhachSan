@@ -50,7 +50,10 @@ public class UI_TiepTan extends JPanel {
     private javax.swing.JPanel pnlTitle;
     private javax.swing.JPanel pnlTop;
 	//
-	public static UI_TiepTan getUI_TiepTanInstance() {return instance;}
+	public static UI_TiepTan getUI_TiepTanInstance() {
+		instance = new UI_TiepTan();
+		return instance;
+	}
 	//
 	public UI_TiepTan() {
 		initComponents();

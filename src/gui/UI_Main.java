@@ -44,7 +44,10 @@ public class UI_Main extends JFrame implements ActionListener{
     
     ArrayList<JButton> functionalButton = new ArrayList<JButton>();
     //
-    public static UI_Main getUI_MainInstance() {return instance;}
+    public static UI_Main getUI_MainInstance() {
+    	instance = new UI_Main();
+    	return instance;
+    }
     //
 	public UI_Main() {
         initComponents();
@@ -238,11 +241,11 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(panel instanceof UI_TiepTan) {
 			btnTiepTan.setBackground(Color.decode("#3333FF"));
 		}
-		if(panel instanceof UI_ChiTietHoaDon) {
+		if(panel instanceof UI_HoaDon) {
 			btnHoaDon.setBackground(Color.decode("#3333FF"));
 		}
 	}
-    private void showUI(JPanel panel) {
+    public void showUI(JPanel panel) {
 		pnlTask.removeAll();
 		pnlTask.revalidate();
 		pnlTask.repaint();
@@ -271,7 +274,7 @@ public class UI_Main extends JFrame implements ActionListener{
 	private void logOut() {
 		int logOutPrompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận Đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
 		if(logOutPrompt == JOptionPane.YES_OPTION) {
-			UI_Login.getUI_LoginInstance().setVisible(true);
+			UI_Login.getUI_LoginInstance();
 			this.dispose();
 		}
 	}
@@ -286,8 +289,7 @@ public class UI_Main extends JFrame implements ActionListener{
 			showUI(UI_TiepTan.getUI_TiepTanInstance());
 		}
 		if(o == btnHoaDon) {
-			showUI(UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance());
-			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().addHoaDon(100000);
+			showUI(UI_HoaDon.getUI_HoaDonInstance());
 		}
 		if(o == btnDangXuat) {
 			logOut();
