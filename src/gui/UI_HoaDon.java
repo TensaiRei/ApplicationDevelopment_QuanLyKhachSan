@@ -45,10 +45,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     	setDecorateButton();
     }
     //
-    public static UI_HoaDon getUI_HoaDonInstance() {
-    	instance = new UI_HoaDon();
-    	return instance;
-    }
+    public static UI_HoaDon getUI_HoaDonInstance() {return instance;}
     //
     private void initComponents() {
 

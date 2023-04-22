@@ -47,21 +47,21 @@ public class TiepTan {
 	//
 	public TiepTan(String maTiepTan, String hoDem, String ten, String cccd, String sdt, String maTaiKhoan) {
 		super();
-		this.setMaTiepTan(maTiepTan);
-		this.setHoDem(hoDem);
-		this.setTen(ten);
-		this.setCccd(cccd);
-		this.setSdt(sdt);
-		this.setMaTaiKhoan(maTaiKhoan);
+		setMaTiepTan(maTiepTan);
+		setHoDem(hoDem);
+		setTen(ten);
+		setCccd(cccd);
+		setSdt(sdt);
+		setMaTaiKhoan(maTaiKhoan);
 	}
 	public TiepTan() {
 		super();
-		this.setMaTiepTan("");
-		this.setHoDem("");
-		this.setTen("");
-		this.setCccd("");
-		this.setSdt("");
-		this.setMaTaiKhoan("");
+		setMaTiepTan("");
+		setHoDem("");
+		setTen("");
+		setCccd("");
+		setSdt("");
+		setMaTaiKhoan("");
 	}
 	//
 	@Override
