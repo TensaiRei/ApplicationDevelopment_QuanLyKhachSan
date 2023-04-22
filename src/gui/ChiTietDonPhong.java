@@ -62,6 +62,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 	private JComboBox<String> cboTypeOfServices;
 	
 	private JButton btnAddServices;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -88,7 +89,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		setBackground(Color.WHITE);
 		setTitle("Chi tiết phòng");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1280, 720);
+		setBounds(100, 100, 1280, 670);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 228, 181));
 		contentPane.setBorder(
@@ -280,13 +281,27 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		txtGia.setBounds(390, 130, 150, 24);
 		pnlRoomDetail.add(txtGia);
 		
+		JLabel lblMnt = new JLabel("Mã đơn đặt:");
+		lblMnt.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblMnt.setBounds(10, 184, 130, 24);
+		pnlRoomDetail.add(lblMnt);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textField.setEditable(false);
+		textField.setColumns(16);
+		textField.setBorder(null);
+		textField.setBackground(Color.WHITE);
+		textField.setBounds(140, 184, 150, 24);
+		pnlRoomDetail.add(textField);
+		
 		String[] header = {"Mã Dịch Vụ", "Tên Dịch Vụ", "Đơn giá", "Loại Dịch Vụ"};
 		tableModelServices = new DefaultTableModel(header, 0);
 		
 		JPanel panelServices = new JPanel();
 		panelServices.setBackground(new Color(240, 255, 255));
 		panelServices.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Services", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
-		panelServices.setBounds(5, 320, 520, 270);
+		panelServices.setBounds(5, 320, 520, 300);
 		contentPane.add(panelServices);
 		panelServices.setLayout(null);
 		tableServices = new JTable(tableModelServices);
@@ -298,13 +313,13 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		JLabel lblSort = new JLabel("Lọc theo:");
-		lblSort.setBounds(10, 230, 65, 30);
+		lblSort.setBounds(10, 240, 65, 30);
 		panelServices.add(lblSort);
-		lblSort.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSort.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		cboTypeOfServices = new JComboBox<String>();
 		cboTypeOfServices.setMaximumRowCount(20);
-		cboTypeOfServices.setBounds(75, 230, 180, 30);
+		cboTypeOfServices.setBounds(75, 240, 180, 30);
 		cboTypeOfServices.addItem("All Services");
 		cboTypeOfServices.addItem("Foods");
 		cboTypeOfServices.addItem("Drinks");
@@ -314,19 +329,19 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		lblSort.setLabelFor(cboTypeOfServices);
 		
 		JLabel lblSoLuong = new JLabel("Số Lượng:");
-		lblSoLuong.setBounds(260, 230, 70, 30);
+		lblSoLuong.setBounds(260, 240, 70, 30);
 		panelServices.add(lblSoLuong);
-		lblSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSoLuong.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		txtNumber = new JTextField();
-		txtNumber.setBounds(330, 230, 60, 30);
+		txtNumber.setBounds(330, 240, 60, 30);
 		panelServices.add(txtNumber);
 		txtNumber.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNumber.setColumns(10);
 		
 		btnAddServices = new JButton("THÊM");
 		btnAddServices.setIcon(new ImageIcon("img\\add.png"));
-		btnAddServices.setBounds(400, 230, 110, 30);
+		btnAddServices.setBounds(400, 240, 110, 30);
 		panelServices.add(btnAddServices);
 		btnAddServices.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnAddServices.setEnabled(false);
@@ -334,43 +349,18 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		JPanel panelOrderDetails = new JPanel();
 		panelOrderDetails.setBackground(new Color(240, 255, 255));
 		panelOrderDetails.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Room's Order Detail", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
-		panelOrderDetails.setBounds(530, 320, 730, 350);
+		panelOrderDetails.setBounds(530, 320, 730, 300);
 		contentPane.add(panelOrderDetails);
 		
-		String[] header_OrderDetails = {"Mã Khách Hàng", "Mã Dịch Vụ", "Tên Dịch Vụ", "Số lượng", "Đơn giá", "Thành tiền"};
+		String[] header_OrderDetails = {"Mã Đơn Đặt", "Mã Dịch Vụ", "Tên Dịch Vụ", "Số lượng", "Đơn giá", "Thành tiền"};
 		tableModelOrderDetails = new DefaultTableModel(header_OrderDetails, 0);
 		panelOrderDetails.setLayout(null);
 		
 		JScrollPane scrollPane_OrderDetails = new JScrollPane();
-		scrollPane_OrderDetails.setBounds(10, 20, 710, 320);
+		scrollPane_OrderDetails.setBounds(10, 20, 710, 265);
 		panelOrderDetails.add(scrollPane_OrderDetails);
 		table_OrderDetails = new JTable(tableModelOrderDetails);
 		scrollPane_OrderDetails.setViewportView(table_OrderDetails);
-		
-		JPanel pnl_Functions = new JPanel();
-		pnl_Functions.setBackground(new Color(240, 255, 255));
-		pnl_Functions.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Ch\u1EE9c n\u0103ng", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
-		pnl_Functions.setBounds(5, 600, 520, 70);
-		contentPane.add(pnl_Functions);
-		pnl_Functions.setLayout(null);
-		
-		JButton btnDelete = new JButton("Xoá đơn");
-		btnDelete.setBackground(new Color(245, 245, 245));
-		btnDelete.setForeground(new Color(0, 0, 0));
-		btnDelete.setIcon(new ImageIcon("img\\delete-document.png"));
-		btnDelete.setBounds(80, 13, 150, 40);
-		pnl_Functions.add(btnDelete);
-		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnDelete.setEnabled(false);
-		
-		JButton btnTraPhong = new JButton("Trả phòng");
-		btnTraPhong.setBackground(new Color(245, 245, 245));
-		btnTraPhong.setForeground(new Color(0, 0, 0));
-		btnTraPhong.setIcon(new ImageIcon("img\\file-export.png"));
-		btnTraPhong.setBounds(270, 13, 170, 40);
-		pnl_Functions.add(btnTraPhong);
-		btnTraPhong.setFont(new Font("Tahoma", Font.BOLD, 20));
-		btnTraPhong.setEnabled(false);
 		
 		JPanel panel_Phong = new JPanel();
 		panel_Phong.setBackground(new Color(240, 255, 255));
