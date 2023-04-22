@@ -32,78 +32,79 @@ GO
 --CREATE TABLES (No constraint)
 CREATE TABLE KhachHang
 (
-	MaKhachHang		int NOT NULL IDENTITY(10000,1),
-	HoDem			nvarchar(30) NOT NULL,
-	Ten				nvarchar(10) NOT NULL,
-	CCCD			varchar(15) NOT NULL,
+	MaKhachHang		int				NOT NULL IDENTITY(10000,1),
+	HoDem			nvarchar(30)	NOT NULL,
+	Ten				nvarchar(10)	NOT NULL,
+	CCCD			varchar(15)		NOT NULL,
 	SDT				varchar(12),
 	QuocTich		nvarchar(20)
 )
 CREATE TABLE Phong
 (
-	MaPhong			varchar(7) NOT NULL,
-	SoPhong			int,
-	SoTang			int,
+	MaPhong			varchar(7)		NOT NULL,
+	SoPhong			int				NOT NULL,
+	SoTang			int				NOT NULL,
 	TenPhong		nvarchar(20),
-	TinhTrang		nvarchar(20),
-	MaLoaiPhong		varchar(7) NOT NULL
+	TinhTrang		nvarchar(20)	NOT NULL,
+	MaLoaiPhong		varchar(7)		NOT NULL,
 )
 CREATE TABLE LoaiPhong
 (
-	MaLoaiPhong		varchar(7) NOT NULL,
+	MaLoaiPhong		varchar(7)		NOT NULL,
 	TenLoaiPhong	nvarchar(20),
-	DonGia			money
+	DonGia			money			NOT NULL
 )
 CREATE TABLE TiepTan
 (
-	MaTiepTan		varchar(7) NOT NULL,
-	HoDem			nvarchar(30) NOT NULL,
-	Ten				nvarchar(10) NOT NULL,
-	CCCD			varchar(15),
+	MaTiepTan		varchar(7)		NOT NULL,
+	HoDem			nvarchar(30)	NOT NULL,
+	Ten				nvarchar(10)	NOT NULL,
+	CCCD			varchar(15)		NOT NULL,
 	SDT				varchar(12),
-	MaTaiKhoan		varchar(10)
+	MaTaiKhoan		varchar(10)		NOT NULL
 )
 CREATE TABLE DichVu
 (
-	MaDichVu		varchar(7) NOT NULL,
+	MaDichVu		varchar(7)		NOT NULL,
 	TenDichVu		nvarchar(30),
-	DonGia			money,
-	LoaiDichVu		nvarchar(20) NOT NULL
+	DonGia			money			NOT NULL,
+	LoaiDichVu		nvarchar(20)	NOT NULL
 )
 CREATE TABLE DonDatPhong
 (
-	MaDonDat		int NOT NULL IDENTITY(100000,1),
-	MaKhachHang		int NOT NULL,
-	MaTiepTan		varchar(7) NOT NULL,
-	SoLuongKhach	int,
-	HinhThucThue	nvarchar(20) NOT NULL,
-	NgayDatPhong	DateTime DEFAULT GETDATE()
+	MaDonDat			int				NOT NULL IDENTITY(100000,1),
+	MaKhachHang			int				NOT NULL,
+	MaTiepTan			varchar(7)		NOT NULL,
+	SoLuongKhach		int				NOT NULL,
+	HinhThucThue		nvarchar(20)	NOT NULL,
+	TrangThaiThanhToan	nvarchar(30)	NOT NULL,
+	NgayDatPhong		DateTime		DEFAULT GETDATE()
 )
 CREATE TABLE DonDatPhong_Phong
 (
-	MaDonDat		int NOT NULL,
-	MaPhong			varchar(7) NOT NULL
+	MaDonDat		int					NOT NULL,
+	MaPhong			varchar(7)			NOT NULL
 )
 CREATE TABLE DonDatPhong_DichVu
 (
-	MaDonDat		int NOT NULL,
-	MaDichVu		varchar(7) NOT NULL,
-	SoLuong			int
+	MaDonDat		int					NOT NULL,
+	MaDichVu		varchar(7)			NOT NULL,
+	SoLuong			int					NOT NULL
 )
 CREATE TABLE HoaDon
 (
-	MaHoaDon		int NOT NULL IDENTITY(100000,1),
-	MaDonDat		int NOT NULL,
-	PhuPhi			money,
-	TongThanhTien	money,
+	MaHoaDon		int					NOT NULL IDENTITY(100000,1),
+	MaDonDat		int					NOT NULL,
+	PhuPhi			money				NOT NULL,
+	TongThanhTien	money				NOT NULL,
 	NgayDatPhong	DateTime,
-	NgayTraPhong	DateTime DEFAULT GETDATE()
+	NgayTraPhong	DateTime			DEFAULT GETDATE()
 )
 CREATE TABLE TaiKhoan
 (
-	MaTaiKhoan		varchar(10) NOT NULL,
-	TenTaiKhoan		varchar(30) NOT NULL,
-	MatKhauTaiKhoan	varbinary(100) NOT NULL
+	MaTaiKhoan		varchar(10)			NOT NULL,
+	TenTaiKhoan		varchar(30)			NOT NULL,
+	MatKhauTaiKhoan	varbinary(100)		NOT NULL
 )
 
 GO
@@ -122,7 +123,7 @@ ALTER TABLE Phong
 ADD CONSTRAINT PK_Phong			PRIMARY KEY (MaPhong),
 	CONSTRAINT CK_SoPhong		CHECK(SoPhong>0),
 	CONSTRAINT CK_SoTang		CHECK(SoTang>0),
-	CONSTRAINT CK_TrangThai		CHECK(TinhTrang in ('Available', 'Booked', 'Not Available')),
+	CONSTRAINT CK_TinhTrang		CHECK(TinhTrang in ('Available', 'Booked', 'Not Available')),
 	CONSTRAINT FK_MaLoaiPhong	FOREIGN KEY (MaLoaiPhong) REFERENCES LoaiPhong(MaLoaiPhong);
 
 GO
@@ -144,11 +145,13 @@ ADD CONSTRAINT PK_DichVu		PRIMARY KEY (MaDichVu),
 
 GO
 ALTER TABLE DonDatPhong
-ADD CONSTRAINT PK_DonDatPhong	PRIMARY KEY (MaDonDat),
-	CONSTRAINT FK_MaKhachHang	FOREIGN KEY (MaKhachHang)	REFERENCES KhachHang(MaKhachHang),
-	CONSTRAINT FK_MaTiepTan		FOREIGN KEY (MaTiepTan)		REFERENCES TiepTan(MaTiepTan),
-	CONSTRAINT CK_HinhThucThue	CHECK (HinhThucThue in (N'Theo giờ', N'Theo ngày')),
-	CONSTRAINT CK_SoLuongKhach	CHECK (SoLuongKhach>0);
+ADD CONSTRAINT PK_DonDatPhong			PRIMARY KEY (MaDonDat),
+	CONSTRAINT FK_MaKhachHang			FOREIGN KEY (MaKhachHang)	REFERENCES KhachHang(MaKhachHang),
+	CONSTRAINT FK_MaTiepTan				FOREIGN KEY (MaTiepTan)		REFERENCES TiepTan(MaTiepTan),
+	CONSTRAINT CK_SoLuongKhach			CHECK (SoLuongKhach>0),
+	CONSTRAINT CK_HinhThucThue			CHECK (HinhThucThue in (N'Theo giờ', N'Theo ngày')),
+	CONSTRAINT CK_TrangThaiThanhToan	CHECK (TrangThaiThanhToan in (N'Đã thanh toán', N'Chưa thanh toán'))
+	
 
 GO
 ALTER TABLE DonDatPhong_Phong

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import connectDB.ConnectDB;
 import entity.DonDatPhong;
 import entity.DonDatPhong.enum_HinhThucThue;
+import entity.DonDatPhong.enum_TrangThaiThanhToan;
 
 public class DAO_DonDatPhong {
 	public static ArrayList<DonDatPhong> getDanhSachDonDatPhong(){
@@ -30,6 +31,7 @@ public class DAO_DonDatPhong {
 				String maTiepTan = result.getString("MaTiepTan");
 				int soLuongKhach = result.getInt("SoLuongKhach");
 				String hinhThucThue = result.getString("HinhThucThue");
+				String trangThaiThanhToan = result.getString("TrangThaiThanhToan");
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				enum_HinhThucThue enumHinhThucThue = null;
 				if(hinhThucThue.equals("Theo giờ")) {
@@ -38,7 +40,14 @@ public class DAO_DonDatPhong {
 				if(hinhThucThue.equals("Theo ngày")) {
 					enumHinhThucThue = enum_HinhThucThue.Days;
 				}
-				DonDatPhong tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, ngayDatPhong);
+				enum_TrangThaiThanhToan enumTrangThaiThanhToan = null;
+				if(trangThaiThanhToan.equals("Chưa thanh toán")) {
+					enumTrangThaiThanhToan = enum_TrangThaiThanhToan.Yet;
+				}
+				if(trangThaiThanhToan.equals("Đã thanh toán")) {
+					enumTrangThaiThanhToan = enum_TrangThaiThanhToan.Paid;
+				}
+				DonDatPhong tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, enumTrangThaiThanhToan, ngayDatPhong);
 				listKH.add(tempDonDatPhong);
 			}
 		}
@@ -74,6 +83,7 @@ public class DAO_DonDatPhong {
 				String maTiepTan = result.getString("MaTiepTan");
 				int soLuongKhach = result.getInt("SoLuongKhach");
 				String hinhThucThue = result.getString("HinhThucThue");
+				String trangThaiThanhToan = result.getString("TrangThaiThanhToan");
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				enum_HinhThucThue enumHinhThucThue = null;
 				if(hinhThucThue.equals("Theo giờ")) {
@@ -82,7 +92,14 @@ public class DAO_DonDatPhong {
 				if(hinhThucThue.equals("Theo ngày")) {
 					enumHinhThucThue = enum_HinhThucThue.Days;
 				}
-				tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, ngayDatPhong);
+				enum_TrangThaiThanhToan enumTrangThaiThanhToan = null;
+				if(trangThaiThanhToan.equals("Chưa thanh toán")) {
+					enumTrangThaiThanhToan = enum_TrangThaiThanhToan.Yet;
+				}
+				if(trangThaiThanhToan.equals("Đã thanh toán")) {
+					enumTrangThaiThanhToan = enum_TrangThaiThanhToan.Paid;
+				}
+				tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, enumTrangThaiThanhToan, ngayDatPhong);
 				rowCount++;
 			}
 			
