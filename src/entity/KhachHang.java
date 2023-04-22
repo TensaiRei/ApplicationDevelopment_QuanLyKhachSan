@@ -54,6 +54,9 @@ public class KhachHang {
 		setSdt(sdt);
 		setQuocTich(quocTich);
 	}
+	public KhachHang() {
+		super();
+	}
 	//
 	@Override
 	public String toString() {

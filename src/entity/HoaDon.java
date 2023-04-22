@@ -57,6 +57,9 @@ public class HoaDon {
 		setNgayDatPhong(ngayDatPhong);
 		setNgayTraPhong(ngayTraPhong);
 	}
+	public HoaDon() {
+		super();
+	}
 	@Override
 	public String toString() {
 		return "HoaDon [maHoaDon=" + maHoaDon + ", maDonDat=" + maDonDat + ", phuPhi=" + phuPhi + ", tongThanhTien="

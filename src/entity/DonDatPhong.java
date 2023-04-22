@@ -60,6 +60,9 @@ public class DonDatPhong {
 		setHinhThucThue(hinhThucThue);
 		setNgayDatPhong(ngayDatPhong);
 	}
+	public DonDatPhong() {
+		super();
+	}
 	//
 	@Override
 	public String toString() {
