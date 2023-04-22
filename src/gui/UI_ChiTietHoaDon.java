@@ -335,13 +335,15 @@ public class UI_ChiTietHoaDon extends JPanel {
     
     private void addTableModel(){
     	modelDV = new DefaultTableModel(new String [] {"Mã Dịch vụ", "Tên Dịch vụ", "Đơn giá", "Loại Dịch vụ", "Số lượng"}, 0);
-    	modelP = new DefaultTableModel(new String[] {"Mã Phòng", "Số Phòng", "Số Tầng", "Mã Loại phòng", "Loại phòng", "Đơn Giá"}, 0);
-    	
+    	modelP = new DefaultTableModel(new String[] {"Mã Phòng", "Số Phòng", "Số Tầng", "Mã Loại phòng", "Loại phòng", "Đơn Giá"}, 0); 	
     	tblDV.setModel(modelDV);
     	tblP.setModel(modelP);
     }
     
     public void addHoaDon(int maHoaDon) {
+    	modelDV.getDataVector().removeAllElements();
+    	modelP.getDataVector().removeAllElements();
+    	
     	HoaDon hoaDon = DAO_HoaDon.getHoaDonTheoMa(maHoaDon);
     	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMa(hoaDon.getMaDonDat());
     	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMa(donDatPhong.getMaKhachHang());
