@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import connectDB.ConnectDB;
 import entity.DichVu;
 import entity.DichVu.enum_LoaiDV;
+import entity.DichVuDat;
 
 public class DAO_DichVu {
 	public DAO_DichVu() {
@@ -19,11 +20,11 @@ public class DAO_DichVu {
 	 * ham lay danh sach tat ca cac dich vu trong database
 	 * @return ArrayList
 	 */
-	public ArrayList<DichVu> getAllDSDichVu() {
+	public static ArrayList<DichVu> getAllDSDichVu() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu";
 			Statement stmt = con.createStatement();
@@ -59,11 +60,11 @@ public class DAO_DichVu {
 	 * ham lay danh sach cac dich vu thuoc do an
 	 * @return ArrayList
 	 */
-	public ArrayList<DichVu> getDSDichVuTheoThucAn() {
+	public static ArrayList<DichVu> getDSDichVuTheoThucAn() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Foods'";
 			Statement stmt = con.createStatement();
@@ -93,11 +94,11 @@ public class DAO_DichVu {
 	 * ham lay danh sach cac dich vu thuoc do uong
 	 * @return ArrayList
 	 */
-	public ArrayList<DichVu> getDSDichVuTheoDoUong() {
+	public static ArrayList<DichVu> getDSDichVuTheoDoUong() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Drinks'";
 			Statement stmt = con.createStatement();
@@ -127,11 +128,11 @@ public class DAO_DichVu {
 	 * ham lay danh sach cac dich vu khac
 	 * @return ArrayList
 	 */
-	public ArrayList<DichVu> getDSDichVuConLai() {
+	public static ArrayList<DichVu> getDSDichVuConLai() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Others'";
 			Statement stmt = con.createStatement();
@@ -153,6 +154,18 @@ public class DAO_DichVu {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		return listDV;
+	}
+	public static ArrayList<DichVu> getDSDichVuDat(ArrayList<DichVuDat> listDVD){
+		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
+		ArrayList<DichVu> listDVFull = getAllDSDichVu();
+		
+		for(DichVu thisDV : listDVFull) {
+			for(DichVuDat thisDVDat : listDVD) {
+				if(thisDVDat.getMaDichVu().equals(thisDV.getMaDichVu())) 
+					listDV.add(thisDV);
+			}
 		}
 		return listDV;
 	}

@@ -406,8 +406,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 	}
 
 	private void updateServicesTableData() {
-		DAO_DichVu dv = new DAO_DichVu();
-		ArrayList<DichVu> listDV = dv.getAllDSDichVu();
+		ArrayList<DichVu> listDV = DAO_DichVu.getAllDSDichVu();
 		tableModelServices.setRowCount(0);
 		for (DichVu dichvu : listDV) {
 			String[] rowDatas = {dichvu.getMaDichVu(), dichvu.getTenDichVu(), 
@@ -421,8 +420,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		Object o = cboTypeOfServices.getSelectedItem();
 		if (o.equals("Foods")) {
 			tableModelServices.setRowCount(0);
-			DAO_DichVu dv = new DAO_DichVu();
-			ArrayList<DichVu> listDV = dv.getDSDichVuTheoThucAn();
+			ArrayList<DichVu> listDV = DAO_DichVu.getDSDichVuTheoThucAn();
 			for (DichVu dichvu : listDV) {
 				String[] rowDatas = {dichvu.getMaDichVu(), dichvu.getTenDichVu(), 
 						dichvu.getDonGia() + "", dichvu.getLoaiDV() + ""};
@@ -430,8 +428,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 			}
 		} else if (o.equals("Drinks")) {
 			tableModelServices.setRowCount(0);
-			DAO_DichVu dv = new DAO_DichVu();
-			ArrayList<DichVu> listDV = dv.getDSDichVuTheoDoUong();
+			ArrayList<DichVu> listDV = DAO_DichVu.getDSDichVuTheoDoUong();
 			for (DichVu dichvu : listDV) {
 				String[] rowDatas = {dichvu.getMaDichVu(), dichvu.getTenDichVu(), 
 						dichvu.getDonGia() + "", dichvu.getLoaiDV() + ""};
@@ -439,8 +436,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 			}
 		} else if (o.equals("Others Services")) {
 			tableModelServices.setRowCount(0);
-			DAO_DichVu dv = new DAO_DichVu();
-			ArrayList<DichVu> listDV = dv.getDSDichVuConLai();
+			ArrayList<DichVu> listDV = DAO_DichVu.getDSDichVuConLai();
 			for (DichVu dichvu : listDV) {
 				String[] rowDatas = {dichvu.getMaDichVu(), dichvu.getTenDichVu(), 
 						dichvu.getDonGia() + "", dichvu.getLoaiDV() + ""};

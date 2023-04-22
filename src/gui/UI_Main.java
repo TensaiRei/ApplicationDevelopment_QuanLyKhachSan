@@ -74,11 +74,13 @@ public class UI_Main extends JFrame implements ActionListener{
         borderLeft = new javax.swing.JPanel();
         borderRight = new javax.swing.JPanel();
 
+        setUndecorated(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Quản Lý Đặt Phòng Khách Sạn");
         setBackground(new java.awt.Color(153, 153, 153));
         setResizable(false);
         setSize(new java.awt.Dimension(1200, 700));
+        setLocationRelativeTo(null);
 
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setPreferredSize(new java.awt.Dimension(800, 50));
@@ -232,6 +234,9 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(panel instanceof UI_TiepTan) {
 			btnTiepTan.setBackground(Color.decode("#3333FF"));
 		}
+		if(panel instanceof UI_ChiTietHoaDon) {
+			btnHoaDon.setBackground(Color.decode("#3333FF"));
+		}
 	}
     public void showUI(JPanel panel) {
 		pnlTask.removeAll();
@@ -245,6 +250,7 @@ public class UI_Main extends JFrame implements ActionListener{
     public void addActionPerform() {
 		btnPhong.addActionListener(this);
 		btnTiepTan.addActionListener(this);
+		btnHoaDon.addActionListener(this);
 		btnDangXuat.addActionListener(this);
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -274,6 +280,10 @@ public class UI_Main extends JFrame implements ActionListener{
 		}
 		if(o == btnTiepTan) {
 			showUI(UI_TiepTan.getUI_TiepTanInstance());
+		}
+		if(o == btnHoaDon) {
+			showUI(UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance());
+			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().addHoaDon(100001);
 		}
 		if(o == btnDangXuat) {
 			logOut();

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,5 +49,51 @@ public class DAO_DonDatPhong {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
 		return listKH;
+	}
+	
+	public static DonDatPhong getDonDatPhongTheoMa(int maDonDat) {
+		DonDatPhong tempDonDatPhong = new DonDatPhong();
+		ConnectDB.getInstance().connectDatabase();
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM DonDatPhong "
+					+ "WHERE MaDonDat = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			
+			prpStm.setInt(1, maDonDat);
+			
+			ResultSet result = prpStm.executeQuery();
+			
+			int rowCount = 0;
+			
+			while(result.next()) {
+				int maDonDatPhong = result.getInt("MaDonDat");
+				int maKhachHang = result.getInt("MaKhachHang");
+				String maTiepTan = result.getString("MaTiepTan");
+				int soLuongKhach = result.getInt("SoLuongKhach");
+				String hinhThucThue = result.getString("HinhThucThue");
+				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+				enum_HinhThucThue enumHinhThucThue = null;
+				if(hinhThucThue.equals("Theo giờ")) {
+					enumHinhThucThue = enum_HinhThucThue.Hours;
+				}
+				if(hinhThucThue.equals("Theo ngày")) {
+					enumHinhThucThue = enum_HinhThucThue.Days;
+				}
+				tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, ngayDatPhong);
+				rowCount++;
+			}
+			
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+		return tempDonDatPhong;
 	}
 }
