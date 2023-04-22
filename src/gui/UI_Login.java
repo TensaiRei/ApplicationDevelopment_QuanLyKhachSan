@@ -26,14 +26,16 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static UI_Login instance = new UI_Login();
+	private static UI_Login instance;
 	//
 	private JTextField textUsername;
 	private JPasswordField passwordField;
 	private JButton btnLogin = new JButton("  Login");
 	private JButton btnReset = new JButton("  Reset");
 	//
-	public static UI_Login getUI_LoginInstance() {return instance;}
+	public static UI_Login getUI_LoginInstance() {
+		instance = new UI_Login();
+		return instance;}
 	//
 	public UI_Login() {
 		//Panel

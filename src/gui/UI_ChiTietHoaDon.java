@@ -29,7 +29,10 @@ public class UI_ChiTietHoaDon extends JPanel {
 	private DefaultTableModel modelDV;
 	private DefaultTableModel modelP;
     //
-    public static UI_ChiTietHoaDon getUI_ChiTietHoaDonInstance() {return instance;}
+    public static UI_ChiTietHoaDon getUI_ChiTietHoaDonInstance() {
+    	new UI_ChiTietHoaDon();
+    	return instance;
+    }
     //
     private javax.swing.JLabel lblIHDMDD;
     private javax.swing.JLabel lblIHDND;
@@ -125,7 +128,7 @@ public class UI_ChiTietHoaDon extends JPanel {
         tblP = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(102, 102, 102));
-        setLayout(new java.awt.BorderLayout(5, 5));
+        setLayout(new java.awt.BorderLayout(3, 3));
 
         pnlTitle.setBackground(new java.awt.Color(204, 204, 204));
         pnlTitle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -311,6 +314,8 @@ public class UI_ChiTietHoaDon extends JPanel {
         pnlDV.setPreferredSize(new java.awt.Dimension(400, 225));
         pnlDV.setLayout(new java.awt.BorderLayout());
 
+        tblDV.setBackground(new java.awt.Color(245, 245, 245));
+        
         tblDV.setToolTipText("");
         scrDV.setViewportView(tblDV);
 
@@ -354,8 +359,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     	addThongTinKhachHang(khachHang);
     	addChiTietHoaDon(hoaDon);
     	addDanhSachDichVu(listDV, listDVD);
-    	addDanhSachPhong(listPhong);
-    	
+    	addDanhSachPhong(listPhong);  	
     }
     
     private void addThongTinKhachHang(KhachHang khachHang) {
