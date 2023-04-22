@@ -150,7 +150,6 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 				UI_Main.getUI_MainInstance().setVisible(true);
 				this.setVisible(false);
 				this.dispose();
-				instance.dispose();
 		}
 		else
 		{
