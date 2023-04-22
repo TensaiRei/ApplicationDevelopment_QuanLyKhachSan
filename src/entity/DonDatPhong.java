@@ -63,13 +63,13 @@ public class DonDatPhong {
 	public DonDatPhong(int maDonDat, int maKhachHang, String maTiepTan, int soLuongKhach,
 			enum_HinhThucThue hinhThucThue, enum_TrangThaiThanhToan trangThaiThanhToan, Timestamp ngayDatPhong) {
 		super();
-		this.maDonDat = maDonDat;
-		this.maKhachHang = maKhachHang;
-		this.maTiepTan = maTiepTan;
-		this.soLuongKhach = soLuongKhach;
-		this.hinhThucThue = hinhThucThue;
-		this.trangThaiThanhToan = trangThaiThanhToan;
-		this.ngayDatPhong = ngayDatPhong;
+		setMaDonDat(maDonDat);
+		setMaKhachHang(maKhachHang);
+		setMaTiepTan(maTiepTan);
+		setSoLuongKhach(soLuongKhach);
+		setHinhThucThue(hinhThucThue);
+		setTrangThaiThanhToan(trangThaiThanhToan);
+		setNgayDatPhong(ngayDatPhong);
 	}
 	public DonDatPhong() {
 		super();

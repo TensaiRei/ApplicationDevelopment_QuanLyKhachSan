@@ -50,14 +50,10 @@ public class UI_TiepTan extends JPanel {
     private javax.swing.JPanel pnlTitle;
     private javax.swing.JPanel pnlTop;
 	//
-	public static UI_TiepTan getUI_TiepTanInstance() {
-		instance = new UI_TiepTan();
-		return instance;
-	}
+	public static UI_TiepTan getUI_TiepTanInstance() {return instance;}
 	//
 	public UI_TiepTan() {
 		initComponents();
-		showThongTinTiepTan();
 	}
 	//
 	private void initComponents() {
@@ -342,7 +338,7 @@ public class UI_TiepTan extends JPanel {
 
         add(pnlPadding, java.awt.BorderLayout.PAGE_END);
     }
-	private void showThongTinTiepTan() {
+	public void showThongTinTiepTan() {
 		TiepTan thisTiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(DAO_TaiKhoan.getTaiKhoanHienHanh().getMaTaiKhoan());
 		setThongTinTiepTan(thisTiepTan);
 	}

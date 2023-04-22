@@ -29,10 +29,12 @@ public class DAO_DonDatPhong_DichVu {
 			int rowCount = 0;
 			
 			while(result.next()) {
+				int id = result.getInt("ID");
 				int maDonDat = result.getInt("MaDonDat");
 				String maDichVu = result.getString("MaDichVu");
+				String maPhong = result.getString("MaPhong");
 				int soLuong = result.getInt("SoLuong");
-				DichVuDat tempDichVuDat = new DichVuDat(maDonDat, maDichVu, soLuong);
+				DichVuDat tempDichVuDat = new DichVuDat(id, maDonDat, maDichVu, maPhong, soLuong);
 				listDVD.add(tempDichVuDat);
 				rowCount++;
 			}

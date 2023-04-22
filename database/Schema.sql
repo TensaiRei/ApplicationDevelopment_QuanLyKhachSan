@@ -3,7 +3,7 @@ GO
 use master
 
 GO
---DROP DATABASE HotelManagement
+DROP DATABASE HotelManagement
 
 --CREATE DATABASE
 GO
@@ -87,8 +87,10 @@ CREATE TABLE DonDatPhong_Phong
 )
 CREATE TABLE DonDatPhong_DichVu
 (
+	ID				int					NOT NULL IDENTITY(1,1),
 	MaDonDat		int					NOT NULL,
 	MaDichVu		varchar(7)			NOT NULL,
+	MaPhong			varchar(7)			NOT NULL,
 	SoLuong			int					NOT NULL
 )
 CREATE TABLE HoaDon
@@ -116,7 +118,7 @@ ADD CONSTRAINT PK_TaiKhoan PRIMARY KEY (MaTaiKhoan);
 GO
 ALTER TABLE LoaiPhong
 ADD CONSTRAINT PK_LoaiPhong		PRIMARY KEY (MaLoaiPhong),
-	CONSTRAINT CK_DonGia_LP		CHECK (DonGia>=0);
+	CONSTRAINT CK_DonGia_LP		CHECK (DonGia>0);
 
 GO
 ALTER TABLE Phong
@@ -140,7 +142,7 @@ ADD CONSTRAINT PK_TiepTan		PRIMARY KEY (MaTiepTan),
 GO
 ALTER TABLE DichVu
 ADD CONSTRAINT PK_DichVu		PRIMARY KEY (MaDichVu),
-	CONSTRAINT CK_DonGia_DV		CHECK (DonGia>=0),
+	CONSTRAINT CK_DonGia_DV		CHECK (DonGia>0),
 	CONSTRAINT CK_LoaiDV		CHECK (LoaiDichVu in ('Foods', 'Drinks', 'Others'));
 
 GO
@@ -155,16 +157,17 @@ ADD CONSTRAINT PK_DonDatPhong			PRIMARY KEY (MaDonDat),
 
 GO
 ALTER TABLE DonDatPhong_Phong
-ADD CONSTRAINT FK_MaDonDat_DP		FOREIGN KEY (MaDonDat) REFERENCES DonDatPhong(MaDonDat),
-	CONSTRAINT FK_MaPhong_DP		FOREIGN KEY (MaPhong) REFERENCES Phong(MaPhong),
+ADD CONSTRAINT FK_MaDonDat_DP		FOREIGN KEY (MaDonDat)	REFERENCES DonDatPhong(MaDonDat),
+	CONSTRAINT FK_MaPhong_DP		FOREIGN KEY (MaPhong)	REFERENCES Phong(MaPhong),
 	CONSTRAINT PK_DonDatPhong_Phong PRIMARY KEY(MaDonDat, MaPhong);
 
 GO
 ALTER TABLE DonDatPhong_DichVu
-ADD CONSTRAINT FK_MaDonDat_DDV			FOREIGN KEY (MaDonDat) REFERENCES DonDatPhong(MaDonDat),
-	CONSTRAINT FK_MaDichVu_DDV			FOREIGN KEY (MaDichVu) REFERENCES DichVu(MaDichVu),
-	CONSTRAINT CK_SoLuong_DDV			CHECK (SoLuong>=0),
-	CONSTRAINT PK_DonDatPhong_DichVu	PRIMARY KEY (MaDonDat, MaDichVu);
+ADD CONSTRAINT FK_MaDonDat_DDV			FOREIGN KEY (MaDonDat)	REFERENCES DonDatPhong(MaDonDat),
+	CONSTRAINT FK_MaDichVu_DDV			FOREIGN KEY (MaDichVu)	REFERENCES DichVu(MaDichVu),
+	CONSTRAINT FK_MaPhong_DDV			FOREIGN KEY (MaPhong)	REFERENCES Phong(MaPhong),
+	CONSTRAINT CK_SoLuong_DDV			CHECK (SoLuong>0),
+	CONSTRAINT PK_DonDatPhong_DichVu	PRIMARY KEY (ID);
 
 GO
 ALTER TABLE HoaDon

@@ -19,8 +19,8 @@ public class TaiKhoan {
 	//
 	public TaiKhoan(String maTaiKhoan, String tenTaiKhoan) {
 		super();
-		this.setMaTaiKhoan(maTaiKhoan);
-		this.setTenTaiKhoan(tenTaiKhoan);
+		setMaTaiKhoan(maTaiKhoan);
+		setTenTaiKhoan(tenTaiKhoan);
 	}
 	//
 	@Override

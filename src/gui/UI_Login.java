@@ -33,7 +33,7 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 	private JButton btnLogin = new JButton("  Login");
 	private JButton btnReset = new JButton("  Reset");
 	//
-	public static UI_Login getUI_LoginInstance() {
+	public static UI_Login newUI_LoginInstance() {
 		instance = new UI_Login();
 		return instance;}
 	//
@@ -147,8 +147,8 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 		
 		if(DAO_TaiKhoan.kiemTraTaiKhoan(username, password)) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+				UI_Main.newUI_MainInstance();
 				UI_Main.getUI_MainInstance().setVisible(true);
-				this.setVisible(false);
 				this.dispose();
 		}
 		else

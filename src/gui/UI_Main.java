@@ -44,10 +44,8 @@ public class UI_Main extends JFrame implements ActionListener{
     
     ArrayList<JButton> functionalButton = new ArrayList<JButton>();
     //
-    public static UI_Main getUI_MainInstance() {
-    	instance = new UI_Main();
-    	return instance;
-    }
+    public static UI_Main getUI_MainInstance() {return instance;}
+    public static void newUI_MainInstance() {instance = new UI_Main();}
     //
 	public UI_Main() {
         initComponents();
@@ -265,7 +263,7 @@ public class UI_Main extends JFrame implements ActionListener{
 			public void windowClosing(WindowEvent e) {
 				int logOutPrompt = JOptionPane.showConfirmDialog(getUI_MainInstance(), "Xin hãy xác nhận Đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
 				if(logOutPrompt == JOptionPane.YES_OPTION) {
-					UI_Login.getUI_LoginInstance().setVisible(true);
+					UI_Login.newUI_LoginInstance().setVisible(true);
 					getUI_MainInstance().dispose();
 				}
 			}
@@ -274,7 +272,7 @@ public class UI_Main extends JFrame implements ActionListener{
 	private void logOut() {
 		int logOutPrompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận Đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
 		if(logOutPrompt == JOptionPane.YES_OPTION) {
-			UI_Login.getUI_LoginInstance();
+			UI_Login.newUI_LoginInstance();
 			this.dispose();
 		}
 	}
@@ -287,6 +285,7 @@ public class UI_Main extends JFrame implements ActionListener{
 		}
 		if(o == btnTiepTan) {
 			showUI(UI_TiepTan.getUI_TiepTanInstance());
+			UI_TiepTan.getUI_TiepTanInstance().showThongTinTiepTan();
 		}
 		if(o == btnHoaDon) {
 			showUI(UI_HoaDon.getUI_HoaDonInstance());
