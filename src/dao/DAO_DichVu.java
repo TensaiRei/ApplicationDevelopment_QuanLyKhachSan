@@ -169,4 +169,13 @@ public class DAO_DichVu {
 		}
 		return listDV;
 	}
+	public static DichVu getDichVuTheoMaDichVu(String maDichVu) {
+		ArrayList<DichVu> listDV = getAllDSDichVu();
+		for(DichVu thisDichVu : listDV) {
+			if(thisDichVu.getMaDichVu().equals(maDichVu)) {
+				return thisDichVu;
+			}
+		}
+		return null;
+	}
 }

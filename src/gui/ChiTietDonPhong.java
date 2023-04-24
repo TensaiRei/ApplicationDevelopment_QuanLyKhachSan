@@ -22,7 +22,16 @@ import javax.swing.table.DefaultTableModel;
 
 import connectDB.ConnectDB;
 import dao.DAO_DichVu;
+import dao.DAO_DonDatPhong;
+import dao.DAO_DonDatPhong_DichVu;
+import dao.DAO_DonDatPhong_Phong;
+import dao.DAO_KhachHang;
+import dao.DAO_Phong;
 import entity.DichVu;
+import entity.DichVuDat;
+import entity.DonDatPhong;
+import entity.KhachHang;
+import entity.Phong;
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JComboBox;
@@ -374,7 +383,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		panel_Phong.add(txtSoPhong);
 		txtSoPhong.setForeground(Color.BLACK);
 		txtSoPhong.setHorizontalAlignment(SwingConstants.LEFT);
-		txtSoPhong.setText("101");
+		txtSoPhong.setText("");
 		txtSoPhong.setBackground(new Color(240, 255, 255));
 		txtSoPhong.setFont(new Font("Tahoma", Font.BOLD, 36));
 		txtSoPhong.setBorder(null);
@@ -393,8 +402,46 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		cboTypeOfServices.addItemListener(this);
 		
 		tableServices.addMouseListener(this);
+		
+		setThongTinUI("PHG0402");
 	}
 
+	public void setThongTinUI(String maPhongCanSet) {
+		Phong phong = DAO_Phong.getPhongTheoMaPhong(maPhongCanSet);
+		int maPhong = DAO_DonDatPhong_Phong.getMaDonDatGanNhatCuaPhong(phong.getMaPhong());
+		ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDatMaPhong(maPhong, phong.getMaPhong());
+		DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMa(maPhong);
+		KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMa(donDatPhong.getMaKhachHang());
+		
+		txtSoPhong.setText(Integer.toString(phong.getSoPhong()));
+		
+		txtMaKH.setText(Integer.toString(khachHang.getMaKhachHang()));
+		txtHo.setText(khachHang.getHoDem());
+		txtTen.setText(khachHang.getTen());
+		txtCCCD.setText(khachHang.getCccd());
+		txtQuocTich.setText(khachHang.getQuocTich());
+		txtSDT.setText(khachHang.getSdt());
+		
+		txtMaPhong.setText(phong.getMaPhong());
+		txtTang.setText(Integer.toString(phong.getSoTang()));
+		txtTenPhong.setText(phong.getTenPhong());
+		textTinhTrang.setText(phong.getTinhTrang().toString());
+		txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+		txtGia.setText(Double.toString(phong.getLoaiPhong().getDonGia()));
+		
+		for(DichVuDat thisDichVuDat : listDVD) {
+			DichVu thisDichVu = DAO_DichVu.getDichVuTheoMaDichVu(thisDichVuDat.getMaDichVu());
+			tableModelOrderDetails.addRow(new String[] {
+				Integer.toString(thisDichVuDat.getMaDonDat()),
+				thisDichVuDat.getMaDichVu(),
+				thisDichVu.getTenDichVu(),
+				Integer.toString(thisDichVuDat.getSoLuong()),
+				Double.toString(thisDichVu.getDonGia()),
+				Double.toString(thisDichVuDat.getSoLuong()*thisDichVu.getDonGia())
+			});
+		}
+	}
+	
 	private void updateServicesTableData() {
 		ArrayList<DichVu> listDV = DAO_DichVu.getAllDSDichVu();
 		tableModelServices.setRowCount(0);

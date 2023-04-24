@@ -82,6 +82,7 @@ CREATE TABLE DonDatPhong
 )
 CREATE TABLE DonDatPhong_Phong
 (
+	ID				int					NOT NULL IDENTITY(1,1),
 	MaDonDat		int					NOT NULL,
 	MaPhong			varchar(7)			NOT NULL
 )
@@ -157,9 +158,9 @@ ADD CONSTRAINT PK_DonDatPhong			PRIMARY KEY (MaDonDat),
 
 GO
 ALTER TABLE DonDatPhong_Phong
-ADD CONSTRAINT FK_MaDonDat_DP		FOREIGN KEY (MaDonDat)	REFERENCES DonDatPhong(MaDonDat),
-	CONSTRAINT FK_MaPhong_DP		FOREIGN KEY (MaPhong)	REFERENCES Phong(MaPhong),
-	CONSTRAINT PK_DonDatPhong_Phong PRIMARY KEY(MaDonDat, MaPhong);
+ADD CONSTRAINT FK_MaDonDat_DP			FOREIGN KEY (MaDonDat)	REFERENCES DonDatPhong(MaDonDat),
+	CONSTRAINT FK_MaPhong_DP			FOREIGN KEY (MaPhong)	REFERENCES Phong(MaPhong),
+	CONSTRAINT PK_DonDatPhong_Phong		PRIMARY KEY(ID);
 
 GO
 ALTER TABLE DonDatPhong_DichVu
