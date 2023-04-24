@@ -42,4 +42,33 @@ public class DAO_DonDatPhong_Phong {
 		}
 		return listMaPhong;
 	}
+	
+	public static int getMaDonDatGanNhatCuaPhong(String maPhongCanTim) {
+		int maPhong = 0;
+		
+		try {
+			ConnectDB.getInstance().connectDatabase();
+			Connection connect = ConnectDB.getConnection();
+			String sql = "SELECT TOP 1 * "
+					+ "FROM DonDatPhong_Phong "
+					+ "WHERE MaPhong = ? "
+					+ "ORDER BY ID DESC";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setString(1, maPhongCanTim);
+			
+			ResultSet result = prpStm.executeQuery();
+			
+			while(result.next()) {
+				maPhong = result.getInt("MaDonDat");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+		
+		return maPhong;
+	}
 }

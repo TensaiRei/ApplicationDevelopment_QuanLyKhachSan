@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,6 +25,8 @@ public class DAO_Phong {
 					+ "FROM Phong";
 			Statement stm = connect.createStatement();
 			
+			int rowCount = 0;
+			
 			ResultSet result = stm.executeQuery(sql);
 			while(result.next()) {
 				String maPhong = result.getString("MaPhong");
@@ -43,9 +46,10 @@ public class DAO_Phong {
 				String maLoaiPhong = result.getString("MaLoaiPhong");
 				
 				Phong tempPhong = new Phong(maPhong, soPhong, soTang, tenPhong, enumtinhTrang, DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(maLoaiPhong));
-				
+				rowCount++;
 				listP.add(tempPhong);
 			}
+			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -66,5 +70,51 @@ public class DAO_Phong {
 			}
 		}
 		return listPhong;
+	}
+	
+	public static Phong getPhongTheoMaPhong(String maPhongCanTim) {
+		Phong tempPhong = new Phong();
+		ConnectDB.getInstance().connectDatabase();
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM Phong "
+					+ "WHERE MaPhong = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			
+			prpStm.setString(1, maPhongCanTim);
+			
+			ResultSet result = prpStm.executeQuery();
+			int rowCount = 0;
+			while(result.next()) {
+				String maPhong = result.getString("MaPhong");
+				int soPhong = result.getInt("SoPhong");
+				int soTang = result.getInt("SoTang");
+				String tenPhong = result.getString("TenPhong");
+				
+				enum_TinhTrang enumtinhTrang = null;
+				String tinhTrang = result.getString("TinhTrang");
+				if(tinhTrang.equals("Available"))
+					enumtinhTrang = enum_TinhTrang.Available;
+				if(tinhTrang.equals("Booked"))
+					enumtinhTrang = enum_TinhTrang.Booked;
+				if(tinhTrang.equals("Not Available"))
+					enumtinhTrang = enum_TinhTrang.Not_Available;
+				
+				String maLoaiPhong = result.getString("MaLoaiPhong");
+				
+				tempPhong = new Phong(maPhong, soPhong, soTang, tenPhong, enumtinhTrang, DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(maLoaiPhong));
+				rowCount++;
+			}
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+		return tempPhong;
 	}
 }
