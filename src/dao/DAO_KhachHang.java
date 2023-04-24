@@ -11,9 +11,7 @@ import connectDB.ConnectDB;
 import entity.KhachHang;
 
 public class DAO_KhachHang {
-	public DAO_KhachHang() {
-		
-	}
+	public DAO_KhachHang() {}
 	public static ArrayList<KhachHang> getDanhSachKhachHang(){
 		ArrayList<KhachHang> listKH = new ArrayList<KhachHang>();
 		ConnectDB.getInstance().connectDatabase();
@@ -23,8 +21,8 @@ public class DAO_KhachHang {
 					+ "SELECT * "
 					+ "FROM KhachHang";
 			Statement stm = connect.createStatement();
-			
 			ResultSet result = stm.executeQuery(sql);
+			int rowCount = 0;
 			while(result.next()) {
 				int maKhachHang = result.getInt("MaKhachHang");
 				String hoDem = result.getString("HoDem");
@@ -34,7 +32,9 @@ public class DAO_KhachHang {
 				String quocTich = result.getString("QuocTich");
 				KhachHang tempKhachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
 				listKH.add(tempKhachHang);
+				rowCount++;
 			}
+			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class DAO_KhachHang {
 		return listKH;
 	}
 	
-	public static KhachHang getKhachHangTheoMa(int maKhachHangCanTim) {
+	public static KhachHang getKhachHangTheoMaKhachHang(int maKhachHangCanTim) {
 		KhachHang tempKhachHang = new KhachHang();
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
@@ -55,13 +55,9 @@ public class DAO_KhachHang {
 					+ "FROM KhachHang "
 					+ "WHERE MaKhachHang = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
-			
 			prpStm.setInt(1, maKhachHangCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
 				int maKhachHang = result.getInt("MaKhachHang");
 				String hoDem = result.getString("HoDem");
@@ -72,7 +68,6 @@ public class DAO_KhachHang {
 				tempKhachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
 				rowCount++;
 			}
-			
 			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {

@@ -9,10 +9,9 @@ import connectDB.ConnectDB;
 import entity.TaiKhoan;
 
 public class DAO_TaiKhoan {
+	public DAO_TaiKhoan() {}
 	private static TaiKhoan taiKhoanHienHanh;
-	private static void setTaiKhoanHienHanh(String maTaiKhoan, String tenTaiKhoan) {
-		taiKhoanHienHanh = new TaiKhoan(maTaiKhoan, tenTaiKhoan);
-	}
+	private static void setTaiKhoanHienHanh(String maTaiKhoan, String tenTaiKhoan) {taiKhoanHienHanh = new TaiKhoan(maTaiKhoan, tenTaiKhoan);}
 	public static TaiKhoan getTaiKhoanHienHanh() {return taiKhoanHienHanh;}
 	public static boolean kiemTraTaiKhoan(String username, String password) {
 		ConnectDB.getInstance().connectDatabase();

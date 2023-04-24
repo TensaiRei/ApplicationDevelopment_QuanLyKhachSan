@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import connectDB.ConnectDB;
 
 public class DAO_DonDatPhong_Phong {
-	public DAO_DonDatPhong_Phong() {
-		
-	}
-	public static ArrayList<String> getDanhSachMaPhongDat(int maDonDatCanTim){
+	public DAO_DonDatPhong_Phong() {}
+	public static ArrayList<String> getDanhSachMaPhongDuocDatTheoMaDonDat(int maDonDatCanTim){
 		ArrayList<String> listMaPhong = new ArrayList<String>();
 		try {
 			ConnectDB.getInstance().connectDatabase();
@@ -22,15 +20,12 @@ public class DAO_DonDatPhong_Phong {
 					+ "WHERE MaDonDat = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			prpStm.setInt(1, maDonDatCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
 				String maPhong = result.getString("MaPhong");
-				rowCount++;
 				listMaPhong.add(maPhong);
+				rowCount++;
 			}
 			if(rowCount == 0) return null;
 		}
@@ -42,10 +37,8 @@ public class DAO_DonDatPhong_Phong {
 		}
 		return listMaPhong;
 	}
-	
 	public static int getMaDonDatGanNhatCuaPhong(String maPhongCanTim) {
 		int maPhong = 0;
-		
 		try {
 			ConnectDB.getInstance().connectDatabase();
 			Connection connect = ConnectDB.getConnection();
@@ -55,9 +48,7 @@ public class DAO_DonDatPhong_Phong {
 					+ "ORDER BY ID DESC";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			prpStm.setString(1, maPhongCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			while(result.next()) {
 				maPhong = result.getInt("MaDonDat");
 			}
@@ -68,7 +59,6 @@ public class DAO_DonDatPhong_Phong {
 		finally {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
-		
 		return maPhong;
 	}
 }

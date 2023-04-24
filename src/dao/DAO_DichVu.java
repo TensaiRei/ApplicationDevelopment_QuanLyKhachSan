@@ -12,9 +12,7 @@ import entity.DichVu.enum_LoaiDV;
 import entity.DichVuDat;
 
 public class DAO_DichVu {
-	public DAO_DichVu() {
-		
-	}
+	public DAO_DichVu() {}
 	
 	/**
 	 * ham lay danh sach tat ca cac dich vu trong database
@@ -157,7 +155,7 @@ public class DAO_DichVu {
 		}
 		return listDV;
 	}
-	public static ArrayList<DichVu> getDSDichVuDat(ArrayList<DichVuDat> listDVD){
+	public static ArrayList<DichVu> getDanhSachDichVuTheoDanhSachDichVuDuocDat(ArrayList<DichVuDat> listDVD){
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		ArrayList<DichVu> listDVFull = getAllDSDichVu();
 		
