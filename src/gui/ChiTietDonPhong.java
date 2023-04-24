@@ -410,8 +410,8 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		Phong phong = DAO_Phong.getPhongTheoMaPhong(maPhongCanSet);
 		int maPhong = DAO_DonDatPhong_Phong.getMaDonDatGanNhatCuaPhong(phong.getMaPhong());
 		ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDatMaPhong(maPhong, phong.getMaPhong());
-		DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMa(maPhong);
-		KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMa(donDatPhong.getMaKhachHang());
+		DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maPhong);
+		KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
 		
 		txtSoPhong.setText(Integer.toString(phong.getSoPhong()));
 		
