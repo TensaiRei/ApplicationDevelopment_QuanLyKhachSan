@@ -342,7 +342,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     	tblP.setModel(modelP);
     }
     
-    public void addHoaDon(int maHoaDon) {
+    public void setHoaDon(int maHoaDon) {
     	modelDV.getDataVector().removeAllElements();
     	modelP.getDataVector().removeAllElements();
     	

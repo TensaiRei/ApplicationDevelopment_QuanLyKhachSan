@@ -53,5 +53,9 @@ public class Testing {
 		//Test DAO_TiepTan
 			//System.out.println(DAO_TiepTan.getDanhSachTiepTan());
 			//System.out.println(DAO_TiepTan.getTiepTanTheoMaTaiKhoan("TKNTTN0001"));
+		//Test UI_ChiTietDonDat
+			//UI_Main.newUI_MainInstance();
+			//UI_Main.getUI_MainInstance().setVisible(true);
+			//UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonDat.getUI_ChiTietDonDatInstance());
 	}
 }
