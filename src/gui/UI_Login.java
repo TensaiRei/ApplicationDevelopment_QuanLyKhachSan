@@ -145,23 +145,23 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 		char[] passwordValue = passwordField.getPassword();
 		String password = String.valueOf(passwordValue);
 		
-//		if(DAO_TaiKhoan.kiemTraTaiKhoan(username, password)) {
+		if(DAO_TaiKhoan.kiemTraTaiKhoan(username, password)) {
 				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
 				UI_Main.newUI_MainInstance();
 				UI_Main.getUI_MainInstance().setVisible(true);
 				this.dispose();
-//		}
-//		else
-//		{
-//			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
-//			if(textUsername.getText().isBlank()) {
-//				textUsername.requestFocus();
-//			}
-//			else {
-//				passwordField.selectAll();
-//				passwordField.requestFocus();
-//			}
-//		}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
+			if(textUsername.getText().isBlank()) {
+				textUsername.requestFocus();
+			}
+			else {
+				passwordField.selectAll();
+				passwordField.requestFocus();
+			}
+		}
 	}
 	
 	public void xoaTrang() {
