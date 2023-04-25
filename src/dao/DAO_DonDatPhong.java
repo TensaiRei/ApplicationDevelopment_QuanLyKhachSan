@@ -14,6 +14,7 @@ import entity.DonDatPhong.enum_HinhThucThue;
 import entity.DonDatPhong.enum_TrangThaiThanhToan;
 
 public class DAO_DonDatPhong {
+	public DAO_DonDatPhong() {}
 	public static ArrayList<DonDatPhong> getDanhSachDonDatPhong(){
 		ArrayList<DonDatPhong> listKH = new ArrayList<DonDatPhong>();
 		ConnectDB.getInstance().connectDatabase();
@@ -23,8 +24,8 @@ public class DAO_DonDatPhong {
 					+ "SELECT * "
 					+ "FROM DonDatPhong";
 			Statement stm = connect.createStatement();
-			
 			ResultSet result = stm.executeQuery(sql);
+			int rowCount = 0;
 			while(result.next()) {
 				int maDonDatPhong = result.getInt("MaDonDat");
 				int maKhachHang = result.getInt("MaKhachHang");
@@ -49,7 +50,9 @@ public class DAO_DonDatPhong {
 				}
 				DonDatPhong tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, enumTrangThaiThanhToan, ngayDatPhong);
 				listKH.add(tempDonDatPhong);
+				rowCount++;
 			}
+			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -59,8 +62,7 @@ public class DAO_DonDatPhong {
 		}
 		return listKH;
 	}
-	
-	public static DonDatPhong getDonDatPhongTheoMa(int maDonDat) {
+	public static DonDatPhong getDonDatPhongTheoMaDonDat(int maDonDatCanTim) {
 		DonDatPhong tempDonDatPhong = new DonDatPhong();
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
@@ -70,15 +72,11 @@ public class DAO_DonDatPhong {
 					+ "FROM DonDatPhong "
 					+ "WHERE MaDonDat = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
-			
-			prpStm.setInt(1, maDonDat);
-			
+			prpStm.setInt(1, maDonDatCanTim);
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
-				int maDonDatPhong = result.getInt("MaDonDat");
+				int maDonDat = result.getInt("MaDonDat");
 				int maKhachHang = result.getInt("MaKhachHang");
 				String maTiepTan = result.getString("MaTiepTan");
 				int soLuongKhach = result.getInt("SoLuongKhach");
@@ -99,10 +97,9 @@ public class DAO_DonDatPhong {
 				if(trangThaiThanhToan.equals("Đã thanh toán")) {
 					enumTrangThaiThanhToan = enum_TrangThaiThanhToan.Paid;
 				}
-				tempDonDatPhong = new DonDatPhong(maDonDatPhong, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, enumTrangThaiThanhToan, ngayDatPhong);
+				tempDonDatPhong = new DonDatPhong(maDonDat, maKhachHang, maTiepTan, soLuongKhach, enumHinhThucThue, enumTrangThaiThanhToan, ngayDatPhong);
 				rowCount++;
 			}
-			
 			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {

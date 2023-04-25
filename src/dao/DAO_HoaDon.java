@@ -12,8 +12,9 @@ import connectDB.ConnectDB;
 import entity.HoaDon;
 
 public class DAO_HoaDon {
+	DAO_HoaDon(){}
 	public static ArrayList<HoaDon> getDanhSachHoaDon(){
-		ArrayList<HoaDon> listKH = new ArrayList<HoaDon>();
+		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
 		try {
@@ -21,8 +22,8 @@ public class DAO_HoaDon {
 					+ "SELECT * "
 					+ "FROM HoaDon";
 			Statement stm = connect.createStatement();
-			
 			ResultSet result = stm.executeQuery(sql);
+			int rowCount = 0;
 			while(result.next()) {
 				int maHoaDon = result.getInt("MaHoaDon");
 				int maDonDat = result.getInt("MaDonDat");
@@ -31,8 +32,10 @@ public class DAO_HoaDon {
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
 				HoaDon tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
-				listKH.add(tempHoaDon);
+				listHD.add(tempHoaDon);
+				rowCount++;
 			}
+			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -40,9 +43,9 @@ public class DAO_HoaDon {
 		finally {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
-		return listKH;
+		return listHD;
 	}
-	public static HoaDon getHoaDonTheoMa(int maHoaDonCanTim) {
+	public static HoaDon getHoaDonTheoMaHoaDon(int maHoaDonCanTim) {
 		HoaDon tempHoaDon = new HoaDon();
 		ConnectDB.getInstance().connectDatabase();
 		Connection connect = ConnectDB.getConnection();
@@ -52,13 +55,9 @@ public class DAO_HoaDon {
 					+ "FROM HoaDon "
 					+ "WHERE MaHoaDon = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
-			
 			prpStm.setInt(1, maHoaDonCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
 				int maHoaDon = result.getInt("MaHoaDon");
 				int maDonDat = result.getInt("MaDonDat");
@@ -69,7 +68,6 @@ public class DAO_HoaDon {
 				tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
 				rowCount++;
 			}
-			
 			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {

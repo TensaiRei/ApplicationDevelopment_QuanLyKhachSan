@@ -10,9 +10,7 @@ import connectDB.ConnectDB;
 import entity.TiepTan;
 
 public class DAO_TiepTan {
-	public DAO_TiepTan() {
-		
-	}
+	public DAO_TiepTan() {}
 	public static ArrayList<TiepTan> getDanhSachTiepTan(){
 		ArrayList<TiepTan> listTT = new ArrayList<TiepTan>();
 		ConnectDB.getInstance().connectDatabase();
@@ -22,8 +20,8 @@ public class DAO_TiepTan {
 					+ "SELECT * "
 					+ "FROM TiepTan";
 			Statement stm = connect.createStatement();
-			
 			ResultSet result = stm.executeQuery(sql);
+			int rowCount = 0;
 			while(result.next()) {
 				String maTiepTan = result.getString("MaTiepTan");
 				String hoDem = result.getString("HoDem");
@@ -33,7 +31,9 @@ public class DAO_TiepTan {
 				String maTaiKhoan = result.getString("MaTaiKhoan");
 				TiepTan tempTiepTan = new TiepTan(maTiepTan, hoDem, ten, cccd, sdt, maTaiKhoan);
 				listTT.add(tempTiepTan);
+				rowCount++;
 			}
+			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -47,6 +47,15 @@ public class DAO_TiepTan {
 		ArrayList<TiepTan> listTT = getDanhSachTiepTan();
 		for(TiepTan thisTiepTan : listTT) {
 			if(thisTiepTan.getMaTaiKhoan().equals(maTaiKhoan)) {
+				return thisTiepTan;
+			}
+		}
+		return null;
+	}
+	public static TiepTan getTiepTanTheoMaTiepTan(String maTiepTan) {
+		ArrayList<TiepTan> listTT = getDanhSachTiepTan();
+		for(TiepTan thisTiepTan : listTT) {
+			if(thisTiepTan.getMaTiepTan().equals(maTiepTan)) {
 				return thisTiepTan;
 			}
 		}

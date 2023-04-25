@@ -342,16 +342,16 @@ public class UI_ChiTietHoaDon extends JPanel {
     	tblP.setModel(modelP);
     }
     
-    public void addHoaDon(int maHoaDon) {
+    public void setHoaDon(int maHoaDon) {
     	modelDV.getDataVector().removeAllElements();
     	modelP.getDataVector().removeAllElements();
     	
-    	HoaDon hoaDon = DAO_HoaDon.getHoaDonTheoMa(maHoaDon);
-    	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMa(hoaDon.getMaDonDat());
-    	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMa(donDatPhong.getMaKhachHang());
-    	ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDat(donDatPhong.getMaDonDat());
-    	ArrayList<DichVu> listDV = DAO_DichVu.getDSDichVuDat(listDVD);
-    	ArrayList<Phong> listPhong = DAO_Phong.getDanhSachPhongDat(DAO_DonDatPhong_Phong.getDanhSachMaPhongDat(donDatPhong.getMaDonDat()));
+    	HoaDon hoaDon = DAO_HoaDon.getHoaDonTheoMaHoaDon(maHoaDon);
+    	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(hoaDon.getMaDonDat());
+    	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
+    	ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(donDatPhong.getMaDonDat());
+    	ArrayList<DichVu> listDV = DAO_DichVu.getDanhSachDichVuTheoDanhSachDichVuDuocDat(listDVD);
+    	ArrayList<Phong> listPhong = DAO_Phong.getDanhSachPhongTheoDanhSachMaPhongDuocDat(DAO_DonDatPhong_Phong.getDanhSachMaPhongDuocDatTheoMaDonDat(donDatPhong.getMaDonDat()));
     	
     	addThongTinKhachHang(khachHang);
     	addChiTietHoaDon(hoaDon);
