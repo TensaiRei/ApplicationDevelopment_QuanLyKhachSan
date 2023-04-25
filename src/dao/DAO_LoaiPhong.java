@@ -11,7 +11,7 @@ import connectDB.ConnectDB;
 import entity.LoaiPhong;
 
 public class DAO_LoaiPhong {
-
+	public DAO_LoaiPhong() {}
 	public static ArrayList<LoaiPhong> getAllLoaiPhong() {
 		ArrayList<LoaiPhong> cacLoaiPhong = new ArrayList<LoaiPhong>();
 		try {
