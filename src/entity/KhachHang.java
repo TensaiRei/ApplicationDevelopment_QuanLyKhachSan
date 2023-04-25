@@ -3,14 +3,14 @@ package entity;
 import java.util.Objects;
 
 public class KhachHang {
-	public String maKH;
+	public int maKH;
 	public String hoDem;
 	public String ten;
 	public String cmnd;
 	public String sdt;
 	public String quocTich;
 	
-	public KhachHang(String maKH, String hoDem, String ten, String cmnd, String sdt, String quocTich) {
+	public KhachHang(int maKH, String hoDem, String ten, String cmnd, String sdt, String quocTich) {
 		super();
 		setMaKH(maKH);
 		setHoDem(hoDem);
@@ -19,14 +19,14 @@ public class KhachHang {
 		setSdt(sdt);
 		setQuocTich(quocTich);
 	}
-	public KhachHang(String maKH) {
+	public KhachHang(int maKH) {
 		this(maKH,"hoDem","ten","cmnd","sdt","quocTich");
 	}
-	public String getMaKH() {
+	public int getMaKH() {
 		return maKH;
 	}
-	public void setMaKH(String maKH) {
-		this.maKH = maKH.trim().equals("")?"maKH":maKH;
+	public void setMaKH(int maKH) {
+		this.maKH = maKH<=0?0:maKH;
 	}
 	public String getHoDem() {
 		return hoDem;
@@ -71,15 +71,17 @@ public class KhachHang {
 		if (getClass() != obj.getClass())
 			return false;
 		KhachHang other = (KhachHang) obj;
-		return Objects.equals(cmnd, other.cmnd) && Objects.equals(hoDem, other.hoDem)
-				&& Objects.equals(maKH, other.maKH) && Objects.equals(quocTich, other.quocTich)
-				&& Objects.equals(sdt, other.sdt) && Objects.equals(ten, other.ten);
+		return Objects.equals(cmnd, other.cmnd) && Objects.equals(hoDem, other.hoDem) && maKH == other.maKH
+				&& Objects.equals(quocTich, other.quocTich) && Objects.equals(sdt, other.sdt)
+				&& Objects.equals(ten, other.ten);
 	}
 	@Override
 	public String toString() {
 		return "KhachHang [maKH=" + maKH + ", hoDem=" + hoDem + ", ten=" + ten + ", cmnd=" + cmnd + ", sdt=" + sdt
 				+ ", quocTich=" + quocTich + "]";
 	}
+	
+	
 	
 	
 }
