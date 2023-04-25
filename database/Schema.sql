@@ -2,8 +2,6 @@
 GO
 use master
 
-GO
-DROP DATABASE HotelManagement
 
 --CREATE DATABASE
 GO
@@ -11,7 +9,7 @@ CREATE DATABASE HotelManagement
 ON PRIMARY
 (
 	NAME = HotelManagement,
-	FILENAME = N'D:\8. Code\Microsoft SQL Server\Databases\HotelManagement\HotelManagement.mdf', --CHANGE THIS
+	FILENAME = N'E:\programming\JAVA\HotelManagement.mdf', --CHANGE THIS
 	SIZE = 32MB,
 	MAXSIZE = 128MB,
 	FILEGROWTH = 1MB
@@ -19,7 +17,7 @@ ON PRIMARY
 LOG ON
 (
 	NAME = HotelManagement_LOG,
-	FILENAME = N'D:\8. Code\Microsoft SQL Server\Databases\HotelManagement\HotelManagement.ldf', --CHANGE THIS
+	FILENAME = N'E:\programming\JAVA\HotelManagement.ldf', --CHANGE THIS
 	SIZE = 8MB,
 	MAXSIZE = 32MB,
 	FILEGROWTH = 1MB
