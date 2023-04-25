@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import connectDB.connectDB;
+import connectDB.ConnectDB;
 import entity.KhachHang;
 
 public class KhachHang_DAO {
@@ -17,8 +17,8 @@ public class KhachHang_DAO {
 	public ArrayList<KhachHang> getAllTableKhachHang(){
 		ArrayList<KhachHang> dskh = new ArrayList<KhachHang>();
 		try {
-			connectDB.getInstance();
-			Connection con = connectDB.getConnection();
+			ConnectDB.getInstance();
+			Connection con = ConnectDB.getConnection();
 			String sql = "Select * from KhachHang";
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
@@ -41,8 +41,8 @@ public class KhachHang_DAO {
 	}
 	public ArrayList<KhachHang> getKhachHangTheoMaKH(String maKH){
 		ArrayList<KhachHang> dskh = new ArrayList<KhachHang>();
-		connectDB.getInstance();
-		Connection con = connectDB.getConnection();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		try {
 			String sql = "select * from KhachHang where MaKhachHang = ?";
@@ -74,8 +74,8 @@ public class KhachHang_DAO {
 		return dskh;
 	}
 	public boolean create(KhachHang kh) {
-		connectDB.getInstance();
-		Connection con = connectDB.getConnection();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
 		try {
@@ -100,8 +100,8 @@ public class KhachHang_DAO {
 		return n>0;
 	}
 	public boolean update(KhachHang kh) {
-		connectDB.getInstance();
-		Connection con = connectDB.getConnection();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
 		try {
