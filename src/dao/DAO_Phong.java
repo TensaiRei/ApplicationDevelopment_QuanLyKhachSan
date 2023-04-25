@@ -71,7 +71,6 @@ public class DAO_Phong {
 		}
 		return listPhong;
 	}
-	
 	public static Phong getPhongTheoMaPhong(String maPhongCanTim) {
 		Phong tempPhong = new Phong();
 		ConnectDB.getInstance().connectDatabase();
@@ -117,4 +116,51 @@ public class DAO_Phong {
 		}
 		return tempPhong;
 	}
-}
+	
+	public static ArrayList<Phong> filterPhong(String loaiPhong, String trangThai) {
+		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+		if(loaiPhong.equals("Tất cả"))
+			loaiPhong = "";
+		if(trangThai.equals("Tất cả"))
+			trangThai = "";
+		System.out.println(loaiPhong +"|"+ trangThai);
+		try {	
+			ConnectDB.getInstance();
+			Connection connection = ConnectDB.getConnection();
+			
+			String sql ="SELECT *\r\n"
+					+ "FROM Phong P\r\n"
+					+ "WHERE TinhTrang LIKE '%?'";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, trangThai);
+//			statement.setString(2, loaiPhong);
+			
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next()) {
+				String maPhong = rs.getString("MaPhong");
+				int soPhong = rs.getInt("SoPhong");
+				int soTang = rs.getInt("SoTang");
+				String tenPhong = rs.getString("TenPhong");
+				
+				enum_TinhTrang enumtinhTrang = null;
+				String tinhTrang = rs.getString("TinhTrang");
+				if(tinhTrang.equals("Available"))
+					enumtinhTrang = enum_TinhTrang.Available;
+				if(tinhTrang.equals("Booked"))
+					enumtinhTrang = enum_TinhTrang.Booked;
+				if(tinhTrang.equals("Not Available"))
+					enumtinhTrang = enum_TinhTrang.Not_Available;
+				
+				String maLoaiPhong = rs.getString("MaLoaiPhong");
+				
+				Phong tempPhong = new Phong(maPhong, soPhong, soTang, tenPhong, enumtinhTrang, DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(maLoaiPhong));
+				dsPhong.add(tempPhong);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return dsPhong;
+	}
+ }
