@@ -52,4 +52,13 @@ public class DAO_TiepTan {
 		}
 		return null;
 	}
+	public static TiepTan getTiepTanTheoMaTiepTan(String maTiepTan) {
+		ArrayList<TiepTan> listTT = getDanhSachTiepTan();
+		for(TiepTan thisTiepTan : listTT) {
+			if(thisTiepTan.getMaTiepTan().equals(maTiepTan)) {
+				return thisTiepTan;
+			}
+		}
+		return null;
+	}
 }
