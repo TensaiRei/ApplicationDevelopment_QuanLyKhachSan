@@ -78,4 +78,58 @@ public class DAO_KhachHang {
 		}
 		return tempKhachHang;
 	}
+	public boolean createKhachHang(KhachHang khachHang) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		int n =0;
+		try {
+			statement = con.prepareStatement("INSERT INTO KhachHang(HoDem, Ten, CCCD, SDT, QuocTich) VALUES(?,?,?,?,?)");
+			//MaKhachHang là cột tăng tự động không cần thêm vào
+			statement.setString(1, khachHang.getHoDem());
+			statement.setString(2, khachHang.getTen());
+			statement.setString(3, khachHang.getCccd());
+			statement.setString(4, khachHang.getSdt());
+			statement.setString(5, khachHang.getQuocTich());
+			n = statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				statement.close();
+				ConnectDB.getInstance().disconnectDatabase();
+			} catch ( SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
+	}
+	public boolean updateKhachHang(KhachHang khachHang) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement statement = null;
+		int n =0;
+		try {
+			statement = con.prepareStatement("UPDATE KhachHang SET HoDem=?, Ten=?, CCCD=?, SDT=?, QuocTich=? WHERE MaKhachHang=?");
+			statement.setString(1, khachHang.getHoDem());
+			statement.setString(2, khachHang.getTen());
+			statement.setString(3, khachHang.getCccd());
+			statement.setString(4, khachHang.getSdt());
+			statement.setString(5, khachHang.getQuocTich());
+			statement.setInt(6, khachHang.getMaKhachHang());
+			n = statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				statement.close();
+				ConnectDB.getInstance().disconnectDatabase();
+			} catch ( SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return n>0;
+	}
 }
