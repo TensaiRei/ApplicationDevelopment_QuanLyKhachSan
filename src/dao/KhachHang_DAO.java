@@ -24,7 +24,7 @@ public class KhachHang_DAO {
 			ResultSet rs = statement.executeQuery(sql);
 			
 			while(rs.next()) {
-				String maKH = rs.getString(1);
+				int maKH = rs.getInt(1);
 				String hoDem = rs.getString(2);
 				String ten = rs.getString(3);
 				String cmnd = rs.getString(4);
@@ -51,7 +51,7 @@ public class KhachHang_DAO {
 			ResultSet rs = statement.executeQuery(sql);
 			
 			while(rs.next()) {
-				String maKhachHang = rs.getString(1);
+				int maKhachHang = rs.getInt(1);
 				String hoDem = rs.getString(2);
 				String ten = rs.getString(3);
 				String cmnd = rs.getString(4);
@@ -80,7 +80,7 @@ public class KhachHang_DAO {
 		int n =0;
 		try {
 			statement = con.prepareStatement("insert into"+" KhachHang values(?,?,?,?,?,?)");
-			statement.setString(1, kh.getMaKH());
+			statement.setInt(1, kh.getMaKH());
 			statement.setString(2, kh.getHoDem());
 			statement.setString(3, kh.getTen());
 			statement.setString(4, kh.getCmnd());
@@ -111,7 +111,7 @@ public class KhachHang_DAO {
 			statement.setString(3, kh.getCmnd());
 			statement.setString(4, kh.getSdt());
 			statement.setString(5, kh.getQuocTich());
-			statement.setString(6, kh.getMaKH());
+			statement.setInt(6, kh.getMaKH());
 			n = statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
