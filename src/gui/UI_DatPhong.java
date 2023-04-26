@@ -190,9 +190,9 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		}
 	}
 	
-	public String createKhachHang() {
+//	public String createKhachHang() {
 //		String maKhachHang = 
-	}
+//	}
 
 //	create GUI
 	private void createGUI() {

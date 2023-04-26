@@ -11,6 +11,10 @@ import connectDB.ConnectDB;
 import entity.LoaiPhong;
 
 public class DAO_LoaiPhong {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3f5f154054eb786d6d246e9956188d79beafd3fe
 	public static ArrayList<LoaiPhong> getAllLoaiPhong() {
 		ArrayList<LoaiPhong> cacLoaiPhong = new ArrayList<LoaiPhong>();
 		try {
@@ -35,7 +39,11 @@ public class DAO_LoaiPhong {
 	
 		return cacLoaiPhong;
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 3f5f154054eb786d6d246e9956188d79beafd3fe
 	public static LoaiPhong getLoaiPhongTheoMaLoaiPhong(String maLoaiPhongCanTim) {
 		LoaiPhong loaiPhong = new LoaiPhong();
 		try {
