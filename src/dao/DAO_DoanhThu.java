@@ -9,20 +9,16 @@ import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.DoanhThu;
-import entity.KhachHang;
-import entity.LoaiPhong;
 
 public class DAO_DoanhThu {
-    public DAO_DoanhThu() {
-    }
-
+    public DAO_DoanhThu() {}
     public static ArrayList<DoanhThu> getDSDoanhThu() {
         ArrayList<DoanhThu> listDT = new ArrayList<DoanhThu>();
         try {
             ConnectDB.getInstance().connectDatabase();
             Connection connect = ConnectDB.getConnection();
             String sql = ""
-                    + "SELECT hd.MaHoaDon, ThanhTien as sum(hd.TongThanhTien), hd.NgayDatPhong "
+                    + "SELECT hd.MaHoaDon, sum(hd.TongThanhTien) as ThanhTien, hd.NgayDatPhong "
                     + "FROM HoaDon hd join DonDatPhong ddp on hd.MaDonDat=ddp.MaDonDat "
                     + "GROUP BY hd.MaHoaDon, hd.NgayDatPhong";
             PreparedStatement prpStm = connect.prepareStatement(sql);
@@ -34,6 +30,7 @@ public class DAO_DoanhThu {
                 Timestamp ThoiGian = result.getTimestamp(3);
                 DoanhThu dt = new DoanhThu(ID, ThanhTien, ThoiGian);
                 listDT.add(dt);
+                rowCount++;
             }
             if (rowCount == 0)
                 return null;

@@ -11,25 +11,24 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import connectDB.ConnectDB;
 import dao.DAO_DoanhThu;
 import entity.DoanhThu;
 
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 public class UI_ThongKeDoanhThu extends JFrame {
-
-    private JPanel contentPane;
-    private JTable table;
-    private DAO_DoanhThu dt_dao;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
     private DefaultTableModel modelDoanhThu;
     private JTable tableDoanhThu;
 
@@ -54,7 +53,6 @@ public class UI_ThongKeDoanhThu extends JFrame {
      */
     public UI_ThongKeDoanhThu() throws SQLException {
         ConnectDB.getInstance().connectDatabase();
-        dt_dao = new DAO_DoanhThu();
 
         setTitle("Th\u1ED1ng k\u00EA doanh thu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,14 +79,13 @@ public class UI_ThongKeDoanhThu extends JFrame {
 
         // =================================
         // doc du lieu tu database SQL vao Jtable
-        ĐocuLieuTuDBVaoTB();
+        docuLieuTuDBVaoTB();
 
         // =================================
-
     }
 
-    public void ĐocuLieuTuDBVaoTB() {
-        List<DoanhThu> listDoanhThu = dt_dao.getDSDoanhThu();
+    public void docuLieuTuDBVaoTB() {
+        ArrayList<DoanhThu> listDoanhThu = DAO_DoanhThu.getDSDoanhThu();
         for (DoanhThu dt : listDoanhThu) {
             modelDoanhThu.addRow(new Object[] { dt.getId(), dt.getThanhtien(), dt.getThoiGian() });
         }
