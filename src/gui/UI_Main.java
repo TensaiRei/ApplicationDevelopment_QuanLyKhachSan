@@ -239,6 +239,9 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(panel instanceof UI_TiepTan) {
 			btnTiepTan.setBackground(Color.decode("#3333FF"));
 		}
+		if(panel instanceof UI_DonDatPhong) {
+			btnDonDat.setBackground(Color.decode("#3333FF"));
+		}
 		if(panel instanceof UI_HoaDon) {
 			btnHoaDon.setBackground(Color.decode("#3333FF"));
 		}
@@ -255,6 +258,7 @@ public class UI_Main extends JFrame implements ActionListener{
     private void addActionPerform() {
 		btnPhong.addActionListener(this);
 		btnTiepTan.addActionListener(this);
+		btnDonDat.addActionListener(this);
 		btnHoaDon.addActionListener(this);
 		btnDangXuat.addActionListener(this);
 		
@@ -286,6 +290,9 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(o == btnTiepTan) {
 			showUI(UI_TiepTan.getUI_TiepTanInstance());
 			UI_TiepTan.getUI_TiepTanInstance().showThongTinTiepTan();
+		}
+		if(o == btnDonDat) {
+			showUI(UI_DonDatPhong.getUI_DonDatPhongInstance());
 		}
 		if(o == btnHoaDon) {
 			showUI(UI_HoaDon.getUI_HoaDonInstance());
