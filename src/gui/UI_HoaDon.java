@@ -171,10 +171,16 @@ public class UI_HoaDon extends JPanel implements ActionListener {
         pnlTable.add(scrHD, java.awt.BorderLayout.CENTER);
 
         add(pnlTable, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>
+    }
     private void addTableModel() {
 		modelHD = new DefaultTableModel(new String [] {"Mã Hóa đơn", "Mã Đơn đặt", "Phụ phí", "Tổng tiền", "Ngày đặt", "Ngày trả"}, 0);
 		tblHD.setModel(modelHD);
+	}
+    private void addActionListener() {
+		btnChiTiet.addActionListener(this);
+		btnHuyHD.addActionListener(this);
+		btnLoc.addActionListener(this);
+		btnTaiLai.addActionListener(this);
 	}
 	private void addButtonGroup() {
 		btnGroupTim.add(radMHD);
@@ -196,11 +202,11 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     		});
     	}
     }
-	private void addActionListener() {
-		btnChiTiet.addActionListener(this);
-		btnHuyHD.addActionListener(this);
-		btnLoc.addActionListener(this);
-		btnTaiLai.addActionListener(this);
+	private void setDecorateButton() {
+		btnChiTiet.setFocusPainted(false);
+		btnHuyHD.setFocusPainted(false);
+		btnLoc.setFocusPainted(false);
+		btnTaiLai.setFocusPainted(false);
 	}
 	private void xemChiTiet() {
 		int row = tblHD.getSelectedRow();
@@ -214,12 +220,6 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 	private void reloadTable() {
 		modelHD.getDataVector().removeAllElements();
 		addDanhSachHoaDon();
-	}
-	private void setDecorateButton() {
-		btnChiTiet.setFocusPainted(false);
-		btnHuyHD.setFocusPainted(false);
-		btnLoc.setFocusPainted(false);
-		btnTaiLai.setFocusPainted(false);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

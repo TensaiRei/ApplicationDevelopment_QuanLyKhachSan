@@ -108,7 +108,6 @@ public class UI_ChiTietDonDat extends JPanel {
     public UI_ChiTietDonDat() {
     	initComponents();
     	addModel();
-    	setDonDat(100000);
     }
     //
  // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
@@ -494,6 +493,9 @@ public class UI_ChiTietDonDat extends JPanel {
     	tblDV.setModel(modelDV);
     }
     public void setDonDat(int maDonDat) {
+    	modelP.getDataVector().removeAllElements();
+    	modelDV.getDataVector().removeAllElements();
+    	
     	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
     	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
     	TiepTan tiepTan = DAO_TiepTan.getTiepTanTheoMaTiepTan(donDatPhong.getMaTiepTan());

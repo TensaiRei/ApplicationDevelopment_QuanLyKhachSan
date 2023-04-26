@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -48,6 +49,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     }
     //
     public static UI_DonDatPhong getUI_DonDatPhongInstance() {return instance;}
+    public static UI_DonDatPhong newUI_DonDatPhongInstance() {instance = new UI_DonDatPhong(); return instance;}
     //
     private void initComponents() {
 
@@ -190,13 +192,6 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     	btnGroupLoc.add(radTTTT);
     	btnGroupLoc.add(radND);
     }
-    private void setDecorateButton() {
-		btnChiTiet.setFocusPainted(false);
-		btnHuyDD.setFocusPainted(false);
-		btnTim.setFocusPainted(false);
-		btnLoc.setFocusPainted(false);
-		btnTaiLai.setFocusPainted(false);
-	}
     public void addDanhSachDonDatPhong() {
     	ArrayList<DonDatPhong> listDDP = DAO_DonDatPhong.getDanhSachDonDatPhong();
     	for(DonDatPhong thisDDP : listDDP) {
@@ -210,9 +205,37 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     		});
     	}
     }
+    private void setDecorateButton() {
+		btnChiTiet.setFocusPainted(false);
+		btnHuyDD.setFocusPainted(false);
+		btnTim.setFocusPainted(false);
+		btnLoc.setFocusPainted(false);
+		btnTaiLai.setFocusPainted(false);
+	}
+    private void xemChiTiet() {
+    	int row = tblDD.getSelectedRow();
+		if(row == -1)
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn Hóa đơn cần xem");
+		else {
+			UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonDat.getUI_ChiTietDonDatInstance());
+			UI_ChiTietDonDat.getUI_ChiTietDonDatInstance().setDonDat(Integer.parseInt(modelDD.getValueAt(row, 0).toString()));;
+		}
+    }
+    private void reloadTable() {
+    	modelDD.getDataVector().removeAllElements();
+		addDanhSachDonDatPhong();
+    }
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
 		
+		if(o == btnChiTiet)
+			xemChiTiet();
+		if(o == btnHuyDD);
+		if(o == btnTim);
+		if(o == btnLoc);
+		if(o == btnTaiLai)
+			reloadTable();
 	}
 	
 }
