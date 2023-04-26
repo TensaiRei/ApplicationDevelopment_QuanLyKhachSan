@@ -78,4 +78,6 @@ public class DAO_HoaDon {
 		}
 		return tempHoaDon;
 	}
+	
+//	public static boolean createHoaDon()
 }
