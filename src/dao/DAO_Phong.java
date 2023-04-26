@@ -12,9 +12,7 @@ import entity.Phong;
 import entity.Phong.enum_TinhTrang;
 
 public class DAO_Phong {
-	public DAO_Phong() {
-		
-	}
+	public DAO_Phong() {}
 	public static ArrayList<Phong> getDanhSachPhong(){
 		ArrayList<Phong> listP = new ArrayList<Phong>();
 		ConnectDB.getInstance().connectDatabase();
@@ -24,10 +22,8 @@ public class DAO_Phong {
 					+ "SELECT * "
 					+ "FROM Phong";
 			Statement stm = connect.createStatement();
-			
-			int rowCount = 0;
-			
 			ResultSet result = stm.executeQuery(sql);
+			int rowCount = 0;
 			while(result.next()) {
 				String maPhong = result.getString("MaPhong");
 				int soPhong = result.getInt("SoPhong");
@@ -59,7 +55,7 @@ public class DAO_Phong {
 		}
 		return listP;
 	}
-	public static ArrayList<Phong> getDanhSachPhongDat(ArrayList<String> listMaPhong){
+	public static ArrayList<Phong> getDanhSachPhongTheoDanhSachMaPhongDuocDat(ArrayList<String> listMaPhong){
 		ArrayList<Phong> listPhong = new ArrayList<Phong>();
 		ArrayList<Phong> listPhongFull = getDanhSachPhong();
 		
@@ -81,9 +77,7 @@ public class DAO_Phong {
 					+ "FROM Phong "
 					+ "WHERE MaPhong = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
-			
 			prpStm.setString(1, maPhongCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
 			int rowCount = 0;
 			while(result.next()) {
@@ -91,7 +85,6 @@ public class DAO_Phong {
 				int soPhong = result.getInt("SoPhong");
 				int soTang = result.getInt("SoTang");
 				String tenPhong = result.getString("TenPhong");
-				
 				enum_TinhTrang enumtinhTrang = null;
 				String tinhTrang = result.getString("TinhTrang");
 				if(tinhTrang.equals("Available"))
@@ -99,10 +92,8 @@ public class DAO_Phong {
 				if(tinhTrang.equals("Booked"))
 					enumtinhTrang = enum_TinhTrang.Booked;
 				if(tinhTrang.equals("Not Available"))
-					enumtinhTrang = enum_TinhTrang.Not_Available;
-				
+					enumtinhTrang = enum_TinhTrang.Not_Available;				
 				String maLoaiPhong = result.getString("MaLoaiPhong");
-				
 				tempPhong = new Phong(maPhong, soPhong, soTang, tenPhong, enumtinhTrang, DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(maLoaiPhong));
 				rowCount++;
 			}
@@ -117,22 +108,20 @@ public class DAO_Phong {
 		return tempPhong;
 	}
 	
-	public static ArrayList<Phong> filterPhong(String loaiPhong, String trangThai) {
+	public static ArrayList<Phong> filterPhong(String trangThai) {
 		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
-		if(loaiPhong.equals("Tất cả"))
-			loaiPhong = "";
-		if(trangThai.equals("Tất cả"))
-			trangThai = "";
-		System.out.println(loaiPhong +"|"+ trangThai);
+
 		try {	
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();
 			Connection connection = ConnectDB.getConnection();
 			
-			String sql ="SELECT *\r\n"
-					+ "FROM Phong P\r\n"
-					+ "WHERE TinhTrang LIKE '%?'";
+			String sql ="SELECT * "
+					+ "FROM Phong "
+					+ "WHERE TinhTrang = ?";
+
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, trangThai);
+
 //			statement.setString(2, loaiPhong);
 			
 			ResultSet rs = statement.executeQuery();
@@ -160,7 +149,9 @@ public class DAO_Phong {
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e);
 		}
+
 		return dsPhong;
 	}
  }

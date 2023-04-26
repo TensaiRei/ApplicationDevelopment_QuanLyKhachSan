@@ -188,7 +188,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Vui lòng chọn Hóa đơn cần xem");
 		else {
 			UI_Main.getUI_MainInstance().showUI(UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance());
-			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().addHoaDon(Integer.parseInt(modelHD.getValueAt(row, 0).toString()));
+			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().setHoaDon(Integer.parseInt(modelHD.getValueAt(row, 0).toString()));
 		}
 	}
 	private void reloadTable() {

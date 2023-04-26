@@ -10,10 +10,8 @@ import connectDB.ConnectDB;
 import entity.DichVuDat;
 
 public class DAO_DonDatPhong_DichVu {
-	public DAO_DonDatPhong_DichVu() {
-		
-	}
-	public static ArrayList<DichVuDat> getDanhSachDichVuDat(int maDonDatCanTim){
+	public DAO_DonDatPhong_DichVu() {}
+	public static ArrayList<DichVuDat> getDanhSachDichVuDatTheoMaDonDat(int maDonDatCanTim){
 		ArrayList<DichVuDat> listDVD = new ArrayList<DichVuDat>();
 		try {
 			ConnectDB.getInstance().connectDatabase();
@@ -23,11 +21,8 @@ public class DAO_DonDatPhong_DichVu {
 					+ "WHERE MaDonDat = ?";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			prpStm.setInt(1, maDonDatCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
 				int id = result.getInt("ID");
 				int maDonDat = result.getInt("MaDonDat");
@@ -59,11 +54,8 @@ public class DAO_DonDatPhong_DichVu {
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			prpStm.setInt(1, maDonDatCanTim);
 			prpStm.setString(2, maPhongCanTim);
-			
 			ResultSet result = prpStm.executeQuery();
-			
 			int rowCount = 0;
-			
 			while(result.next()) {
 				int id = result.getInt("ID");
 				int maDonDat = result.getInt("MaDonDat");
