@@ -78,6 +78,61 @@ public class DAO_HoaDon {
 		}
 		return tempHoaDon;
 	}
-	
-//	public static boolean createHoaDon()
+	public static HoaDon getHoaDonTheoMaDonDat(int maDonDatCanTim) {
+		HoaDon tempHoaDon = new HoaDon();
+		ConnectDB.getInstance().connectDatabase();
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM HoaDon "
+					+ "WHERE MaDonDat = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setInt(1, maDonDatCanTim);
+			ResultSet result = prpStm.executeQuery();
+			int rowCount = 0;
+			while(result.next()) {
+				int maHoaDon = result.getInt("MaHoaDon");
+				int maDonDat = result.getInt("MaDonDat");
+				double phuPhi = result.getDouble("PhuPhi");
+				double tongThanhTien = result.getDouble("TongThanhTien");
+				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
+				tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				rowCount++;
+			}
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+		return tempHoaDon;
+	}
+	public static void insertNewHoaDon(HoaDon newHoaDon) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection connect = ConnectDB.getConnection();
+		
+		try {
+			String sql = ""
+					+ "INSERT INTO HoaDon(MaDonDat, PhuPhi, TongThanhTien, NgayDatPhong) "
+					+ "VALUES (?, ?, ?, ?)";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			//Mã Hóa đơn cột tăng tự động không cần thêm
+			prpStm.setInt(1, newHoaDon.getMaDonDat());
+			prpStm.setDouble(2, newHoaDon.getPhuPhi());
+			prpStm.setDouble(3, newHoaDon.getTongThanhTien());
+			prpStm.setTimestamp(4, newHoaDon.getNgayDatPhong());
+			//Ngày trả phòng cột tăng tự động không cần thêm
+			prpStm.execute();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+	}
 }

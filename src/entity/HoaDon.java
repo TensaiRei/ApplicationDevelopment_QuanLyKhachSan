@@ -57,6 +57,13 @@ public class HoaDon {
 		setNgayDatPhong(ngayDatPhong);
 		setNgayTraPhong(ngayTraPhong);
 	}
+	public HoaDon(int maDonDat, double phuPhi, double tongThanhTien, Timestamp ngayDatPhong) {
+		super();
+		setMaDonDat(maDonDat);
+		setPhuPhi(phuPhi);
+		setTongThanhTien(tongThanhTien);
+		setNgayDatPhong(ngayDatPhong);
+	}
 	public HoaDon() {
 		super();
 	}

@@ -57,5 +57,9 @@ public class Testing {
 			//UI_Main.newUI_MainInstance();
 			//UI_Main.getUI_MainInstance().setVisible(true);
 			//UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonDat.getUI_ChiTietDonDatInstance());
+		//Test UI_DonDatPhong;
+			//UI_Main.newUI_MainInstance();
+			//UI_Main.getUI_MainInstance().setVisible(true);
+			//UI_Main.getUI_MainInstance().showUI(UI_DonDatPhong.getUI_DonDatPhongInstance());
 	}
 }

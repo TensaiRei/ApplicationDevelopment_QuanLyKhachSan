@@ -1,11 +1,14 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,11 +25,12 @@ import entity.DichVuDat;
 import entity.DonDatPhong;
 import entity.DonDatPhong.enum_HinhThucThue;
 import entity.DonDatPhong.enum_TrangThaiThanhToan;
+import entity.HoaDon;
 import entity.KhachHang;
 import entity.Phong;
 import entity.TiepTan;
 
-public class UI_ChiTietDonDat extends JPanel {
+public class UI_ChiTietDonDat extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
@@ -104,11 +108,12 @@ public class UI_ChiTietDonDat extends JPanel {
     private javax.swing.JTable tblP;
     //
     public static UI_ChiTietDonDat getUI_ChiTietDonDatInstance() {return instance;}
+    public static UI_ChiTietDonDat newUI_ChiTietDonDatInstance() {instance = new UI_ChiTietDonDat(); return instance;}
     //
     public UI_ChiTietDonDat() {
     	initComponents();
     	addModel();
-    	setDonDat(100000);
+    	addActionListener();
     }
     //
  // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
@@ -494,6 +499,9 @@ public class UI_ChiTietDonDat extends JPanel {
     	tblDV.setModel(modelDV);
     }
     public void setDonDat(int maDonDat) {
+    	modelP.getDataVector().removeAllElements();
+    	modelDV.getDataVector().removeAllElements();
+    	
     	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
     	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
     	TiepTan tiepTan = DAO_TiepTan.getTiepTanTheoMaTiepTan(donDatPhong.getMaTiepTan());
@@ -556,7 +564,7 @@ public class UI_ChiTietDonDat extends JPanel {
     	
     	//Calculate money
     	if(donDatPhong.getTrangThaiThanhToan().equals(enum_TrangThaiThanhToan.Paid)) {
-    		thoiDiemTraPhong = DAO_HoaDon.getHoaDonTheoMaHoaDon(donDatPhong.getMaDonDat()).getNgayTraPhong();
+    		thoiDiemTraPhong = DAO_HoaDon.getHoaDonTheoMaDonDat(donDatPhong.getMaDonDat()).getNgayTraPhong();
     		thoiGianThue = tinhThoiGianThue(thoiDiemDatPhong, thoiDiemTraPhong, donDatPhong.getHinhThucThue());
     	}
   	
@@ -570,14 +578,14 @@ public class UI_ChiTietDonDat extends JPanel {
     	tongTienThanhToan = tinhTongTienThanhToan(tongTienPhong, tongTienDichVu);
     	
     	//TongTien
-    	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi", "VN"));
+    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
     	
     	lblIMNTime.setText(thoiDiemTraPhong.toString());
     	if(donDatPhong.getHinhThucThue().equals(enum_HinhThucThue.Days)) {
-    		lblIMNDistance.setText(nf_vn.format(thoiGianThue) + " Ngày");
+    		lblIMNDistance.setText(Long.toString(thoiGianThue) + " Ngày");
     	}
     	if(donDatPhong.getHinhThucThue().equals(enum_HinhThucThue.Hours)) {
-    		lblIMNDistance.setText(nf_vn.format(thoiGianThue) + " Giờ");
+    		lblIMNDistance.setText(Long.toString(thoiGianThue) + " Giờ");
     	}
     	
     	lblIMNPhong.setText(nf_vn.format(tongTienPhong));
@@ -639,4 +647,31 @@ public class UI_ChiTietDonDat extends JPanel {
 		}
 		return 0;
     }
+    public void addActionListener() {
+    	btnThanhToan.addActionListener(this);
+    	btnXoa.addActionListener(this);
+    }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		
+		if(o == btnThanhToan)
+			thanhToanDonDatPhong();
+		if(o == btnXoa);
+	}
+	public void thanhToanDonDatPhong() {
+		int prompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận thanh toán", "Thanh toán", JOptionPane.YES_NO_OPTION);
+		if(prompt == JOptionPane.YES_OPTION) {
+			int maDonDat = Integer.parseInt(lblIDDMDD.getText());
+			double phuPhi = Double.parseDouble(lblIMNPhuPhi.getText().replaceAll("\\.", ""));
+			double tongThanhTien = Double.parseDouble(lblIMNTong.getText().replaceAll("\\.", ""));
+			Timestamp ngayDatPhong = Timestamp.valueOf(lblIDDND.getText());
+			HoaDon hoaDon = new HoaDon(maDonDat, phuPhi, tongThanhTien, ngayDatPhong);
+			DAO_HoaDon.insertNewHoaDon(hoaDon);
+			DAO_DonDatPhong.setTrangThaiThanhToanMaDonDat(maDonDat, "Đã thanh toán");
+			UI_Main.getUI_MainInstance().showUI(UI_ChiTietHoaDon.newUI_ChiTietHoaDonInstance());
+			int maHoaDon = DAO_HoaDon.getHoaDonTheoMaDonDat(maDonDat).getMaHoaDon();
+			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().setHoaDon(maHoaDon);
+		}
+	}
 }

@@ -1,6 +1,8 @@
 package gui;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -30,6 +32,7 @@ public class UI_ChiTietHoaDon extends JPanel {
 	private DefaultTableModel modelP;
     //
     public static UI_ChiTietHoaDon getUI_ChiTietHoaDonInstance() {return instance;}
+    public static UI_ChiTietHoaDon newUI_ChiTietHoaDonInstance() {instance = new UI_ChiTietHoaDon(); return instance;}
     //
     private javax.swing.JLabel lblIHDMDD;
     private javax.swing.JLabel lblIHDND;
@@ -368,10 +371,11 @@ public class UI_ChiTietHoaDon extends JPanel {
     	lblIKHQT.setText(khachHang.getQuocTich());
     }
     private void addChiTietHoaDon(HoaDon hoaDon) {
+    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
     	lblIMHD.setText(Integer.toString(hoaDon.getMaHoaDon()));
     	lblIHDMDD.setText(Integer.toString(hoaDon.getMaDonDat()));
-    	lblIHDPP.setText(Double.toString(hoaDon.getPhuPhi()));
-    	lblIHDTTT.setText(Double.toString(hoaDon.getTongThanhTien()));
+    	lblIHDPP.setText(nf_vn.format(hoaDon.getPhuPhi()));
+    	lblIHDTTT.setText(nf_vn.format(hoaDon.getTongThanhTien()));
     	lblIHDND.setText(hoaDon.getNgayDatPhong().toString());
     	lblIHDNT.setText(hoaDon.getNgayTraPhong().toString());
     }
