@@ -108,22 +108,20 @@ public class DAO_Phong {
 		return tempPhong;
 	}
 	
-	public static ArrayList<Phong> filterPhong(String loaiPhong, String trangThai) {
+	public static ArrayList<Phong> filterPhong(String trangThai) {
 		ArrayList<Phong> dsPhong = new ArrayList<Phong>();
-		if(loaiPhong.equals("Tất cả"))
-			loaiPhong = "";
-		if(trangThai.equals("Tất cả"))
-			trangThai = "";
-		System.out.println(loaiPhong +"|"+ trangThai);
+
 		try {	
-			ConnectDB.getInstance();
+			ConnectDB.getInstance().connectDatabase();
 			Connection connection = ConnectDB.getConnection();
 			
-			String sql ="SELECT *\r\n"
-					+ "FROM Phong P\r\n"
-					+ "WHERE TinhTrang LIKE '%?'";
+			String sql ="SELECT * "
+					+ "FROM Phong "
+					+ "WHERE TinhTrang = ?";
+
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, trangThai);
+
 //			statement.setString(2, loaiPhong);
 			
 			ResultSet rs = statement.executeQuery();
@@ -151,7 +149,9 @@ public class DAO_Phong {
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println(e);
 		}
+
 		return dsPhong;
 	}
  }

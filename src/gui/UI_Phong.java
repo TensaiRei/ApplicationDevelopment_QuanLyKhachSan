@@ -26,6 +26,7 @@ import dao.DAO_Phong;
 import entity.LoaiPhong;
 import entity.Phong;
 
+
 public class UI_Phong extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
@@ -41,6 +42,7 @@ public class UI_Phong extends JPanel implements ActionListener{
 	private JButton btnLoc;
 	private JComboBox<String> cboLoaiPhong;
 	private JComboBox<String> cboTinhTrang;
+	ArrayList<Phong> dsPhong = new ArrayList<Phong>();
 
 	public UI_Phong() {
 		setBackground(new java.awt.Color(102, 102, 102));
@@ -67,18 +69,29 @@ public class UI_Phong extends JPanel implements ActionListener{
 		if(row == 0)
 			JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn đặt");
 		else {
+			ArrayList<Phong> dsPhongBooking= new ArrayList<Phong>();
+			int[] selectedRows = table.getSelectedRows();
+			for(int i=0; i<selectedRows.length; i++) {
+				String maPhong = (String) table.getValueAt(i, 0);
+				Phong p = new Phong(maPhong);
+				p =  dsPhong.get(dsPhong.indexOf(p));
+				dsPhongBooking.add(p);
+			}
 			UI_Main.getUI_MainInstance().showUI(UI_DatPhong.getUI_DatPhongInstance());
-//			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().addHoaDon(Integer.parseInt(modelHD.getValueAt(row, 0).toString()));
+			UI_DatPhong.getUI_DatPhongInstance().addListRoom(dsPhongBooking);
 		}
 	}
 	
 	private void handlerBtnloc() {
-
-		String loaiPhong = cboLoaiPhong.getSelectedIndex()==0? "": (String) cboLoaiPhong.getSelectedItem();
-		String tinhTrang = cboTinhTrang.getSelectedIndex()==0? "": (String) cboTinhTrang.getSelectedItem();
 		model.setRowCount(0);
-		ArrayList<Phong> dsPhong = DAO_Phong.filterPhong(loaiPhong, tinhTrang);
-		System.out.println(dsPhong);
+		if(cboTinhTrang.getSelectedIndex()==0) {
+			dsPhong = DAO_Phong.getDanhSachPhong();
+		} else {
+			String tinhTrang =(String) cboTinhTrang.getSelectedItem();
+			dsPhong = DAO_Phong.filterPhong(tinhTrang);
+		}
+		
+		
 		addAllTableData(dsPhong);
 		
 	}
@@ -115,7 +128,7 @@ public class UI_Phong extends JPanel implements ActionListener{
 		scroll.setPreferredSize(new Dimension(0, 250));
 
 		table.setRowHeight(40);
-		ArrayList<Phong> dsPhong = DAO_Phong.getDanhSachPhong();
+		dsPhong = DAO_Phong.getDanhSachPhong();
 		addAllTableData(dsPhong);
 	}
 
@@ -139,17 +152,6 @@ public class UI_Phong extends JPanel implements ActionListener{
 		btnLoc.setForeground(new Color(34, 34, 34));
 		btnLoc.setText("Lọc phòng");
 		btnLoc.setPreferredSize(new Dimension(150, 50));
-		
-//		get all loai phong
-		JPanel pnlLoaiPhong = new JPanel();
-		pnlLoaiPhong.add(cboLoaiPhong = new JComboBox<String>());
-		cboLoaiPhong.setPreferredSize(new Dimension(150, 30));
-		ArrayList<LoaiPhong> cacLoaiPhong = DAO_LoaiPhong.getAllLoaiPhong();
-		cboLoaiPhong.addItem("Tất cả");
-		for (LoaiPhong loaiPhong : cacLoaiPhong)
-			cboLoaiPhong.addItem(loaiPhong.getTenLoaiPhong());
-		panel.add(cboLoaiPhong);
-		
 
 		JPanel pnlTinhTrang = new JPanel();
 		pnlTinhTrang.add(cboTinhTrang = new JComboBox<String>());

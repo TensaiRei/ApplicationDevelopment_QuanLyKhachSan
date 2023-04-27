@@ -78,6 +78,7 @@ public class DAO_KhachHang {
 		}
 		return tempKhachHang;
 	}
+	
 	public boolean createKhachHang(KhachHang khachHang) {
 		ConnectDB.getInstance().connectDatabase();
 		Connection con = ConnectDB.getConnection();
