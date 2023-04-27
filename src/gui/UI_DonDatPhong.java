@@ -196,7 +196,8 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     }
     public void addDanhSachDonDatPhong() {
     	ArrayList<DonDatPhong> listDDP = DAO_DonDatPhong.getDanhSachDonDatPhong();
-    	if(listDDP != null) {
+    	if(listDDP == null) return;
+    	else {
     		for(DonDatPhong thisDDP : listDDP) {
         		modelDD.addRow(new String[] {
         			Integer.toString(thisDDP.getMaDonDat()),
@@ -207,7 +208,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
         			thisDDP.getNgayDatPhong().toString()
         		});
         	}
-    	}	
+    	}
     }
     private void setDecorateButton() {
 		btnChiTiet.setFocusPainted(false);

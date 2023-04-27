@@ -13,6 +13,7 @@ import dao.DAO_Phong;
 import dao.DAO_TaiKhoan;
 import dao.DAO_TiepTan;
 import entity.DichVuDat;
+import entity.HoaDon;
 
 @SuppressWarnings("unused")
 public class Testing {

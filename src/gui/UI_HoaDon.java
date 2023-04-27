@@ -196,17 +196,20 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 		btnGroupLoc.add(radNT);
 	}
 	public void addDanhSachHoaDon() {
-		NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+		NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	ArrayList<HoaDon> listHD = DAO_HoaDon.getDanhSachHoaDon();
-    	for(HoaDon thisHoaDon : listHD) {
-    		modelHD.addRow(new String[] {
-    			Integer.toString(thisHoaDon.getMaHoaDon()),
-    			Integer.toString(thisHoaDon.getMaDonDat()),
-    			nf_vn.format(thisHoaDon.getPhuPhi()),
-    			nf_vn.format(thisHoaDon.getTongThanhTien()),
-    			thisHoaDon.getNgayDatPhong().toString(),
-    			thisHoaDon.getNgayTraPhong().toString()
-    		});
+    	if(listHD == null) return;
+    	else {
+    		for(HoaDon thisHoaDon : listHD) {
+        		modelHD.addRow(new String[] {
+        			Integer.toString(thisHoaDon.getMaHoaDon()),
+        			Integer.toString(thisHoaDon.getMaDonDat()),
+        			nf_vn.format(thisHoaDon.getPhuPhi()),
+        			nf_vn.format(thisHoaDon.getTongThanhTien()),
+        			thisHoaDon.getNgayDatPhong().toString(),
+        			thisHoaDon.getNgayTraPhong().toString()
+        		});
+        	}
     	}
     }
 	private void setDecorateButton() {

@@ -578,7 +578,7 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
     	tongTienThanhToan = tinhTongTienThanhToan(tongTienPhong, tongTienDichVu);
     	
     	//TongTien
-    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+    	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	
     	lblIMNTime.setText(thoiDiemTraPhong.toString());
     	if(donDatPhong.getHinhThucThue().equals(enum_HinhThucThue.Days)) {
