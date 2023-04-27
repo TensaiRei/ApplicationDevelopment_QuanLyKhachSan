@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import dao.DAO_HoaDon;
@@ -176,7 +177,10 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     }
     private void addTableModel() {
 		modelHD = new DefaultTableModel(new String [] {"Mã Hóa đơn", "Mã Đơn đặt", "Phụ phí", "Tổng tiền", "Ngày đặt", "Ngày trả"}, 0);
+		
 		tblHD.setModel(modelHD);
+		
+		tblHD.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
     private void addActionListener() {
 		btnChiTiet.addActionListener(this);

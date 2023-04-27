@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import dao.DAO_DonDatPhong;
@@ -176,6 +177,8 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     	modelDD = new DefaultTableModel(new String [] {"Mã Đơn đặt", "Mã Khách hàng", "Lượng Khách", "Hình Thức Thuê", "TT Thanh Toán", "Ngày Đặt"}, 0);
     	
     	tblDD.setModel(modelDD);
+    	
+    	tblDD.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     public void addActionListener() {
     	btnChiTiet.addActionListener(this);
@@ -193,16 +196,18 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     }
     public void addDanhSachDonDatPhong() {
     	ArrayList<DonDatPhong> listDDP = DAO_DonDatPhong.getDanhSachDonDatPhong();
-    	for(DonDatPhong thisDDP : listDDP) {
-    		modelDD.addRow(new String[] {
-    			Integer.toString(thisDDP.getMaDonDat()),
-    			Integer.toString(thisDDP.getMaKhachHang()),
-    			Integer.toString(thisDDP.getSoLuongKhach()),
-    			thisDDP.getHinhThucThue().toString(),
-    			thisDDP.getTrangThaiThanhToan().toString(),
-    			thisDDP.getNgayDatPhong().toString()
-    		});
-    	}
+    	if(listDDP != null) {
+    		for(DonDatPhong thisDDP : listDDP) {
+        		modelDD.addRow(new String[] {
+        			Integer.toString(thisDDP.getMaDonDat()),
+        			Integer.toString(thisDDP.getMaKhachHang()),
+        			Integer.toString(thisDDP.getSoLuongKhach()),
+        			thisDDP.getHinhThucThue().toString(),
+        			thisDDP.getTrangThaiThanhToan().toString(),
+        			thisDDP.getNgayDatPhong().toString()
+        		});
+        	}
+    	}	
     }
     private void setDecorateButton() {
 		btnChiTiet.setFocusPainted(false);
