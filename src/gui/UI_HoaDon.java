@@ -196,7 +196,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 		btnGroupLoc.add(radNT);
 	}
 	public void addDanhSachHoaDon() {
-		NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+		NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	ArrayList<HoaDon> listHD = DAO_HoaDon.getDanhSachHoaDon();
     	if(listHD == null) return;
     	else {

@@ -371,7 +371,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     	lblIKHQT.setText(khachHang.getQuocTich());
     }
     private void addChiTietHoaDon(HoaDon hoaDon) {
-    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
+    	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	lblIMHD.setText(Integer.toString(hoaDon.getMaHoaDon()));
     	lblIHDMDD.setText(Integer.toString(hoaDon.getMaDonDat()));
     	lblIHDPP.setText(nf_vn.format(hoaDon.getPhuPhi()));
