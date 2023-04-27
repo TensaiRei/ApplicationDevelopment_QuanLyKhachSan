@@ -110,4 +110,25 @@ public class DAO_DonDatPhong {
 		}
 		return tempDonDatPhong;
 	}
+	public static void setTrangThaiThanhToanMaDonDat(int maDonDatCanSet, String trangThaiThanhToanCanSet) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection connect = ConnectDB.getConnection();
+		
+		try {
+			String sql = ""
+					+ "UPDATE DonDatPhong "
+					+ "SET TrangThaiThanhToan = ? "
+					+ "WHERE MaDonDat = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setString(1, trangThaiThanhToanCanSet);
+			prpStm.setInt(2, maDonDatCanSet);
+			prpStm.execute();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			ConnectDB.getInstance().disconnectDatabase();
+		}
+	}
 }

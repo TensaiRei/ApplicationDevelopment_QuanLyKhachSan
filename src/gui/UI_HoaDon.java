@@ -2,7 +2,9 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,11 +46,11 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     	addTableModel();
     	addActionListener();
     	addButtonGroup();
-    	addDanhSachHoaDon();
     	setDecorateButton();
     }
     //
     public static UI_HoaDon getUI_HoaDonInstance() {return instance;}
+    public static UI_HoaDon newUI_HoaDonInstance() {instance = new UI_HoaDon(); return instance;}
     //                         
     private void initComponents() {
 
@@ -189,14 +191,15 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 		btnGroupLoc.add(radND);
 		btnGroupLoc.add(radNT);
 	}
-	private void addDanhSachHoaDon() {
+	public void addDanhSachHoaDon() {
+		NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     	ArrayList<HoaDon> listHD = DAO_HoaDon.getDanhSachHoaDon();
     	for(HoaDon thisHoaDon : listHD) {
     		modelHD.addRow(new String[] {
     			Integer.toString(thisHoaDon.getMaHoaDon()),
     			Integer.toString(thisHoaDon.getMaDonDat()),
-    			Double.toString(thisHoaDon.getPhuPhi()),
-    			Double.toString(thisHoaDon.getTongThanhTien()),
+    			nf_vn.format(thisHoaDon.getPhuPhi()),
+    			nf_vn.format(thisHoaDon.getTongThanhTien()),
     			thisHoaDon.getNgayDatPhong().toString(),
     			thisHoaDon.getNgayTraPhong().toString()
     		});
@@ -217,7 +220,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().setHoaDon(Integer.parseInt(modelHD.getValueAt(row, 0).toString()));
 		}
 	}
-	private void reloadTable() {
+	public void reloadTable() {
 		modelHD.getDataVector().removeAllElements();
 		addDanhSachHoaDon();
 	}

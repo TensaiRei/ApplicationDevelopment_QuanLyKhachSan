@@ -292,10 +292,12 @@ public class UI_Main extends JFrame implements ActionListener{
 			UI_TiepTan.getUI_TiepTanInstance().showThongTinTiepTan();
 		}
 		if(o == btnDonDat) {
-			showUI(UI_DonDatPhong.getUI_DonDatPhongInstance());
+			showUI(UI_DonDatPhong.newUI_DonDatPhongInstance());
+			UI_DonDatPhong.getUI_DonDatPhongInstance().reloadTable();
 		}
 		if(o == btnHoaDon) {
-			showUI(UI_HoaDon.getUI_HoaDonInstance());
+			showUI(UI_HoaDon.newUI_HoaDonInstance());
+			UI_HoaDon.getUI_HoaDonInstance().reloadTable();
 		}
 		if(o == btnDangXuat) {
 			logOut();

@@ -44,7 +44,6 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     	addTableModel();
     	addActionListener();
     	addButtonGroup();
-    	addDanhSachDonDatPhong();
     	setDecorateButton();
     }
     //
@@ -217,11 +216,11 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
 		if(row == -1)
 			JOptionPane.showMessageDialog(this, "Vui lòng chọn Hóa đơn cần xem");
 		else {
-			UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonDat.getUI_ChiTietDonDatInstance());
+			UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonDat.newUI_ChiTietDonDatInstance());
 			UI_ChiTietDonDat.getUI_ChiTietDonDatInstance().setDonDat(Integer.parseInt(modelDD.getValueAt(row, 0).toString()));;
 		}
     }
-    private void reloadTable() {
+    public void reloadTable() {
     	modelDD.getDataVector().removeAllElements();
 		addDanhSachDonDatPhong();
     }
