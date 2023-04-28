@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.PhongDat;
+import entity.DonDatPhong.enum_HinhThucThue;
 
 public class DAO_DonDatPhong_Phong {
 	public DAO_DonDatPhong_Phong() {}
@@ -60,5 +63,22 @@ public class DAO_DonDatPhong_Phong {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
 		return maPhong;
+	}
+	
+	public static boolean createDonDatPhong_Phong(PhongDat p) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection connection = ConnectDB.getConnection();
+		int n = 0;
+		try {
+			String sql = "INSERT [dbo].[DonDatPhong_Phong] ([MaDonDat], [MaPhong]) VALUES (?,?)";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, p.getDonDatPhong().getMaDonDat()+"");
+			statement.setString(2, p.getPhong().getMaPhong());
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return n>0;
 	}
 }

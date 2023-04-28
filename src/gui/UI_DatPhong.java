@@ -9,21 +9,40 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import dao.DAO_DonDatPhong;
+import dao.DAO_DonDatPhong_Phong;
+import dao.DAO_HoaDon;
+import dao.DAO_KhachHang;
 import dao.DAO_LoaiPhong;
+import dao.DAO_Phong;
+import dao.DAO_TaiKhoan;
+import dao.DAO_TiepTan;
+import entity.DonDatPhong;
+import entity.DonDatPhong.enum_HinhThucThue;
+import entity.DonDatPhong.enum_TrangThaiThanhToan;
+import entity.HoaDon;
+import entity.KhachHang;
 import entity.LoaiPhong;
 import entity.Phong;
+import entity.PhongDat;
 
 public class UI_DatPhong extends JPanel implements ActionListener {
 
@@ -61,6 +80,9 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 	private JTable tableAvai;
 	private static DefaultTableModel modelBook;
 	private JTable tableBook;
+	private JRadioButton rdoHour;
+	private JRadioButton rdoDay;
+	private JTextField txtSoLuongKhach;
 
 	private static ArrayList<Phong> dsPhongDaThem = new ArrayList<Phong>();
 	private static ArrayList<Phong> dsPhongsCoTheThem = new ArrayList<Phong>();
@@ -94,7 +116,9 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 
 	private void handlerBtnDat() {
 		if (validateForm()) {
-			JOptionPane.showMessageDialog(this, "Đặt phòng thành công");
+			if (validateSoLuongKhach()) {
+				createHoaDon();
+			}
 		}
 	}
 
@@ -118,7 +142,7 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Không được bỏ trống họ");
 			txtHo.requestFocus();
 			return false;
-		}  else if(!txtHo.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
+		} else if (!txtHo.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
 			JOptionPane.showMessageDialog(this, "Họ chỉ gồm chữ thường và cách nhau 1 khoảng trắng");
 			txtHo.requestFocus();
 			return false;
@@ -131,7 +155,7 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Không được bỏ trống tên");
 			txtTen.requestFocus();
 			return false;
-		} else if(!txtTen.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
+		} else if (!txtTen.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
 			JOptionPane.showMessageDialog(this, "Tên chỉ gồm chữ thường và cách nhau 1 khoảng trắng");
 			txtTen.requestFocus();
 			return false;
@@ -144,7 +168,7 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Không được bỏ trống CCCD");
 			txtCCCD.requestFocus();
 			return false;
-		}  else if(!txtCCCD.getText().matches("^0\\d{11}$")) {
+		} else if (!txtCCCD.getText().matches("^0\\d{11}$")) {
 			JOptionPane.showMessageDialog(this, "Gồm 12 chữ số và bắt đầu là số 0");
 			txtCCCD.requestFocus();
 			return false;
@@ -157,7 +181,7 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Không được bỏ trống số điện thoại");
 			txtSDT.requestFocus();
 			return false;
-		}   else if(!txtSDT.getText().matches("^0\\d{9}$")) {
+		} else if (!txtSDT.getText().matches("^0\\d{9}$")) {
 			JOptionPane.showMessageDialog(this, "Gồm 10 chữ số và bắt đầu là số 0");
 			txtSDT.requestFocus();
 			return false;
@@ -170,11 +194,31 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Không được bỏ trống quốc tịch");
 			txtQuocTich.requestFocus();
 			return false;
-		} else if(!txtQuocTich.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
+		} else if (!txtQuocTich.getText().matches("([a-zA-Z\\p{IsLatin} ]*?)*")) {
 			JOptionPane.showMessageDialog(this, "Quốc tịch chỉ gồm chữ thường và cách nhau 1 khoảng trắng");
 			txtQuocTich.requestFocus();
 			return false;
 		}
+		return true;
+	}
+
+	private boolean validateSoLuongKhach() {
+		try {
+			if (txtSoLuongKhach.getText().trim().equals("")) {
+				JOptionPane.showMessageDialog(this, "Không được bỏ trống số lượng khách");
+				txtSoLuongKhach.requestFocus();
+				return false;
+			} else if (Integer.parseInt(txtSoLuongKhach.getText()) < 1) {
+				JOptionPane.showMessageDialog(this, "Số lượng khách phải lớn hơn 0");
+				txtSoLuongKhach.requestFocus();
+				return false;
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Số lượng khách phải là số");
+			txtSoLuongKhach.requestFocus();
+			return false;
+		}
+
 		return true;
 	}
 
@@ -185,14 +229,46 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		for (Phong phong : dsPhongDaThem) {
 			String tinhTrang;
 			LoaiPhong loaiPhong = DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(phong.getLoaiPhong().getMaloaiPhong());
-			modelBook.addRow(
-					new String[] { phong.getMaPhong(), phong.getTenPhong(), loaiPhong.getTenLoaiPhong()});
+			modelBook.addRow(new String[] { phong.getMaPhong(), phong.getTenPhong(), loaiPhong.getTenLoaiPhong() });
 		}
 	}
-	
-//	public String createKhachHang() {
-//		String maKhachHang = 
-//	}
+
+	public int createKhachHang() {
+		int maKhachHang = DAO_KhachHang.getDanhSachKhachHang().size();
+		String ho = txtHo.getText();
+		String ten = txtTen.getText();
+		String cccd = txtCCCD.getText();
+		String std = txtSDT.getText();
+		String quocTich = txtQuocTich.getText();
+		KhachHang kh = new KhachHang(maKhachHang, ho, ten, cccd, std, quocTich);
+
+		DAO_KhachHang.createKhachHang(kh);
+		return DAO_KhachHang.getNewKhachHang();
+	}
+
+	public boolean createHoaDon() {
+		int maDonDat = DAO_DonDatPhong.getDanhSachDonDatPhong().size();
+		int maKhachHang = createKhachHang();
+		String maTiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(DAO_TaiKhoan.getTaiKhoanHienHanh().getMaTaiKhoan()).getMaTiepTan();
+		int soLuong = Integer.parseInt(txtSoLuongKhach.getText());
+		enum_HinhThucThue hinhThucThue = rdoDay.isSelected()? enum_HinhThucThue.Days: enum_HinhThucThue.Hours;
+		enum_TrangThaiThanhToan trangThaiThanhToan = enum_TrangThaiThanhToan.Yet;
+		java.sql.Timestamp ngayDatPhong = new java.sql.Timestamp(System.currentTimeMillis());
+		
+		DonDatPhong donDatPhong = new DonDatPhong(maDonDat, maKhachHang, maTiepTan, soLuong, hinhThucThue, trangThaiThanhToan, ngayDatPhong);
+		DAO_DonDatPhong.createDonDatPhong(donDatPhong);
+		
+//		lấy mã đơn đặt vừa tạo
+		int maDonDatPhong = DAO_DonDatPhong.getNewDonDat();
+		donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDatPhong);
+		for(Phong phong: dsPhongDaThem) {
+			DAO_Phong.updatePhongToBooked(phong);
+			int id = 0;
+			PhongDat phongDat = new PhongDat(id, donDatPhong, phong);
+			DAO_DonDatPhong_Phong.createDonDatPhong_Phong(phongDat);
+		}
+		return true;
+	}
 
 //	create GUI
 	private void createGUI() {
@@ -343,12 +419,26 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		btnXoa.setText("Xóa phòng");
 		btnXoa.setBackground(Color.decode("#FF8080"));
 
+		panel.add(Box.createRigidArea(new Dimension(20, 20)));
+
+		panel.add(new JLabel("Số lượng khách:      "));
+		panel.add(txtSoLuongKhach = new JTextField(12));
+
+		JPanel pnlHinhThucThue = new JPanel();
+		pnlHinhThucThue.setLayout(new GridLayout(2, 1));
+		pnlHinhThucThue.setBorder(BorderFactory.createTitledBorder("Hình thức thuê: "));
+		pnlHinhThucThue.add(rdoHour = new JRadioButton("Theo giờ        ", true));
+		pnlHinhThucThue.add(rdoDay = new JRadioButton("Theo ngày"));
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdoHour);
+		group.add(rdoDay);
+		panel.add(pnlHinhThucThue);
+
 		panel.add(btnDat = new JButton());
 		btnDat.setBackground(new Color(128, 128, 255));
 		btnDat.setFont(new Font("Segoe UI", 0, 18));
 		btnDat.setForeground(new Color(34, 34, 34));
 		btnDat.setText("Đặt phòng");
-
 	}
 
 	private void createListRoom(JPanel main) {

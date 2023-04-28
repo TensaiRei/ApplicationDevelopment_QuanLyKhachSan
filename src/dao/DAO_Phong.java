@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.Phong;
+import entity.DonDatPhong.enum_HinhThucThue;
 import entity.Phong.enum_TinhTrang;
 
 public class DAO_Phong {
@@ -153,5 +155,22 @@ public class DAO_Phong {
 		}
 
 		return dsPhong;
+	}
+	public static boolean updatePhongToBooked(Phong phong) {
+		ConnectDB.getInstance().connectDatabase();
+		Connection connection = ConnectDB.getConnection();
+		int n = 0;
+		try {
+			String sql = "UPDATE [dbo].[Phong] "
+					+ "SET [TinhTrang] = 'Booked' "
+					+ "WHERE [MaPhong] = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, phong.getMaPhong());
+			n = statement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return n>0;
 	}
  }
