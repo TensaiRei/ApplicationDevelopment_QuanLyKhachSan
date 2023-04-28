@@ -118,6 +118,9 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		if (validateForm()) {
 			if (validateSoLuongKhach()) {
 				createHoaDon();
+				JOptionPane.showMessageDialog(this, "Đặt phòng thành công");
+				UI_Main.getUI_MainInstance().showUI(UI_DonDatPhong.getUI_DonDatPhongInstance());
+				UI_DonDatPhong.getUI_DonDatPhongInstance().reloadTable();
 			}
 		}
 	}

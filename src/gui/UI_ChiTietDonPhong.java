@@ -41,7 +41,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.ImageIcon;
 
-public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListener {
+public class UI_ChiTietDonPhong extends JFrame implements ItemListener, MouseListener {
 	/**
 	 * 
 	 */
@@ -80,7 +80,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ChiTietDonPhong frame = new ChiTietDonPhong();
+					UI_ChiTietDonPhong frame = new UI_ChiTietDonPhong();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -92,7 +92,7 @@ public class ChiTietDonPhong extends JFrame implements ItemListener, MouseListen
 	/**
 	 * Create the frame.
 	 */
-	public ChiTietDonPhong() {
+	public UI_ChiTietDonPhong() {
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setBackground(Color.WHITE);
