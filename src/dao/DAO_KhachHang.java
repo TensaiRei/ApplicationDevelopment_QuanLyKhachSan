@@ -77,9 +77,8 @@ public class DAO_KhachHang {
 			ConnectDB.getInstance().disconnectDatabase();
 		}
 		return tempKhachHang;
-	}
-	
-	public boolean createKhachHang(KhachHang khachHang) {
+	}	
+	public static boolean createKhachHang(KhachHang khachHang) {
 		ConnectDB.getInstance().connectDatabase();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
@@ -93,6 +92,7 @@ public class DAO_KhachHang {
 			statement.setString(4, khachHang.getSdt());
 			statement.setString(5, khachHang.getQuocTich());
 			n = statement.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,6 +105,25 @@ public class DAO_KhachHang {
 			}
 		}
 		return n>0;
+	}
+	public static int getNewKhachHang() {
+		ConnectDB.getInstance().connectDatabase();
+		int maKhachHang=0;
+		try {
+			Connection connection = ConnectDB.getConnection();
+			String sql = "SELECT TOP 1 MaKhachHang "
+					+ "FROM [dbo].[KhachHang] "
+					+ "ORDER BY MaKhachHang DESC";
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			if (rs.next()) {
+				maKhachHang = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return maKhachHang;
+		
 	}
 	public boolean updateKhachHang(KhachHang khachHang) {
 		ConnectDB.getInstance().connectDatabase();
