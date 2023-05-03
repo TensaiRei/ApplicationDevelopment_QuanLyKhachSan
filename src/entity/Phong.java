@@ -1,68 +1,53 @@
 package entity;
 
-import java.util.Objects;
-
 public class Phong {
 	private String maPhong;
 	private int soPhong;
 	private int soTang;
 	private String tenPhong;
-	public enum enum_TinhTrang{
-		Available, Booked, Not_Available
-	}
-	private enum_TinhTrang tinhTrang;
+	private Enum_TinhTrang tinhTrang;
 	private LoaiPhong loaiPhong;
 	//
 	public String getMaPhong() {
 		return maPhong;
 	}
-
-	public void setMaPhong(String maPhong) {
-		this.maPhong = maPhong.trim().equals("")?"-----":maPhong;
-	}
-
 	public int getSoPhong() {
 		return soPhong;
 	}
-
-	public void setSoPhong(int soPhong) {
-		this.soPhong = soPhong<0?0:soPhong;
-	}
-
 	public int getSoTang() {
 		return soTang;
 	}
-
-	public void setSoTang(int soTang) {
-		this.soTang = soTang<0?0:soTang;
-	}
-
 	public String getTenPhong() {
-		return tenPhong.trim().equals("")?"-----":maPhong;
+		return tenPhong;
 	}
-
-	public void setTenPhong(String tenPhong) {
-		this.tenPhong = tenPhong;
-	}
-
-	public enum_TinhTrang getTinhTrang() {
+	public Enum_TinhTrang getTinhTrang() {
 		return tinhTrang;
 	}
-
-	public void setTinhTrang(enum_TinhTrang tinhTrang) {
-		this.tinhTrang = tinhTrang;
-	}
-
 	public LoaiPhong getLoaiPhong() {
 		return loaiPhong;
 	}
-	public void setLoaiPhong(LoaiPhong loaiPhong) {
-		if(loaiPhong == null)
-			loaiPhong = new LoaiPhong();
+	private void setMaPhong(String maPhong) {
+		this.maPhong = maPhong;
+	}
+	private void setSoPhong(int soPhong) {
+		this.soPhong = soPhong;
+	}
+	private void setSoTang(int soTang) {
+		this.soTang = soTang;
+	}
+	private void setTenPhong(String tenPhong) {
+		this.tenPhong = tenPhong;
+	}
+	private void setTinhTrang(Enum_TinhTrang tinhTrang) {
+		this.tinhTrang = tinhTrang;
+	}
+	private void setLoaiPhong(LoaiPhong loaiPhong) {
 		this.loaiPhong = loaiPhong;
 	}
-	
-	public Phong(String maPhong, int soPhong, int soTang, String tenPhong, enum_TinhTrang tinhTrang, LoaiPhong loaiPhong) {
+	//
+	public Phong(String maPhong, int soPhong, int soTang, String tenPhong, Enum_TinhTrang tinhTrang,
+			LoaiPhong loaiPhong) {
+		super();
 		setMaPhong(maPhong);
 		setSoPhong(soPhong);
 		setSoTang(soTang);
@@ -70,31 +55,26 @@ public class Phong {
 		setTinhTrang(tinhTrang);
 		setLoaiPhong(loaiPhong);
 	}
-	
 	public Phong(String maPhong) {
+		super();
 		setMaPhong(maPhong);
-		setSoPhong(0);
-		setSoTang(0);
-		setTenPhong("");
-		setTinhTrang(null);
-		setLoaiPhong(null);
 	}
 	public Phong() {
-		setMaPhong("");
-		setSoPhong(0);
-		setSoTang(0);
-		setTenPhong("");
-		setTinhTrang(null);
-		setLoaiPhong(null);
+		super();
 	}
+	//
 	@Override
 	public String toString() {
-		return maPhong + ";" + soPhong + ";" + soTang + ";" + tenPhong
-				+ ";" + tinhTrang + ";" + loaiPhong;
+		return "Phong [maPhong=" + maPhong + ", soPhong=" + soPhong + ", soTang=" + soTang + ", tenPhong=" + tenPhong
+				+ ", tinhTrang=" + tinhTrang + ", loaiPhong=" + loaiPhong + "]";
 	}
+	//
 	@Override
 	public int hashCode() {
-		return Objects.hash(maPhong);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((maPhong == null) ? 0 : maPhong.hashCode());
+		return result;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -105,6 +85,11 @@ public class Phong {
 		if (getClass() != obj.getClass())
 			return false;
 		Phong other = (Phong) obj;
-		return Objects.equals(maPhong, other.maPhong);
+		if (maPhong == null) {
+			if (other.maPhong != null)
+				return false;
+		} else if (!maPhong.equals(other.maPhong))
+			return false;
+		return true;
 	}
 }

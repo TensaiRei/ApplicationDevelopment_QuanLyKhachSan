@@ -7,16 +7,13 @@ import java.util.Locale;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
-import dao.DAO_DichVu;
-import dao.DAO_DonDatPhong;
 import dao.DAO_DonDatPhong_DichVu;
 import dao.DAO_DonDatPhong_Phong;
 import dao.DAO_HoaDon;
-import dao.DAO_KhachHang;
-import dao.DAO_Phong;
 import entity.DichVu;
-import entity.DichVuDat;
 import entity.DonDatPhong;
+import entity.DonDatPhong_DichVu;
+import entity.DonDatPhong_Phong;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.Phong;
@@ -244,7 +241,7 @@ public class UI_ChiTietHoaDon extends JPanel {
 
         lblLHDPP.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblLHDPP.setForeground(new java.awt.Color(102, 102, 102));
-        lblLHDPP.setText("Phụ phí:");
+        lblLHDPP.setText("Phụ phí / Phòng:");
         lblLHDPP.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(153, 153, 153)));
         pnlLHD.add(lblLHDPP);
 
@@ -350,16 +347,18 @@ public class UI_ChiTietHoaDon extends JPanel {
     	modelP.getDataVector().removeAllElements();
     	
     	HoaDon hoaDon = DAO_HoaDon.getHoaDonTheoMaHoaDon(maHoaDon);
-    	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(hoaDon.getMaDonDat());
-    	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
-    	ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(donDatPhong.getMaDonDat());
-    	ArrayList<DichVu> listDV = DAO_DichVu.getDanhSachDichVuTheoDanhSachDichVuDuocDat(listDVD);
-    	ArrayList<Phong> listPhong = DAO_Phong.getDanhSachPhongTheoDanhSachMaPhongDuocDat(DAO_DonDatPhong_Phong.getDanhSachMaPhongDuocDatTheoMaDonDat(donDatPhong.getMaDonDat()));
+    	DonDatPhong donDatPhong = hoaDon.getDonDatPhong();
+    	KhachHang khachHang = donDatPhong.getKhachHang();
+    	ArrayList<DonDatPhong_DichVu> listDDV = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(donDatPhong.getMaDonDat());
+    	ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(donDatPhong.getMaDonDat());
     	
     	addThongTinKhachHang(khachHang);
     	addChiTietHoaDon(hoaDon);
-    	addDanhSachDichVu(listDV, listDVD);
-    	addDanhSachPhong(listPhong);  	
+    	if(listDDV != null)
+    		addDanhSachDichVu(listDDV);
+    	if(listDP != null)
+    		addDanhSachPhong(listDP);
+    	  	
     }
     
     private void addThongTinKhachHang(KhachHang khachHang) {
@@ -373,34 +372,32 @@ public class UI_ChiTietHoaDon extends JPanel {
     private void addChiTietHoaDon(HoaDon hoaDon) {
     	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	lblIMHD.setText(Integer.toString(hoaDon.getMaHoaDon()));
-    	lblIHDMDD.setText(Integer.toString(hoaDon.getMaDonDat()));
-    	lblIHDPP.setText(nf_vn.format(hoaDon.getPhuPhi()));
+    	lblIHDMDD.setText(Integer.toString(hoaDon.getDonDatPhong().getMaDonDat()));
+    	lblIHDPP.setText(nf_vn.format(hoaDon.getPhuPhiMoiPhong()));
     	lblIHDTTT.setText(nf_vn.format(hoaDon.getTongThanhTien()));
     	lblIHDND.setText(hoaDon.getNgayDatPhong().toString());
     	lblIHDNT.setText(hoaDon.getNgayTraPhong().toString());
     }
-    private void addDanhSachDichVu(ArrayList<DichVu> listDV, ArrayList<DichVuDat> listDVD) {
-    	for(DichVu thisDichVu : listDV) {
-    		for(DichVuDat thisDichVuDat : listDVD) {
-    			if(thisDichVu.getMaDichVu().equals(thisDichVuDat.getMaDichVu())) {
-    				modelDV.addRow(new String[] {
-    	    			thisDichVu.getMaDichVu(),
-    	    			thisDichVu.getTenDichVu(),
-    	    			Double.toString(thisDichVu.getDonGia()),
-    	    			thisDichVu.getLoaiDV().toString(),
-    	    			Integer.toString(thisDichVuDat.getSoLuong())
-    	    		});
-    			}
-    		}
+    private void addDanhSachDichVu(ArrayList<DonDatPhong_DichVu> listDDV) {
+    	for(DonDatPhong_DichVu thisDDV : listDDV) {
+    		DichVu thisDichVu = thisDDV.getDichVu();
+    		modelDV.addRow(new String[] {
+    			thisDichVu.getMaDichVu(),
+    			thisDichVu.getTenDichVu(),
+    			Double.toString(thisDichVu.getDonGia()),
+    			thisDichVu.getLoaiDichVu().toString(),
+    			Integer.toString(thisDDV.getSoLuong())
+    		});
     	}
     }
-    private void addDanhSachPhong(ArrayList<Phong> listPhong) {
-    	for(Phong thisPhong : listPhong) {
+    private void addDanhSachPhong(ArrayList<DonDatPhong_Phong> listDP) {
+    	for(DonDatPhong_Phong thisDP : listDP) {
+    		Phong thisPhong = thisDP.getPhongDat();
     		modelP.addRow(new String[] {
     			thisPhong.getMaPhong(),
     			Integer.toString(thisPhong.getSoPhong()),
     			Integer.toString(thisPhong.getSoTang()),
-    			thisPhong.getLoaiPhong().getMaloaiPhong(),
+    			thisPhong.getLoaiPhong().getMaLoaiPhong(),
     			thisPhong.getLoaiPhong().getTenLoaiPhong(),
     			Double.toString(thisPhong.getLoaiPhong().getDonGia())
     		});

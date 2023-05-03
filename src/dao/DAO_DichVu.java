@@ -8,21 +8,15 @@ import java.util.ArrayList;
 
 import connectDB.ConnectDB;
 import entity.DichVu;
-import entity.DichVu.enum_LoaiDV;
-import entity.DichVuDat;
+import entity.Enum_LoaiDichVu;
 
 public class DAO_DichVu {
-	public DAO_DichVu() {}
-	
-	/**
-	 * ham lay danh sach tat ca cac dich vu trong database
-	 * @return ArrayList
-	 */
+public DAO_DichVu() {}
 	public static ArrayList<DichVu> getAllDSDichVu() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance().connectDatabase();
+			
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu";
 			Statement stmt = con.createStatement();
@@ -34,15 +28,15 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
-				enum_LoaiDV loaiDichVu = null;
+				Enum_LoaiDichVu loaiDichVu = null;
 				if (loaiDV.equals("Foods")) {
-					loaiDichVu = enum_LoaiDV.Foods;
+					loaiDichVu = Enum_LoaiDichVu.Foods;
 				}
 				if (loaiDV.equals("Drinks")) {
-					loaiDichVu = enum_LoaiDV.Drinks;
+					loaiDichVu = Enum_LoaiDichVu.Drinks;
 				}
 				if (loaiDV.equals("Others")) {
-					loaiDichVu = enum_LoaiDV.Others;
+					loaiDichVu = Enum_LoaiDichVu.Others;
 				}
 				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
@@ -54,15 +48,11 @@ public class DAO_DichVu {
 		return listDV;
 	}
 	
-	/**
-	 * ham lay danh sach cac dich vu thuoc do an
-	 * @return ArrayList
-	 */
 	public static ArrayList<DichVu> getDSDichVuTheoThucAn() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance().connectDatabase();;
+			;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Foods'";
 			Statement stmt = con.createStatement();
@@ -74,9 +64,9 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
-				enum_LoaiDV loaiDichVu = null;
+				Enum_LoaiDichVu loaiDichVu = null;
 				if (loaiDV.equals("Foods")) {
-					loaiDichVu = enum_LoaiDV.Foods;
+					loaiDichVu = Enum_LoaiDichVu.Foods;
 				}
 				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
@@ -88,15 +78,11 @@ public class DAO_DichVu {
 		return listDV;
 	}
 	
-	/**
-	 * ham lay danh sach cac dich vu thuoc do uong
-	 * @return ArrayList
-	 */
 	public static ArrayList<DichVu> getDSDichVuTheoDoUong() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance().connectDatabase();;
+			;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Drinks'";
 			Statement stmt = con.createStatement();
@@ -108,9 +94,9 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
-				enum_LoaiDV loaiDichVu = null;
+				Enum_LoaiDichVu loaiDichVu = null;
 				if (loaiDV.equals("Drinks")) {
-					loaiDichVu = enum_LoaiDV.Drinks;
+					loaiDichVu = Enum_LoaiDichVu.Drinks;
 				}
 				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
@@ -122,15 +108,11 @@ public class DAO_DichVu {
 		return listDV;
 	}
 	
-	/**
-	 * ham lay danh sach cac dich vu khac
-	 * @return ArrayList
-	 */
 	public static ArrayList<DichVu> getDSDichVuConLai() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
 		
 		try {
-			ConnectDB.getInstance().connectDatabase();
+			
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Others'";
 			Statement stmt = con.createStatement();
@@ -142,11 +124,10 @@ public class DAO_DichVu {
 				double donGia = rs.getDouble("DonGia");
 				String loaiDV = rs.getString("LoaiDichVu");
 				
-				enum_LoaiDV loaiDichVu = null;
+				Enum_LoaiDichVu loaiDichVu = null;
 				if (loaiDV.equals("Others")) {
-					loaiDichVu = enum_LoaiDV.Others;
+					loaiDichVu = Enum_LoaiDichVu.Others;
 				}
-				
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
@@ -155,18 +136,7 @@ public class DAO_DichVu {
 		}
 		return listDV;
 	}
-	public static ArrayList<DichVu> getDanhSachDichVuTheoDanhSachDichVuDuocDat(ArrayList<DichVuDat> listDVD){
-		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
-		ArrayList<DichVu> listDVFull = getAllDSDichVu();
-		
-		for(DichVu thisDV : listDVFull) {
-			for(DichVuDat thisDVDat : listDVD) {
-				if(thisDVDat.getMaDichVu().equals(thisDV.getMaDichVu())) 
-					listDV.add(thisDV);
-			}
-		}
-		return listDV;
-	}
+	
 	public static DichVu getDichVuTheoMaDichVu(String maDichVu) {
 		ArrayList<DichVu> listDV = getAllDSDichVu();
 		for(DichVu thisDichVu : listDV) {

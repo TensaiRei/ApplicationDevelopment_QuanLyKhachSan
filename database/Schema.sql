@@ -2,7 +2,6 @@
 GO
 use master
 
-
 --CREATE DATABASE
 GO
 CREATE DATABASE HotelManagement

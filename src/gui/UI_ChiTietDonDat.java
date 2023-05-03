@@ -12,19 +12,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
-import dao.DAO_DichVu;
 import dao.DAO_DonDatPhong;
 import dao.DAO_DonDatPhong_DichVu;
 import dao.DAO_DonDatPhong_Phong;
 import dao.DAO_HoaDon;
-import dao.DAO_KhachHang;
 import dao.DAO_Phong;
-import dao.DAO_TiepTan;
 import entity.DichVu;
-import entity.DichVuDat;
 import entity.DonDatPhong;
-import entity.DonDatPhong.enum_HinhThucThue;
-import entity.DonDatPhong.enum_TrangThaiThanhToan;
+import entity.DonDatPhong_DichVu;
+import entity.DonDatPhong_Phong;
+import entity.Enum_HinhThucThue;
+import entity.Enum_TrangThaiThanhToan;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.Phong;
@@ -450,7 +448,7 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
 
         lblLMNPhuPhi.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblLMNPhuPhi.setForeground(new java.awt.Color(102, 102, 102));
-        lblLMNPhuPhi.setText("Phụ phí:");
+        lblLMNPhuPhi.setText("Phụ phí / Phòng:");
         lblLMNPhuPhi.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(153, 153, 153)));
         pnlLMN.add(lblLMNPhuPhi);
 
@@ -503,12 +501,10 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
     	modelDV.getDataVector().removeAllElements();
     	
     	DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
-    	KhachHang khachHang = DAO_KhachHang.getKhachHangTheoMaKhachHang(donDatPhong.getMaKhachHang());
-    	TiepTan tiepTan = DAO_TiepTan.getTiepTanTheoMaTiepTan(donDatPhong.getMaTiepTan());
-    	ArrayList<DichVuDat> listDVD = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(maDonDat);
-    	ArrayList<DichVu> listDV = DAO_DichVu.getDanhSachDichVuTheoDanhSachDichVuDuocDat(listDVD);
-    	ArrayList<String> listPD = DAO_DonDatPhong_Phong.getDanhSachMaPhongDuocDatTheoMaDonDat(maDonDat);
-    	ArrayList<Phong> listP = DAO_Phong.getDanhSachPhongTheoDanhSachMaPhongDuocDat(listPD);
+    	KhachHang khachHang = donDatPhong.getKhachHang();
+    	TiepTan tiepTan = donDatPhong.getTiepTan();
+    	ArrayList<DonDatPhong_DichVu> listDDV = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(maDonDat);
+    	ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(maDonDat);
     	
     	Timestamp thoiDiemDatPhong = donDatPhong.getNgayDatPhong();;
     	Timestamp thoiDiemTraPhong = new Timestamp(0);
@@ -538,53 +534,55 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
     	lblITTCCCD.setText(tiepTan.getCccd());
     	
     	//Phong
-    	for(Phong thisPhong : listP) {
-    		modelP.addRow(new String[] {
+    	if(listDP != null) {
+    		for(DonDatPhong_Phong thisDP : listDP) {
+        		Phong thisPhong = thisDP.getPhongDat();
+        		modelP.addRow(new String[] {
     				thisPhong.getTenPhong(),
     				Integer.toString(thisPhong.getSoPhong()),
     				thisPhong.getLoaiPhong().getTenLoaiPhong(),
     				Double.toString(thisPhong.getLoaiPhong().getDonGia()),
-    		});
+        		});
+        	}
     	}
     	
     	//DichVu
-    	for(DichVuDat thisDichVuDat : listDVD) {
-    		for(DichVu thisDichVu : listDV) {
-    			if(thisDichVu.getMaDichVu().equals(thisDichVuDat.getMaDichVu())) {
-    				modelDV.addRow(new String[] {
-            				thisDichVu.getTenDichVu(),
-            				thisDichVu.getLoaiDV().toString(),
-            				Integer.toString(thisDichVuDat.getSoLuong()),
-            				Double.toString(thisDichVu.getDonGia()),
-            				Double.toString(thisDichVuDat.getSoLuong()*thisDichVu.getDonGia())
-            		});
-    			}
+    	if(listDDV != null) {
+    		for(DonDatPhong_DichVu thisDDV : listDDV) {
+        		DichVu thisDichVu = thisDDV.getDichVu();
+    			modelDV.addRow(new String[] {
+    				thisDichVu.getTenDichVu(),
+    				thisDichVu.getLoaiDichVu().toString(),
+    				Integer.toString(thisDDV.getSoLuong()),
+    				Double.toString(thisDichVu.getDonGia()),
+    				Double.toString(thisDDV.getSoLuong()*thisDichVu.getDonGia())
+        		});
         	}
     	}
     	
     	//Calculate money
-    	if(donDatPhong.getTrangThaiThanhToan().equals(enum_TrangThaiThanhToan.Paid)) {
+    	if(donDatPhong.getTrangThaiThanhToan().equals(Enum_TrangThaiThanhToan.Paid)) {
     		thoiDiemTraPhong = DAO_HoaDon.getHoaDonTheoMaDonDat(donDatPhong.getMaDonDat()).getNgayTraPhong();
     		thoiGianThue = tinhThoiGianThue(thoiDiemDatPhong, thoiDiemTraPhong, donDatPhong.getHinhThucThue());
     	}
   	
-    	if(donDatPhong.getTrangThaiThanhToan().equals(enum_TrangThaiThanhToan.Yet)) {
+    	if(donDatPhong.getTrangThaiThanhToan().equals(Enum_TrangThaiThanhToan.Yet)) {
     		thoiDiemTraPhong = Timestamp.from(Instant.now());
     		thoiGianThue = tinhThoiGianThue(thoiDiemDatPhong, thoiDiemTraPhong, donDatPhong.getHinhThucThue());
     	}
     	
-    	tongTienPhong = tinhTongTienPhong(listP, donDatPhong.getHinhThucThue(), thoiGianThue);
-    	tongTienDichVu = tinhTongTienDichVu(listDVD, listDV);
+    	tongTienPhong = tinhTongTienPhong(listDP, donDatPhong.getHinhThucThue(), thoiGianThue);
+    	tongTienDichVu = tinhTongTienDichVu(listDDV);
     	tongTienThanhToan = tinhTongTienThanhToan(tongTienPhong, tongTienDichVu);
     	
     	//TongTien
     	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
     	
     	lblIMNTime.setText(thoiDiemTraPhong.toString());
-    	if(donDatPhong.getHinhThucThue().equals(enum_HinhThucThue.Days)) {
+    	if(donDatPhong.getHinhThucThue().equals(Enum_HinhThucThue.Days)) {
     		lblIMNDistance.setText(Long.toString(thoiGianThue) + " Ngày");
     	}
-    	if(donDatPhong.getHinhThucThue().equals(enum_HinhThucThue.Hours)) {
+    	if(donDatPhong.getHinhThucThue().equals(Enum_HinhThucThue.Hours)) {
     		lblIMNDistance.setText(Long.toString(thoiGianThue) + " Giờ");
     	}
     	
@@ -594,55 +592,58 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
     	lblIMNTong.setText(nf_vn.format(tongTienThanhToan));
     	
     	//Disable Button
-    	if(donDatPhong.getTrangThaiThanhToan().equals(enum_TrangThaiThanhToan.Paid)) {
+    	if(donDatPhong.getTrangThaiThanhToan().equals(Enum_TrangThaiThanhToan.Paid)) {
     		btnThanhToan.setEnabled(false);
     		btnXoa.setEnabled(false);
     	}
     }
     
-    public double tinhTongTienPhong(ArrayList<Phong> listP, enum_HinhThucThue enumHinhThucThue, long thoiGianThue) {
+    public double tinhTongTienPhong(ArrayList<DonDatPhong_Phong> listDP, Enum_HinhThucThue enumHinhThucThue, long thoiGianThue) {
     	double tongTienPhong = 0;
     	double donGiaPhong = 0;
     	
-    	if(enumHinhThucThue.equals(enum_HinhThucThue.Days)) {
-    		for(Phong thisPhong : listP) {
-    			donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
-    			tongTienPhong += donGiaPhong*thoiGianThue;
-    		}
-    	}
-    	if(enumHinhThucThue.equals(enum_HinhThucThue.Hours)) {
-    		for(Phong thisPhong : listP) {
-    			donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
-    			tongTienPhong+= donGiaPhong*tiLeGioThue*thoiGianThue;
-    		}
+    	if(listDP != null) {
+    		if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
+        		for(DonDatPhong_Phong thisDP : listDP) {
+        			Phong thisPhong = thisDP.getPhongDat();
+        			donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+        			tongTienPhong += donGiaPhong*thoiGianThue;
+        		}
+        	}
+        	if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
+        		for(DonDatPhong_Phong thisDP : listDP) {
+        			Phong thisPhong = thisDP.getPhongDat();
+        			donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+        			tongTienPhong+= donGiaPhong*tiLeGioThue*thoiGianThue;
+        		}
+        	}
     	}
     	return tongTienPhong;
     }
     
-    public double tinhTongTienDichVu(ArrayList<DichVuDat> listDVD, ArrayList<DichVu> listDV) {
+    public double tinhTongTienDichVu(ArrayList<DonDatPhong_DichVu> listDDV) {
     	double tongTienDichVu = 0;
-    	for(DichVuDat thisDichVuDat : listDVD) {
-    		for(DichVu thisDichVu : listDV) {
-    			if(thisDichVu.getMaDichVu().equals(thisDichVuDat.getMaDichVu())) {
-    				tongTienDichVu += thisDichVu.getDonGia() * thisDichVuDat.getSoLuong();
-    			}
-    		}
+    	if(listDDV != null) {
+    		for(DonDatPhong_DichVu thisDDV : listDDV) {
+        		DichVu thisDichVu = thisDDV.getDichVu();
+        		tongTienDichVu += thisDichVu.getDonGia() * thisDDV.getSoLuong();
+        	}
     	}
     	return tongTienDichVu;
     }
     
     public double tinhTongTienThanhToan(double tongTienPhong, double tongTienDichVu) {
-    	return tongTienPhong + tongTienDichVu + phuPhi;
+    	return tongTienPhong + tongTienDichVu + modelP.getRowCount()*phuPhi;
     }
     
-    public long tinhThoiGianThue(Timestamp thoiDiemDatPhong, Timestamp thoiDiemTraPhong, enum_HinhThucThue enumHinhThucThue) {
+    public long tinhThoiGianThue(Timestamp thoiDiemDatPhong, Timestamp thoiDiemTraPhong, Enum_HinhThucThue enumHinhThucThue) {
     	double thoiGianDatPhong = thoiDiemDatPhong.getTime();
 		double thoiGianTraPhong = thoiDiemTraPhong.getTime();
 		
-		if(enumHinhThucThue.equals(enum_HinhThucThue.Days)) {
+		if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
 			return Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/86400000));
 		}
-		if(enumHinhThucThue.equals(enum_HinhThucThue.Hours)) {
+		if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
 			return Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/3600000));
 		}
 		return 0;
@@ -657,8 +658,33 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
 		
 		if(o == btnThanhToan)
 			thanhToanDonDatPhong();
-		if(o == btnXoa);
+		if(o == btnXoa)
+			xoaDonDatPhong();
 	}
+	
+	public void xoaDonDatPhong() {
+		int maDonDat = 0;
+		try {
+			maDonDat = Integer.parseInt(lblIDDMDD.getText());
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return;
+		}
+		int prompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận hủy đơn phòng", "Hủy đơn", JOptionPane.YES_NO_OPTION);
+		if(prompt == JOptionPane.YES_OPTION) {
+			ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(maDonDat);
+			for(DonDatPhong_Phong thisDP : listDP) {
+				Phong thisPhong = thisDP.getPhongDat();
+				DAO_Phong.updatePhongToAvailable(thisPhong);
+			}
+			if(DAO_DonDatPhong_Phong.deleteDonDatPhong_Phong(maDonDat) && DAO_DonDatPhong.xoaDonDatPhong(maDonDat)) {
+				JOptionPane.showMessageDialog(this, "Xóa thành công đơn đặt phòng");
+				UI_Main.getUI_MainInstance().showUI(UI_DonDatPhong.newUI_DonDatPhongInstance());
+				UI_DonDatPhong.getUI_DonDatPhongInstance().reloadTable();
+			}
+		}
+	}
+	
 	public void thanhToanDonDatPhong() {
 		int prompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận thanh toán", "Thanh toán", JOptionPane.YES_NO_OPTION);
 		if(prompt == JOptionPane.YES_OPTION) {
@@ -666,9 +692,19 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
 			double phuPhi = Double.parseDouble(lblIMNPhuPhi.getText().replaceAll("\\.", ""));
 			double tongThanhTien = Double.parseDouble(lblIMNTong.getText().replaceAll("\\.", ""));
 			Timestamp ngayDatPhong = Timestamp.valueOf(lblIDDND.getText());
-			HoaDon hoaDon = new HoaDon(maDonDat, phuPhi, tongThanhTien, ngayDatPhong);
+			
+			DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+			
+			HoaDon hoaDon = new HoaDon(donDatPhong, phuPhi, tongThanhTien, ngayDatPhong);
 			DAO_HoaDon.insertNewHoaDon(hoaDon);
 			DAO_DonDatPhong.setTrangThaiThanhToanMaDonDat(maDonDat, "Đã thanh toán");
+			
+			ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(maDonDat);
+			for(DonDatPhong_Phong thisDP : listDP) {
+				Phong thisPhong = thisDP.getPhongDat();
+				DAO_Phong.updatePhongToAvailable(thisPhong);
+			}
+			
 			UI_Main.getUI_MainInstance().showUI(UI_ChiTietHoaDon.newUI_ChiTietHoaDonInstance());
 			int maHoaDon = DAO_HoaDon.getHoaDonTheoMaDonDat(maDonDat).getMaHoaDon();
 			UI_ChiTietHoaDon.getUI_ChiTietHoaDonInstance().setHoaDon(maHoaDon);

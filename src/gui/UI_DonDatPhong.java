@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -23,7 +25,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
 	private javax.swing.JButton btnChiTiet;
     private javax.swing.ButtonGroup btnGroupLoc;
     private javax.swing.ButtonGroup btnGroupTim;
-    private javax.swing.JButton btnHuyDD;
+//    private javax.swing.JButton btnHuyDD;
     private javax.swing.JButton btnLoc;
     private javax.swing.JButton btnTaiLai;
     private javax.swing.JButton btnTim;
@@ -59,7 +61,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
         lblTitle = new javax.swing.JLabel();
         pnlFunc = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
-        btnHuyDD = new javax.swing.JButton();
+//        btnHuyDD = new javax.swing.JButton();
         btnTim = new javax.swing.JButton();
         pnlTim = new javax.swing.JPanel();
         radMDD = new javax.swing.JRadioButton();
@@ -99,13 +101,13 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
         btnChiTiet.setPreferredSize(new java.awt.Dimension(150, 50));
         pnlFunc.add(btnChiTiet);
 
-        btnHuyDD.setBackground(new java.awt.Color(128, 128, 255));
-        btnHuyDD.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnHuyDD.setForeground(new java.awt.Color(34, 34, 34));
-        btnHuyDD.setText("Hủy Đơn đặt");
-        btnHuyDD.setToolTipText("");
-        btnHuyDD.setPreferredSize(new java.awt.Dimension(150, 50));
-        pnlFunc.add(btnHuyDD);
+//        btnHuyDD.setBackground(new java.awt.Color(128, 128, 255));
+//        btnHuyDD.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+//        btnHuyDD.setForeground(new java.awt.Color(34, 34, 34));
+//        btnHuyDD.setText("Hủy Đơn đặt");
+//        btnHuyDD.setToolTipText("");
+//        btnHuyDD.setPreferredSize(new java.awt.Dimension(150, 50));
+//        pnlFunc.add(btnHuyDD);
 
         btnTim.setBackground(new java.awt.Color(128, 128, 255));
         btnTim.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -182,7 +184,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     }
     public void addActionListener() {
     	btnChiTiet.addActionListener(this);
-		btnHuyDD.addActionListener(this);
+//		btnHuyDD.addActionListener(this);
 		btnTim.addActionListener(this);
 		btnLoc.addActionListener(this);
 		btnTaiLai.addActionListener(this);
@@ -201,7 +203,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     		for(DonDatPhong thisDDP : listDDP) {
         		modelDD.addRow(new String[] {
         			Integer.toString(thisDDP.getMaDonDat()),
-        			Integer.toString(thisDDP.getMaKhachHang()),
+        			Integer.toString(thisDDP.getKhachHang().getMaKhachHang()),
         			Integer.toString(thisDDP.getSoLuongKhach()),
         			thisDDP.getHinhThucThue().toString(),
         			thisDDP.getTrangThaiThanhToan().toString(),
@@ -212,7 +214,7 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
     }
     private void setDecorateButton() {
 		btnChiTiet.setFocusPainted(false);
-		btnHuyDD.setFocusPainted(false);
+//		btnHuyDD.setFocusPainted(false);
 		btnTim.setFocusPainted(false);
 		btnLoc.setFocusPainted(false);
 		btnTaiLai.setFocusPainted(false);
@@ -236,11 +238,134 @@ public class UI_DonDatPhong extends JPanel implements ActionListener {
 		
 		if(o == btnChiTiet)
 			xemChiTiet();
-		if(o == btnHuyDD);
-		if(o == btnTim);
-		if(o == btnLoc);
+//		if(o == btnHuyDD);
+		if(o == btnTim)
+			timDonDatPhong();
+		if(o == btnLoc)
+			locDonDatPhong();
 		if(o == btnTaiLai)
 			reloadTable();
 	}
+	public void timDonDatPhong() {
+		if(radMDD.isSelected()) {
+			String stringMaDonDat = JOptionPane.showInputDialog(this, "Nhập Mã đơn đặt: ", "Tìm theo Mã đơn đặt", JOptionPane.PLAIN_MESSAGE);
+			if(stringMaDonDat == null || stringMaDonDat.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			int maDonDat = 0;
+			try {
+				maDonDat = Integer.parseInt(stringMaDonDat);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng dạng", "Lỗi thao tác", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+			if(donDatPhong == null) {
+				JOptionPane.showMessageDialog(this, "Đơn đặt không tồn tại");
+				return;
+			}
+			else {
+				modelDD.getDataVector().removeAllElements();
+				modelDD.addRow(new String[] {
+					Integer.toString(donDatPhong.getMaDonDat()),
+        			Integer.toString(donDatPhong.getKhachHang().getMaKhachHang()),
+        			Integer.toString(donDatPhong.getSoLuongKhach()),
+        			donDatPhong.getHinhThucThue().toString(),
+        			donDatPhong.getTrangThaiThanhToan().toString(),
+        			donDatPhong.getNgayDatPhong().toString()	
+				});
+			}
+		}
+		else if(radCCCD.isSelected()) {
+			String stringCCCD = JOptionPane.showInputDialog(this, "Nhập Căn cước công dân: ", "Tìm theo Căn Cước Công Dân", JOptionPane.PLAIN_MESSAGE);
+			if(stringCCCD == null || stringCCCD.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			ArrayList<DonDatPhong> listDonDatPhong = DAO_DonDatPhong.getDanhSachDonDatPhong();
+			ArrayList<DonDatPhong> listFilter = new ArrayList<DonDatPhong>();
+			for(DonDatPhong thisDonDatPhong : listDonDatPhong) {
+				if(thisDonDatPhong.getKhachHang().getCccd().equals(stringCCCD))
+					listFilter.add(thisDonDatPhong);
+			}
+			if(listFilter.size() == 0) {
+				JOptionPane.showMessageDialog(this, "Đơn đặt có Khách hàng có Căn Cước Công Dân này không tồn tại");
+			}
+			else {
+				modelDD.getDataVector().removeAllElements();
+				for(DonDatPhong donDatPhong : listFilter) {
+					modelDD.addRow(new String[] {
+							Integer.toString(donDatPhong.getMaDonDat()),
+		        			Integer.toString(donDatPhong.getKhachHang().getMaKhachHang()),
+		        			Integer.toString(donDatPhong.getSoLuongKhach()),
+		        			donDatPhong.getHinhThucThue().toString(),
+		        			donDatPhong.getTrangThaiThanhToan().toString(),
+		        			donDatPhong.getNgayDatPhong().toString()	
+						});
+				}
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn một lựa chọn tìm");
+		}
+	}
 	
+	public void locDonDatPhong() {
+		if(radTTTT.isSelected()) {
+			String stringTTTT = JOptionPane.showInputDialog(this, "Nhập Trạng thái thanh toán (Yet/Paid): ", "Lọc theo Trạng thái thanh toán", JOptionPane.PLAIN_MESSAGE);
+			if(stringTTTT == null || stringTTTT.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			ArrayList<DonDatPhong> listDonDatPhong = DAO_DonDatPhong.getDanhSachDonDatPhong();
+			if(stringTTTT.equals("Yet") || (stringTTTT.equals("Paid"))) {
+				modelDD.getDataVector().removeAllElements();
+				for(DonDatPhong thisDonDatPhong : listDonDatPhong) {
+					if(thisDonDatPhong.getTrangThaiThanhToan().toString().equals(stringTTTT)) {
+						modelDD.addRow(new String[] {
+								Integer.toString(thisDonDatPhong.getMaDonDat()),
+			        			Integer.toString(thisDonDatPhong.getKhachHang().getMaKhachHang()),
+			        			Integer.toString(thisDonDatPhong.getSoLuongKhach()),
+			        			thisDonDatPhong.getHinhThucThue().toString(),
+			        			thisDonDatPhong.getTrangThaiThanhToan().toString(),
+			        			thisDonDatPhong.getNgayDatPhong().toString()	
+							});
+					}
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng Trạng thái thanh toán");
+			}
+		}
+		else if(radND.isSelected()) {
+			String stringND = JOptionPane.showInputDialog(this, "Nhập Ngày đặt phòng (dd/MM/yyyy): ", "Lọc theo Ngày đặt phòng", JOptionPane.PLAIN_MESSAGE);
+			if(stringND == null || stringND.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate ngayCanLoc = LocalDate.parse(stringND, dtf);
+			
+	        modelDD.getDataVector().removeAllElements();
+	        ArrayList<DonDatPhong> listDonDatPhong = DAO_DonDatPhong.getDanhSachDonDatPhong();
+	        for(DonDatPhong thisDonDatPhong : listDonDatPhong) {
+	        	LocalDate ngayDatPhong = thisDonDatPhong.getNgayDatPhong().toLocalDateTime().toLocalDate();
+	        	if(ngayCanLoc.isEqual(ngayDatPhong)) {
+	        		modelDD.addRow(new String[] {
+						Integer.toString(thisDonDatPhong.getMaDonDat()),
+	        			Integer.toString(thisDonDatPhong.getKhachHang().getMaKhachHang()),
+	        			Integer.toString(thisDonDatPhong.getSoLuongKhach()),
+	        			thisDonDatPhong.getHinhThucThue().toString(),
+	        			thisDonDatPhong.getTrangThaiThanhToan().toString(),
+	        			thisDonDatPhong.getNgayDatPhong().toString()	
+					});
+	        	}
+	        }
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn một lựa chọn lọc");
+		}
+	}
 }
