@@ -16,7 +16,6 @@ public class DAO_HoaDon {
 	DAO_HoaDon(){}
 	public static ArrayList<HoaDon> getDanhSachHoaDon(){
 		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -51,7 +50,6 @@ public class DAO_HoaDon {
 	}
 	public static HoaDon getHoaDonTheoMaHoaDon(int maHoaDonCanTim) {
 		HoaDon tempHoaDon = new HoaDon();
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -87,7 +85,6 @@ public class DAO_HoaDon {
 	}
 	public static HoaDon getHoaDonTheoMaDonDat(int maDonDatCanTim) {
 		HoaDon tempHoaDon = new HoaDon();
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -122,9 +119,7 @@ public class DAO_HoaDon {
 		return tempHoaDon;
 	}
 	public static void insertNewHoaDon(HoaDon newHoaDon) {
-		
 		Connection connect = ConnectDB.getConnection();
-		
 		try {
 			String sql = ""
 					+ "INSERT INTO HoaDon(MaDonDat, PhuPhi, TongThanhTien, NgayDatPhong) "

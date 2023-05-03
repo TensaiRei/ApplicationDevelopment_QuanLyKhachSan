@@ -14,7 +14,6 @@ public class DAO_TiepTan {
 	DAO_TiepTan(){}
 	public static ArrayList<TiepTan> getDanhSachTiepTan(){
 		ArrayList<TiepTan> listTT = new ArrayList<TiepTan>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {

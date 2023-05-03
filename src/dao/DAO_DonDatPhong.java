@@ -19,7 +19,6 @@ public class DAO_DonDatPhong {
 	public DAO_DonDatPhong() {}
 	public static ArrayList<DonDatPhong> getDanhSachDonDatPhong() {
 		ArrayList<DonDatPhong> listDDP = new ArrayList<DonDatPhong>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -60,7 +59,8 @@ public class DAO_DonDatPhong {
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -79,7 +79,6 @@ public class DAO_DonDatPhong {
 	}
 	
 	public static boolean createDonDatPhong(DonDatPhong donDatPhong) {
-		
 		Connection connection = ConnectDB.getConnection();
 		int n = 0;
 		try {
@@ -93,7 +92,8 @@ public class DAO_DonDatPhong {
 			statement.setString(4, donDatPhong.getHinhThucThue() == Enum_HinhThucThue.Days ? "Theo ngày" : "Theo giờ");
 			statement.setString(5, "Chưa thanh toán");
 			n = statement.executeUpdate();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println(e);
 		}
 
@@ -101,7 +101,6 @@ public class DAO_DonDatPhong {
 	}
 
 	public static DonDatPhong getNewDonDat() {
-		
 		Connection connection = ConnectDB.getConnection();
 		try {
 			String sql = "SELECT TOP 1 MaDonDat "
@@ -114,7 +113,8 @@ public class DAO_DonDatPhong {
 				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
 				return donDatPhong;
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println(e);
 			return null;
 		}
@@ -122,7 +122,6 @@ public class DAO_DonDatPhong {
 	}
 	
 	public static void setTrangThaiThanhToanMaDonDat(int maDonDatCanSet, String trangThaiThanhToanCanSet) {
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -144,7 +143,6 @@ public class DAO_DonDatPhong {
 	}
 	
 	public static boolean xoaDonDatPhong(int maDonDat) {
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -158,7 +156,8 @@ public class DAO_DonDatPhong {
 			
 			if(rowCount == 0) return false;
 			else return true;
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

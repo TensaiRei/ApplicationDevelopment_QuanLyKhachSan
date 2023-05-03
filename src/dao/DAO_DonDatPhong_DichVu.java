@@ -17,7 +17,6 @@ public class DAO_DonDatPhong_DichVu {
 	DAO_DonDatPhong_DichVu(){}
 	public static ArrayList<DonDatPhong_DichVu> getDanhSachDichVuDat(){
 		ArrayList<DonDatPhong_DichVu> listDDV = new ArrayList<DonDatPhong_DichVu>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -58,7 +57,6 @@ public class DAO_DonDatPhong_DichVu {
 	
 	public static ArrayList<DonDatPhong_DichVu> getDanhSachDichVuDatTheoMaDonDat(int thisMaDonDat){
 		ArrayList<DonDatPhong_DichVu> listDDV = new ArrayList<DonDatPhong_DichVu>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -101,7 +99,6 @@ public class DAO_DonDatPhong_DichVu {
 	
 	public static ArrayList<DonDatPhong_DichVu> getDanhSachDichVuDatTheoMaDonDatMaPhong(int thisMaDonDat, String thisMaPhongDat){
 		ArrayList<DonDatPhong_DichVu> listDDV = new ArrayList<DonDatPhong_DichVu>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -144,10 +141,8 @@ public class DAO_DonDatPhong_DichVu {
 	}
 	
 	public static boolean insertDonDatPhong_DichVu(DonDatPhong_DichVu thisDDV) {
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
-		
 		try {
 			String sql = ""
 					+ "INSERT INTO DonDatPhong_DichVu(MaDonDat, MaDichVu, MaPhong, SoLuong) "

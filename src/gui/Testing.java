@@ -1,7 +1,15 @@
 package gui;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import connectDB.ConnectDB;
 import dao.DAO_DichVu;
 import dao.DAO_DonDatPhong;
 import dao.DAO_DonDatPhong_DichVu;
@@ -20,6 +28,7 @@ import entity.Enum_TrangThaiThanhToan;
 import entity.HoaDon;
 import entity.KhachHang;
 import entity.LoaiPhong;
+import entity.Phong;
 import entity.TiepTan;
 
 @SuppressWarnings("unused")
@@ -126,5 +135,72 @@ public class Testing {
 //		for(HoaDon thisHoaDon : DAO_HoaDon.getDanhSachHoaDon()) {
 //			System.out.println(thisHoaDon);
 //		}
+		
+//		ConnectDB.getInstance().connectDatabase();
+//		Connection connect = ConnectDB.getConnection();
+//		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
+//		int thang = 5;
+//		int nam = 2023;
+//		double tongTien = 0;
+//		try {
+//			String sql = ""
+//					+ "SELECT * "
+//					+ "FROM HoaDon "
+//					+ "WHERE YEAR(NgayTraPhong) = ? AND MONTH(NgayTraPhong) = ?";
+//			PreparedStatement prpStm = connect.prepareStatement(sql);
+//			
+//			prpStm.setInt(1, nam);
+//			prpStm.setInt(2, thang);
+//			
+//			ResultSet result = prpStm.executeQuery();
+//			
+//			while(result.next()) {
+//				int maHoaDon = result.getInt("MaHoaDon");
+//				int maDonDat = result.getInt("MaDonDat");
+//				double phuPhi = result.getDouble("PhuPhi");
+//				double tongThanhTien = result.getDouble("TongThanhTien");
+//				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+//				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
+//				
+//				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+//				
+//				HoaDon tempHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+//				
+//				listHD.add(tempHoaDon);
+//			}
+//		} 
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		for(HoaDon thisHD : listHD) {
+//			double tiLeGioThue = 0.07;
+//			Enum_HinhThucThue enumHinhThucThue = thisHD.getDonDatPhong().getHinhThucThue();
+//			ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(thisHD.getDonDatPhong().getMaDonDat());
+//			double thoiGianDatPhong = thisHD.getNgayDatPhong().getTime();
+//			double thoiGianTraPhong = thisHD.getNgayTraPhong().getTime();
+//			long thoiGianThue = 0;
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
+//				thoiGianThue = Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/86400000));
+//			}
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
+//				thoiGianThue = Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/3600000));
+//			}
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
+//        		for(DonDatPhong_Phong thisDP : listDP) {
+//        			Phong thisPhong = thisDP.getPhongDat();
+//        			double donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+//        			tongTien += donGiaPhong*thoiGianThue;
+//        		}
+//        	}
+//        	if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
+//        		for(DonDatPhong_Phong thisDP : listDP) {
+//        			Phong thisPhong = thisDP.getPhongDat();
+//        			double donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+//        			tongTien+= donGiaPhong*tiLeGioThue*thoiGianThue;
+//        		}
+//        	}
+//		}
+//		NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+//		System.out.println(nf.format(tongTien));
 	}
 }

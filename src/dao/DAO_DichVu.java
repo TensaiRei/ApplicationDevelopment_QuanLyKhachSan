@@ -14,9 +14,7 @@ public class DAO_DichVu {
 public DAO_DichVu() {}
 	public static ArrayList<DichVu> getAllDSDichVu() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
-		
 		try {
-			
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu";
 			Statement stmt = con.createStatement();
@@ -42,7 +40,8 @@ public DAO_DichVu() {}
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listDV;
@@ -50,9 +49,7 @@ public DAO_DichVu() {}
 	
 	public static ArrayList<DichVu> getDSDichVuTheoThucAn() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
-		
 		try {
-			;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Foods'";
 			Statement stmt = con.createStatement();
@@ -72,7 +69,8 @@ public DAO_DichVu() {}
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listDV;
@@ -80,9 +78,7 @@ public DAO_DichVu() {}
 	
 	public static ArrayList<DichVu> getDSDichVuTheoDoUong() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
-		
 		try {
-			;
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Drinks'";
 			Statement stmt = con.createStatement();
@@ -102,7 +98,8 @@ public DAO_DichVu() {}
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listDV;
@@ -110,9 +107,7 @@ public DAO_DichVu() {}
 	
 	public static ArrayList<DichVu> getDSDichVuConLai() {
 		ArrayList<DichVu> listDV = new ArrayList<DichVu>();
-		
 		try {
-			
 			Connection con = ConnectDB.getConnection();
 			String sql = "select * from DichVu where LoaiDichVu like 'Others'";
 			Statement stmt = con.createStatement();
@@ -131,7 +126,8 @@ public DAO_DichVu() {}
 				DichVu dv = new DichVu(maDV, tenDV, donGia, loaiDichVu);
 				listDV.add(dv);
 			}
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return listDV;
