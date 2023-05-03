@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import dao.DAO_TaiKhoan;
 import dao.DAO_TiepTan;
+import entity.TaiKhoan;
 import entity.TiepTan;
 
 public class UI_TiepTan extends JPanel {
@@ -339,8 +340,13 @@ public class UI_TiepTan extends JPanel {
         add(pnlPadding, java.awt.BorderLayout.PAGE_END);
     }
 	public void showThongTinTiepTan() {
-		TiepTan thisTiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(DAO_TaiKhoan.getTaiKhoanHienHanh().getMaTaiKhoan());
-		setThongTinTiepTan(thisTiepTan);
+		TaiKhoan taiKhoanHienHanh = DAO_TaiKhoan.getTaiKhoanHienHanh();
+		TiepTan tiepTan = null;
+		if(taiKhoanHienHanh != null) {
+			tiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(taiKhoanHienHanh.getMaTaiKhoan());
+		}
+		if(tiepTan != null)
+			setThongTinTiepTan(tiepTan);
 	}
 	private void setThongTinTiepTan(TiepTan thisTiepTan) {
 		lblIMNV.setText(thisTiepTan.getMaTiepTan());

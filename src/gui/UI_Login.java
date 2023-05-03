@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,6 +21,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import connectDB.ConnectDB;
 import dao.DAO_TaiKhoan;
 
 public class UI_Login extends JFrame implements ActionListener, KeyListener{
@@ -28,8 +31,8 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 	private static final long serialVersionUID = 1L;
 	private static UI_Login instance;
 	//
-	private JTextField textUsername;
-	private JPasswordField passwordField;
+	private JTextField txtUsername;
+	private JPasswordField txtPassword;
 	private JButton btnLogin = new JButton("  Login");
 	private JButton btnReset = new JButton("  Reset");
 	//
@@ -101,17 +104,17 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 		btnReset.setFocusPainted(false);
 		panel.add(btnReset);
 		
-		textUsername = new JTextField();
-		textUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textUsername.setBounds(110, 130, 280, 40);
-		panel.add(textUsername);
-		textUsername.setColumns(20);
+		txtUsername = new JTextField();
+		txtUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtUsername.setBounds(110, 130, 280, 40);
+		panel.add(txtUsername);
+		txtUsername.setColumns(20);
 		
-		passwordField = new JPasswordField();
-		passwordField.setEchoChar('*');
-		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		passwordField.setBounds(110, 190, 280, 40);
-		panel.add(passwordField);
+		txtPassword = new JPasswordField();
+		txtPassword.setEchoChar('*');
+		txtPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtPassword.setBounds(110, 190, 280, 40);
+		panel.add(txtPassword);
 		
 		JLabel lblNewLabel_3 = new JLabel("Welcome");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
@@ -123,11 +126,20 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 		//
 		btnLogin.addActionListener(this);
 		btnReset.addActionListener(this);
-		textUsername.addKeyListener(this);
-		passwordField.addKeyListener(this);
+		txtUsername.addKeyListener(this);
+		txtPassword.addKeyListener(this);
 		
 		//
 		this.setVisible(true);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				ConnectDB.getInstance().disconnectDatabase();
+			}
+		});
+		
+		ConnectDB.getInstance().connectDatabase();
 	}
 
 	@Override
@@ -141,33 +153,34 @@ public class UI_Login extends JFrame implements ActionListener, KeyListener{
 	}
 	
 	public void kiemTraDangNhap() {
-		String username = textUsername.getText();
-		char[] passwordValue = passwordField.getPassword();
+		String username = txtUsername.getText();
+		char[] passwordValue = txtPassword.getPassword();
 		String password = String.valueOf(passwordValue);
 		
 		if(DAO_TaiKhoan.kiemTraTaiKhoan(username, password)) {
-				JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-				UI_Main.newUI_MainInstance();
-				UI_Main.getUI_MainInstance().setVisible(true);
-				this.dispose();
+			JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+			
+			UI_Main.newUI_MainInstance();
+			UI_Main.getUI_MainInstance().setVisible(true);
+			this.dispose();
 		}
 		else
 		{
 			JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu bị sai. Hãy nhập lại!");
-			if(textUsername.getText().isBlank()) {
-				textUsername.requestFocus();
+			if(txtUsername.getText().isBlank()) {
+				txtUsername.requestFocus();
 			}
 			else {
-				passwordField.selectAll();
-				passwordField.requestFocus();
+				txtPassword.selectAll();
+				txtPassword.requestFocus();
 			}
 		}
 	}
 	
 	public void xoaTrang() {
-		textUsername.setText("");
-		passwordField.setText("");
-		textUsername.requestFocus();
+		txtUsername.setText("");
+		txtUsername.requestFocus();
+		txtPassword.setText("");
 	}
 
 	@Override

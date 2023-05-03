@@ -7,11 +7,11 @@ public class TaiKhoan {
 	public String getMaTaiKhoan() {
 		return maTaiKhoan;
 	}
-	private void setMaTaiKhoan(String maTaiKhoan) {
-		this.maTaiKhoan = maTaiKhoan;
-	}
 	public String getTenTaiKhoan() {
 		return tenTaiKhoan;
+	}
+	private void setMaTaiKhoan(String maTaiKhoan) {
+		this.maTaiKhoan = maTaiKhoan;
 	}
 	private void setTenTaiKhoan(String tenTaiKhoan) {
 		this.tenTaiKhoan = tenTaiKhoan;
@@ -22,10 +22,12 @@ public class TaiKhoan {
 		setMaTaiKhoan(maTaiKhoan);
 		setTenTaiKhoan(tenTaiKhoan);
 	}
+	public TaiKhoan() {
+		super();
+	}
 	//
 	@Override
 	public String toString() {
 		return "TaiKhoan [maTaiKhoan=" + maTaiKhoan + ", tenTaiKhoan=" + tenTaiKhoan + "]";
 	}
-	
 }

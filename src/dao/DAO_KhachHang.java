@@ -14,15 +14,16 @@ public class DAO_KhachHang {
 	public DAO_KhachHang() {}
 	public static ArrayList<KhachHang> getDanhSachKhachHang(){
 		ArrayList<KhachHang> listKH = new ArrayList<KhachHang>();
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection connect = ConnectDB.getConnection();
+		int rowCount = 0;
 		try {
 			String sql = ""
 					+ "SELECT * "
 					+ "FROM KhachHang";
 			Statement stm = connect.createStatement();
 			ResultSet result = stm.executeQuery(sql);
-			int rowCount = 0;
+			
 			while(result.next()) {
 				int maKhachHang = result.getInt("MaKhachHang");
 				String hoDem = result.getString("HoDem");
@@ -30,56 +31,41 @@ public class DAO_KhachHang {
 				String cccd = result.getString("CCCD");
 				String sdt = result.getString("SDT");
 				String quocTich = result.getString("QuocTich");
-				KhachHang tempKhachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
-				listKH.add(tempKhachHang);
+				
+				KhachHang khachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
+				
+				listKH.add(khachHang);
+				
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
 		return listKH;
 	}
+	public static KhachHang getKhachHangTheoMaKhachHang(int thisMaKhachHang) {
+		ArrayList<KhachHang> listKH = DAO_KhachHang.getDanhSachKhachHang();
+		KhachHang khachHang = new KhachHang(thisMaKhachHang);
+		if(listKH.contains(khachHang)) return listKH.get(listKH.indexOf(khachHang));
+		else return null;
+	}
 	
-	public static KhachHang getKhachHangTheoMaKhachHang(int maKhachHangCanTim) {
-		KhachHang tempKhachHang = new KhachHang();
-		ConnectDB.getInstance().connectDatabase();
-		Connection connect = ConnectDB.getConnection();
-		try {
-			String sql = ""
-					+ "SELECT * "
-					+ "FROM KhachHang "
-					+ "WHERE MaKhachHang = ?";
-			PreparedStatement prpStm = connect.prepareStatement(sql);
-			prpStm.setInt(1, maKhachHangCanTim);
-			ResultSet result = prpStm.executeQuery();
-			int rowCount = 0;
-			while(result.next()) {
-				int maKhachHang = result.getInt("MaKhachHang");
-				String hoDem = result.getString("HoDem");
-				String ten = result.getString("Ten");
-				String cccd = result.getString("CCCD");
-				String sdt = result.getString("SDT");
-				String quocTich = result.getString("QuocTich");
-				tempKhachHang = new KhachHang(maKhachHang, hoDem, ten, cccd, sdt, quocTich);
-				rowCount++;
-			}
-			if(rowCount == 0) return null;
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			ConnectDB.getInstance().disconnectDatabase();
-		}
-		return tempKhachHang;
-	}	
+	public static KhachHang getKhachHangTheoCCCD(String cccd) {
+		ArrayList<KhachHang> listKH = DAO_KhachHang.getDanhSachKhachHang();
+		for(KhachHang thisKhachHang : listKH)
+			if(thisKhachHang.getCccd().equals(cccd))
+				return thisKhachHang;
+		return null;
+	}
+	
 	public static boolean createKhachHang(KhachHang khachHang) {
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
@@ -99,15 +85,16 @@ public class DAO_KhachHang {
 		finally {
 			try {
 				statement.close();
-				ConnectDB.getInstance().disconnectDatabase();
+				
 			} catch ( SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return n>0;
 	}
+	
 	public static int getNewKhachHang() {
-		ConnectDB.getInstance().connectDatabase();
+		
 		int maKhachHang=0;
 		try {
 			Connection connection = ConnectDB.getConnection();
@@ -123,10 +110,10 @@ public class DAO_KhachHang {
 			System.out.println(e);
 		}
 		return maKhachHang;
-		
 	}
+	
 	public boolean updateKhachHang(KhachHang khachHang) {
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
@@ -145,11 +132,33 @@ public class DAO_KhachHang {
 		finally {
 			try {
 				statement.close();
-				ConnectDB.getInstance().disconnectDatabase();
+				
 			} catch ( SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		return n>0;
+	}
+	
+	public static boolean kiemTraKhachHangDaTonTai(String cccd) {
+		
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM KhachHang "
+					+ "WHERE CCCD = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setString(1, cccd);
+			ResultSet result = prpStm.executeQuery();
+			
+			while(result.next()) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

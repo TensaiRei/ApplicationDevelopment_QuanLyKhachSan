@@ -9,13 +9,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import connectDB.ConnectDB;
+import entity.DonDatPhong;
 import entity.HoaDon;
 
 public class DAO_HoaDon {
 	DAO_HoaDon(){}
 	public static ArrayList<HoaDon> getDanhSachHoaDon(){
 		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -31,7 +32,10 @@ public class DAO_HoaDon {
 				double tongThanhTien = result.getDouble("TongThanhTien");
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
-				HoaDon tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				
+				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+				
+				HoaDon tempHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
 				listHD.add(tempHoaDon);
 				rowCount++;
 			}
@@ -41,13 +45,13 @@ public class DAO_HoaDon {
 			e.printStackTrace();
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
 		return listHD;
 	}
 	public static HoaDon getHoaDonTheoMaHoaDon(int maHoaDonCanTim) {
 		HoaDon tempHoaDon = new HoaDon();
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -65,7 +69,10 @@ public class DAO_HoaDon {
 				double tongThanhTien = result.getDouble("TongThanhTien");
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
-				tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				
+				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+				
+				tempHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
@@ -74,13 +81,13 @@ public class DAO_HoaDon {
 			e.printStackTrace();
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
 		return tempHoaDon;
 	}
 	public static HoaDon getHoaDonTheoMaDonDat(int maDonDatCanTim) {
 		HoaDon tempHoaDon = new HoaDon();
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -98,7 +105,10 @@ public class DAO_HoaDon {
 				double tongThanhTien = result.getDouble("TongThanhTien");
 				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
 				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
-				tempHoaDon = new HoaDon(maHoaDon, maDonDat, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				
+				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+				
+				tempHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
@@ -107,12 +117,12 @@ public class DAO_HoaDon {
 			e.printStackTrace();
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
 		return tempHoaDon;
 	}
 	public static void insertNewHoaDon(HoaDon newHoaDon) {
-		ConnectDB.getInstance().connectDatabase();
+		
 		Connection connect = ConnectDB.getConnection();
 		
 		try {
@@ -121,8 +131,8 @@ public class DAO_HoaDon {
 					+ "VALUES (?, ?, ?, ?)";
 			PreparedStatement prpStm = connect.prepareStatement(sql);
 			//Mã Hóa đơn cột tăng tự động không cần thêm
-			prpStm.setInt(1, newHoaDon.getMaDonDat());
-			prpStm.setDouble(2, newHoaDon.getPhuPhi());
+			prpStm.setInt(1, newHoaDon.getDonDatPhong().getMaDonDat());
+			prpStm.setDouble(2, newHoaDon.getPhuPhiMoiPhong());
 			prpStm.setDouble(3, newHoaDon.getTongThanhTien());
 			prpStm.setTimestamp(4, newHoaDon.getNgayDatPhong());
 			//Ngày trả phòng cột tăng tự động không cần thêm
@@ -132,7 +142,7 @@ public class DAO_HoaDon {
 			e.printStackTrace();
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
 	}
 }

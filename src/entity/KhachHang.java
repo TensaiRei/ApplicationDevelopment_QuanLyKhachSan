@@ -11,37 +11,37 @@ public class KhachHang {
 	public int getMaKhachHang() {
 		return maKhachHang;
 	}
-	public void setMaKhachHang(int maKhachHang) {
-		this.maKhachHang = maKhachHang;
-	}
 	public String getHoDem() {
 		return hoDem;
-	}
-	public void setHoDem(String hoDem) {
-		this.hoDem = hoDem;
 	}
 	public String getTen() {
 		return ten;
 	}
-	public void setTen(String ten) {
-		this.ten = ten;
-	}
 	public String getCccd() {
 		return cccd;
-	}
-	public void setCccd(String cccd) {
-		this.cccd = cccd;
 	}
 	public String getSdt() {
 		return sdt;
 	}
-	public void setSdt(String sdt) {
-		this.sdt = sdt;
-	}
 	public String getQuocTich() {
 		return quocTich;
 	}
-	public void setQuocTich(String quocTich) {
+	private void setMaKhachHang(int maKhachHang) {
+		this.maKhachHang = maKhachHang;
+	}
+	private void setHoDem(String hoDem) {
+		this.hoDem = hoDem;
+	}
+	private void setTen(String ten) {
+		this.ten = ten;
+	}
+	private void setCccd(String cccd) {
+		this.cccd = cccd;
+	}
+	private void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+	private void setQuocTich(String quocTich) {
 		this.quocTich = quocTich;
 	}
 	//
@@ -53,6 +53,19 @@ public class KhachHang {
 		setCccd(cccd);
 		setSdt(sdt);
 		setQuocTich(quocTich);
+	}
+	public KhachHang(String hoDem, String ten, String cccd, String sdt, String quocTich) {
+		super();
+		setHoDem(hoDem);
+		setTen(ten);
+		setCccd(cccd);
+		setSdt(sdt);
+		setQuocTich(quocTich);
+	}
+	
+	public KhachHang(int maKhachHang) {
+		super();
+		setMaKhachHang(maKhachHang);
 	}
 	public KhachHang() {
 		super();
@@ -84,5 +97,4 @@ public class KhachHang {
 			return false;
 		return true;
 	}
-	
 }

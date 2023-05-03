@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.DAO_LoaiPhong;
 import dao.DAO_Phong;
+import entity.Enum_TinhTrang;
 import entity.LoaiPhong;
 import entity.Phong;
 
@@ -37,12 +38,12 @@ public class UI_Phong extends JPanel implements ActionListener{
 	}
 
 	private JButton btnThue;
+	private JButton btnLoc;
+	private JButton btnThemDichVu;
 	private JTable table;
 	private DefaultTableModel model;
-	private JButton btnLoc;
 	private JComboBox<String> cboLoaiPhong;
-	private JComboBox<String> cboTinhTrang;
-	ArrayList<Phong> dsPhong = new ArrayList<Phong>();
+	private JComboBox<String> cboTrangThai;
 
 	public UI_Phong() {
 		setBackground(new java.awt.Color(102, 102, 102));
@@ -53,6 +54,7 @@ public class UI_Phong extends JPanel implements ActionListener{
 		
 		btnThue.addActionListener(this);
 		btnLoc.addActionListener(this);
+		btnThemDichVu.addActionListener(this);
 	}
 	
 	@Override
@@ -60,8 +62,10 @@ public class UI_Phong extends JPanel implements ActionListener{
 		Object object = e.getSource();
 		if(object.equals(btnThue))
 			handlerBtnThue();
-		else if(object.equals(btnLoc)) 	
+		if(object.equals(btnLoc)) 	
 			handlerBtnloc();
+		if(object.equals(btnThemDichVu))
+			handlerBtnThemDichVu();
 	}
 	
 	private void handlerBtnThue() {
@@ -69,33 +73,75 @@ public class UI_Phong extends JPanel implements ActionListener{
 		if(row == 0)
 			JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn đặt");
 		else {
-			ArrayList<Phong> dsPhongBooking= new ArrayList<Phong>();
+			ArrayList<Phong> listPhong = DAO_Phong.getDanhSachPhong();
+			ArrayList<Phong> listPhongBooking= new ArrayList<Phong>();
 			int[] selectedRows = table.getSelectedRows();
-			for(int i=0; i<selectedRows.length; i++) {
-				String maPhong = (String) table.getValueAt(i, 0);
-				Phong p = new Phong(maPhong);
-				p =  dsPhong.get(dsPhong.indexOf(p));
-				dsPhongBooking.add(p);
+			for(int i = 0; i < selectedRows.length; i++) {
+				String maPhong = (String) table.getValueAt(selectedRows[i], 0);
+				Phong phong = new Phong(maPhong);
+				listPhongBooking.add(listPhong.get(listPhong.indexOf(phong)));
 			}
-			UI_Main.getUI_MainInstance().showUI(UI_DatPhong.getUI_DatPhongInstance());
-			UI_DatPhong.getUI_DatPhongInstance().addListRoom(dsPhongBooking);
+			for(Phong thisPhong : listPhongBooking) {
+				if(thisPhong.getTinhTrang().equals(Enum_TinhTrang.Booked) || 
+						thisPhong.getTinhTrang().equals(Enum_TinhTrang.Not_Available)) {
+					JOptionPane.showMessageDialog(
+							this, 
+							"Phòng chọn hiện tại không có sẵn\nVui lòng chọn lại", 
+							"Lỗi thao tác", 
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			UI_Main.getUI_MainInstance().showUI(UI_DatPhong.newUI_DatPhongInstance());
+			UI_DatPhong.getUI_DatPhongInstance().addListRoom(listPhongBooking);
+			UI_DatPhong.getUI_DatPhongInstance().updateAvailableRoom();
 		}
 	}
 	
 	private void handlerBtnloc() {
-		model.setRowCount(0);
-		if(cboTinhTrang.getSelectedIndex()==0) {
-			dsPhong = DAO_Phong.getDanhSachPhong();
-		} else {
-			String tinhTrang =(String) cboTinhTrang.getSelectedItem();
-			dsPhong = DAO_Phong.filterPhong(tinhTrang);
-		}
-		
-		
-		addAllTableData(dsPhong);
-		
+		String trangThai = cboTrangThai.getSelectedItem().toString();
+		String loaiPhong = cboLoaiPhong.getSelectedItem().toString();
+		ArrayList<Phong> listFilter = DAO_Phong.filterPhong(trangThai, loaiPhong);
+		addAllTableData(listFilter);
 	}
 
+	private void handlerBtnThemDichVu() {
+		int rowCount = table.getSelectedRowCount();
+		if(rowCount == 0) {
+			JOptionPane.showMessageDialog(
+					this, 
+					"Vui lòng chọn một phòng để thêm Dịch vụ",
+					"Lỗi thao tác",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+			
+		if(rowCount > 1) {
+			JOptionPane.showMessageDialog(
+					this, 
+					"Vui lòng chọn duy nhất một phòng để thêm Dịch vụ",
+					"Lỗi thao tác",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		int row = table.getSelectedRow();
+		String trangThai = table.getValueAt(row, 4).toString();
+		if(!trangThai.equals("Booked")) {
+			JOptionPane.showMessageDialog(
+					this, 
+					"Vui lòng chọn phòng đang trong trạng thái Booked",
+					"Lỗi thao tác",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		else {
+			String maPhong = table.getValueAt(row, 0).toString();
+			UI_Main.getUI_MainInstance().showUI(UI_ChiTietDonPhong.newUI_ChiTietDonPhongInstance());
+			UI_ChiTietDonPhong.getUI_ChiTietDonPhongInstance().setThongTinUI(maPhong);
+		}
+	}
+	
 	private void createGUI() {
 		createTitle();
 		createTable();
@@ -116,7 +162,7 @@ public class UI_Phong extends JPanel implements ActionListener{
 
 		add(panel, BorderLayout.PAGE_START);
 	}
-
+	
 	private void createTable() {
 		JScrollPane scroll;
 		String[] headers = { "Mã phòng", "Số phòng", "Số tầng", "Tên phòng", "tinhTrang", "Loại phòng" };
@@ -128,10 +174,8 @@ public class UI_Phong extends JPanel implements ActionListener{
 		scroll.setPreferredSize(new Dimension(0, 250));
 
 		table.setRowHeight(40);
-		dsPhong = DAO_Phong.getDanhSachPhong();
-		addAllTableData(dsPhong);
 	}
-
+	
 	private void createOption() {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.LINE_END);
@@ -145,6 +189,13 @@ public class UI_Phong extends JPanel implements ActionListener{
 		btnThue.setForeground(new Color(34, 34, 34));
 		btnThue.setText("Thuê phòng");
 		btnThue.setPreferredSize(new Dimension(150, 50));
+
+		panel.add(btnThemDichVu = new JButton());
+		btnThemDichVu.setBackground(new Color(128, 128, 255));
+		btnThemDichVu.setFont(new Font("Segoe UI", 0, 18));
+		btnThemDichVu.setForeground(new Color(34, 34, 34));
+		btnThemDichVu.setText("Thêm Dịch vụ");
+		btnThemDichVu.setPreferredSize(new Dimension(150, 50));
 		
 		panel.add(btnLoc = new JButton());
 		btnLoc.setBackground(new Color(128, 128, 255));
@@ -152,39 +203,38 @@ public class UI_Phong extends JPanel implements ActionListener{
 		btnLoc.setForeground(new Color(34, 34, 34));
 		btnLoc.setText("Lọc phòng");
 		btnLoc.setPreferredSize(new Dimension(150, 50));
-
+		
 		JPanel pnlTinhTrang = new JPanel();
-		pnlTinhTrang.add(cboTinhTrang = new JComboBox<String>());
-		cboTinhTrang.setPreferredSize(new Dimension(150, 30));
+		pnlTinhTrang.add(cboTrangThai = new JComboBox<String>());
+		cboTrangThai.setPreferredSize(new Dimension(150, 30));
 		String[] tinhTrang = {"Tất cả", "Available", "Booked", "Not Available"};
-		cboTinhTrang.setModel(new DefaultComboBoxModel<String>(tinhTrang));;
-		panel.add(cboTinhTrang);
+		cboTrangThai.setModel(new DefaultComboBoxModel<String>(tinhTrang));;
+		panel.add(cboTrangThai);
+		
+		JPanel pnlLoaiPhong = new JPanel();
+		pnlLoaiPhong.add(cboLoaiPhong = new JComboBox<String>());
+		cboLoaiPhong.setPreferredSize(new Dimension(150, 30));
+		cboLoaiPhong.addItem("Tất cả");
+		ArrayList<LoaiPhong> listLP = DAO_LoaiPhong.getAllLoaiPhong();
+		for(LoaiPhong thisLoaiPhong : listLP) {
+			cboLoaiPhong.addItem(thisLoaiPhong.getTenLoaiPhong());
+		}
+		panel.add(cboLoaiPhong);
 	}
-
-	private void addAllTableData(ArrayList<Phong> dsPhong) {
-		for (Phong phong : dsPhong) {
-			String tinhTrang;
-			switch (phong.getTinhTrang()) {
-			case Available: {
-				tinhTrang = "Available";
-				break;
-			}
-			case Booked: {
-				tinhTrang = "Booked";
-				break;
-			}
-			case Not_Available: {
-				tinhTrang = "Not Available";
-				break;
-			}
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + dsPhong);
-			}
-			LoaiPhong loaiPhong = DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(phong.getLoaiPhong().getMaloaiPhong());
-			model.addRow(new String[] { phong.getMaPhong(), phong.getSoPhong() + "", phong.getSoTang() + "",
-					phong.getTenPhong(), tinhTrang, loaiPhong.getTenLoaiPhong(), });
+	
+	public void addAllTableData(ArrayList<Phong> listP) {
+		model.getDataVector().removeAllElements();
+		table.revalidate();
+		table.repaint();
+		for(Phong thisPhong : listP) {
+			model.addRow(new String[] {
+				thisPhong.getMaPhong(),
+				Integer.toString(thisPhong.getSoPhong()),
+				Integer.toString(thisPhong.getSoTang()),
+				thisPhong.getTenPhong(),
+				thisPhong.getTinhTrang().toString(),
+				thisPhong.getLoaiPhong().getTenLoaiPhong()
+			});
 		}
 	}
-
-	
 }

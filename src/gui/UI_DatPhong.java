@@ -9,10 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.Timestamp;
-import java.time.Instant;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -29,27 +28,31 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.DAO_DonDatPhong;
 import dao.DAO_DonDatPhong_Phong;
-import dao.DAO_HoaDon;
 import dao.DAO_KhachHang;
-import dao.DAO_LoaiPhong;
 import dao.DAO_Phong;
 import dao.DAO_TaiKhoan;
 import dao.DAO_TiepTan;
 import entity.DonDatPhong;
-import entity.DonDatPhong.enum_HinhThucThue;
-import entity.DonDatPhong.enum_TrangThaiThanhToan;
-import entity.HoaDon;
+import entity.DonDatPhong_Phong;
+import entity.Enum_HinhThucThue;
+import entity.Enum_TinhTrang;
+import entity.Enum_TrangThaiThanhToan;
 import entity.KhachHang;
-import entity.LoaiPhong;
 import entity.Phong;
-import entity.PhongDat;
+import entity.TaiKhoan;
+import entity.TiepTan;
 
-public class UI_DatPhong extends JPanel implements ActionListener {
+public class UI_DatPhong extends JPanel implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private static UI_DatPhong instance = new UI_DatPhong();
 
 	public static UI_DatPhong getUI_DatPhongInstance() {
+		return instance;
+	}
+	
+	public static UI_DatPhong newUI_DatPhongInstance() {
+		instance = new UI_DatPhong();
 		return instance;
 	}
 
@@ -76,16 +79,16 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 	private JButton btnThem;
 	private JButton btnXoa;
 	private JButton btnDat;
-	private static DefaultTableModel modelAvai;
-	private JTable tableAvai;
+	private static DefaultTableModel modelAvailable;
+	private JTable tableAvailable;
 	private static DefaultTableModel modelBook;
 	private JTable tableBook;
 	private JRadioButton rdoHour;
-	private JRadioButton rdoDay;
+	private JRadioButton radDays;
 	private JTextField txtSoLuongKhach;
 
 	private static ArrayList<Phong> dsPhongDaThem = new ArrayList<Phong>();
-	private static ArrayList<Phong> dsPhongsCoTheThem = new ArrayList<Phong>();
+	private static ArrayList<Phong> dsPhongAvailable = new ArrayList<Phong>();
 
 	public UI_DatPhong() {
 		createGUI();
@@ -100,21 +103,62 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		Object object = e.getSource();
 		if (object.equals(btnThem))
 			handlerBtnThem();
-		else if (object.equals(btnXoa))
+		if (object.equals(btnXoa))
 			handlerBtnXoa();
-		else if (object.equals(btnDat))
+		if (object.equals(btnDat))
 			handlerBtnDat();
 	}
 
 	private void handlerBtnThem() {
-
+		int row = tableAvailable.getSelectedRowCount();
+		if(row == 0)
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn thêm");
+		else {
+			ArrayList<Phong> listPhong = dsPhongAvailable;
+			ArrayList<Phong> listPhongAdd = new ArrayList<Phong>();
+			int[] selectedRows = tableAvailable.getSelectedRows();
+			for(int i = 0; i < selectedRows.length; i++) {
+				String maPhong = (String) tableAvailable.getValueAt(selectedRows[i], 0);
+				Phong tempPhong = new Phong(maPhong);
+				Phong phong = listPhong.get(listPhong.indexOf(tempPhong));
+				listPhongAdd.add(phong);
+				modelBook.addRow(new String[] {
+					phong.getMaPhong(),
+					phong.getTenPhong(),
+					phong.getLoaiPhong().getTenLoaiPhong()
+				});
+			}
+			dsPhongDaThem.addAll(listPhongAdd);
+			updateAvailableRoom();
+			tableAvailable.clearSelection();
+		}
 	}
 
 	private void handlerBtnXoa() {
-
+		int row = tableBook.getSelectedRowCount();
+		if(row == 0)
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng muốn xóa");
+		else {
+			ArrayList<Phong> listPhong = dsPhongDaThem;
+			ArrayList<Phong> listPhongRemove = new ArrayList<Phong>();
+			int[] selectedRows = tableBook.getSelectedRows();
+			for(int i = selectedRows.length - 1; i >= 0; i--) {
+				String maPhong = (String) tableBook.getValueAt(selectedRows[i], 0);
+				Phong phong = new Phong(maPhong);
+				listPhongRemove.add(listPhong.get(listPhong.indexOf(phong)));
+				modelBook.removeRow(selectedRows[i]);
+			}
+			dsPhongDaThem.removeAll(listPhongRemove);
+			updateAvailableRoom();
+			tableBook.clearSelection();
+		}
 	}
 
 	private void handlerBtnDat() {
+		if(modelBook.getRowCount() == 0) {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn phòng ít nhất một phòng");
+			return;
+		}
 		if (validateForm()) {
 			if (validateSoLuongKhach()) {
 				createHoaDon();
@@ -226,49 +270,75 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 	}
 
 //  load data
-	public static void addListRoom(ArrayList<Phong> dsPhongDat) {
+	public void addListRoom(ArrayList<Phong> dsPhongDat) {
+		modelBook.getDataVector().removeAllElements();
+		tableBook.revalidate();
+		tableBook.repaint();
 		dsPhongDaThem = dsPhongDat;
-
 		for (Phong phong : dsPhongDaThem) {
-			String tinhTrang;
-			LoaiPhong loaiPhong = DAO_LoaiPhong.getLoaiPhongTheoMaLoaiPhong(phong.getLoaiPhong().getMaloaiPhong());
-			modelBook.addRow(new String[] { phong.getMaPhong(), phong.getTenPhong(), loaiPhong.getTenLoaiPhong() });
+			modelBook.addRow(new String[] {
+				phong.getMaPhong(),
+				phong.getTenPhong(),
+				phong.getLoaiPhong().getTenLoaiPhong()
+			});
+		}
+	}
+	
+	public void updateAvailableRoom() {
+		modelAvailable.getDataVector().removeAllElements();
+		tableAvailable.revalidate();
+		tableAvailable.repaint();
+		dsPhongAvailable.removeAll(dsPhongAvailable);
+		ArrayList<Phong> listPhong = DAO_Phong.getDanhSachPhong();
+		for(Phong thisPhong : listPhong) {
+			if(thisPhong.getTinhTrang().equals(Enum_TinhTrang.Available))
+				dsPhongAvailable.add(thisPhong);
+		}
+		dsPhongAvailable.removeAll(dsPhongDaThem);
+		for(Phong thisPhong : dsPhongAvailable) {
+			modelAvailable.addRow(new String[] {
+				thisPhong.getMaPhong(),
+				thisPhong.getTenPhong(),
+				thisPhong.getLoaiPhong().getTenLoaiPhong()
+			});
 		}
 	}
 
-	public int createKhachHang() {
-		int maKhachHang = DAO_KhachHang.getDanhSachKhachHang().size();
-		String ho = txtHo.getText();
-		String ten = txtTen.getText();
-		String cccd = txtCCCD.getText();
-		String std = txtSDT.getText();
-		String quocTich = txtQuocTich.getText();
-		KhachHang kh = new KhachHang(maKhachHang, ho, ten, cccd, std, quocTich);
+	public void createKhachHang() {
+		if(DAO_KhachHang.kiemTraKhachHangDaTonTai(txtCCCD.getText()) == false) {
+			String ho = txtHo.getText();
+			String ten = txtTen.getText();
+			String cccd = txtCCCD.getText();
+			String std = txtSDT.getText();
+			String quocTich = txtQuocTich.getText();
+			KhachHang khachHang = new KhachHang(ho, ten, cccd, std, quocTich);
 
-		DAO_KhachHang.createKhachHang(kh);
-		return DAO_KhachHang.getNewKhachHang();
+			DAO_KhachHang.createKhachHang(khachHang);
+		}
 	}
 
 	public boolean createHoaDon() {
-		int maDonDat = DAO_DonDatPhong.getDanhSachDonDatPhong().size();
-		int maKhachHang = createKhachHang();
-		String maTiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(DAO_TaiKhoan.getTaiKhoanHienHanh().getMaTaiKhoan()).getMaTiepTan();
-		int soLuong = Integer.parseInt(txtSoLuongKhach.getText());
-		enum_HinhThucThue hinhThucThue = rdoDay.isSelected()? enum_HinhThucThue.Days: enum_HinhThucThue.Hours;
-		enum_TrangThaiThanhToan trangThaiThanhToan = enum_TrangThaiThanhToan.Yet;
-		java.sql.Timestamp ngayDatPhong = new java.sql.Timestamp(System.currentTimeMillis());
+		createKhachHang();
+		KhachHang khachHang = DAO_KhachHang.getKhachHangTheoCCCD(txtCCCD.getText());
 		
-		DonDatPhong donDatPhong = new DonDatPhong(maDonDat, maKhachHang, maTiepTan, soLuong, hinhThucThue, trangThaiThanhToan, ngayDatPhong);
+		TaiKhoan taiKhoanHienHanh = DAO_TaiKhoan.getTaiKhoanHienHanh();
+		TiepTan tiepTan = null;
+		if(taiKhoanHienHanh != null)
+			tiepTan = DAO_TiepTan.getTiepTanTheoMaTaiKhoan(taiKhoanHienHanh.getMaTaiKhoan());
+		int soLuongKhach = Integer.parseInt(txtSoLuongKhach.getText());
+		Enum_HinhThucThue hinhThucThue = radDays.isSelected() ? Enum_HinhThucThue.Days: Enum_HinhThucThue.Hours;
+		Enum_TrangThaiThanhToan trangThaiThanhToan = Enum_TrangThaiThanhToan.Yet;
+		
+		DonDatPhong donDatPhong = new DonDatPhong(khachHang, tiepTan, soLuongKhach, hinhThucThue, trangThaiThanhToan);
 		DAO_DonDatPhong.createDonDatPhong(donDatPhong);
 		
 //		lấy mã đơn đặt vừa tạo
-		int maDonDatPhong = DAO_DonDatPhong.getNewDonDat();
-		donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDatPhong);
+		DonDatPhong newDonDatPhong = DAO_DonDatPhong.getNewDonDat();
 		for(Phong phong: dsPhongDaThem) {
 			DAO_Phong.updatePhongToBooked(phong);
 			int id = 0;
-			PhongDat phongDat = new PhongDat(id, donDatPhong, phong);
-			DAO_DonDatPhong_Phong.createDonDatPhong_Phong(phongDat);
+			DonDatPhong_Phong donDatPhong_Phong = new DonDatPhong_Phong(id, newDonDatPhong, phong);
+			DAO_DonDatPhong_Phong.createDonDatPhong_Phong(donDatPhong_Phong);
 		}
 		return true;
 	}
@@ -391,7 +461,17 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 	private void createRoomTable(JPanel main) {
 		JScrollPane scroll;
 		String[] headers = { "Mã phòng", "Tên phòng", "Loại phòng" };
-		modelBook = new DefaultTableModel(headers, 0);
+		modelBook = new DefaultTableModel(headers, 0) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 		tableBook = new JTable(modelBook);
 		main.add(scroll = new JScrollPane(tableBook, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.WEST);
@@ -400,8 +480,34 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		scroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)),
 				"Các phòng đã chọn"));
 		scroll.setBackground(new Color(204, 204, 204));
+		tableBook.addMouseListener(this);
 	}
+	
+	private void createListRoom(JPanel main) {
+		JScrollPane scroll;
+		String[] headers = { "Mã phòng", "Tên phòng", "Loại phòng" };
+		modelAvailable = new DefaultTableModel(headers, 0) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
+		tableAvailable = new JTable(modelAvailable);
+		main.add(scroll = new JScrollPane(tableAvailable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.EAST);
+		tableAvailable.setRowHeight(20);
+		scroll.setPreferredSize(new Dimension(400, 305));
+		scroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)),
+				"Các phòng có thể"));
+		scroll.setBackground(new Color(204, 204, 204));
+		tableAvailable.addMouseListener(this);
+	}
+	
 	private void createOption(JPanel main) {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(204, 204, 204));
@@ -431,10 +537,10 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		pnlHinhThucThue.setLayout(new GridLayout(2, 1));
 		pnlHinhThucThue.setBorder(BorderFactory.createTitledBorder("Hình thức thuê: "));
 		pnlHinhThucThue.add(rdoHour = new JRadioButton("Theo giờ        ", true));
-		pnlHinhThucThue.add(rdoDay = new JRadioButton("Theo ngày"));
+		pnlHinhThucThue.add(radDays = new JRadioButton("Theo ngày"));
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdoHour);
-		group.add(rdoDay);
+		group.add(radDays);
 		panel.add(pnlHinhThucThue);
 
 		panel.add(btnDat = new JButton());
@@ -444,18 +550,69 @@ public class UI_DatPhong extends JPanel implements ActionListener {
 		btnDat.setText("Đặt phòng");
 	}
 
-	private void createListRoom(JPanel main) {
-		JScrollPane scroll;
-		String[] headers = { "Mã phòng", "Tên phòng", "Loại phòng" };
-		modelAvai = new DefaultTableModel(headers, 0);
-		tableAvai = new JTable(modelAvai);
-		main.add(scroll = new JScrollPane(tableAvai, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.EAST);
-		tableAvai.setRowHeight(20);
-		scroll.setPreferredSize(new Dimension(400, 305));
-		scroll.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)),
-				"Các phòng có thể"));
-		scroll.setBackground(new Color(204, 204, 204));
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Object o = e.getSource();
+		if(o == tableBook) {
+			if(tableBook.getSelectedRowCount() == 1) {
+				int row = tableBook.getSelectedRow();
+				Phong phong = DAO_Phong.getPhongTheoMaPhong(tableBook.getValueAt(row, 0).toString());
+				txtMaPhong.setText(phong.getMaPhong());
+				txtTenPhong.setText(phong.getTenPhong());
+				txtSoPhong.setText(Integer.toString(phong.getSoPhong()));
+				txtSoTang.setText(Integer.toString(phong.getSoTang()));
+				txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+			}
+			else {
+				txtMaPhong.setText("");
+				txtTenPhong.setText("");
+				txtSoPhong.setText("");
+				txtSoTang.setText("");
+				txtLoaiPhong.setText("");
+			}
+		}
+		if(o == tableAvailable) {
+			if(tableAvailable.getSelectedRowCount() == 1) {
+				int row = tableAvailable.getSelectedRow();
+				Phong phong = DAO_Phong.getPhongTheoMaPhong(tableAvailable.getValueAt(row, 0).toString());
+				txtMaPhong.setText(phong.getMaPhong());
+				txtTenPhong.setText(phong.getTenPhong());
+				txtSoPhong.setText(Integer.toString(phong.getSoPhong()));
+				txtSoTang.setText(Integer.toString(phong.getSoTang()));
+				txtLoaiPhong.setText(phong.getLoaiPhong().getTenLoaiPhong());
+			}
+			else {
+				txtMaPhong.setText("");
+				txtTenPhong.setText("");
+				txtSoPhong.setText("");
+				txtSoTang.setText("");
+				txtLoaiPhong.setText("");
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

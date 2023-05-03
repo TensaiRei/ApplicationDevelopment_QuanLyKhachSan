@@ -17,6 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import connectDB.ConnectDB;
+import dao.DAO_Phong;
+
 public class UI_Main extends JFrame implements ActionListener{
 	/**
 	 * 
@@ -52,6 +55,7 @@ public class UI_Main extends JFrame implements ActionListener{
         addFunctionalButton();
         setDecorateButton();
         showUI(UI_Phong.getUI_PhongInstance());
+        UI_Phong.getUI_PhongInstance().addAllTableData(DAO_Phong.getDanhSachPhong());;
         addActionPerform();
     }
 	//                        
@@ -276,6 +280,7 @@ public class UI_Main extends JFrame implements ActionListener{
 	private void logOut() {
 		int logOutPrompt = JOptionPane.showConfirmDialog(this, "Xin hãy xác nhận Đăng xuất", "Đăng Xuất", JOptionPane.YES_NO_OPTION);
 		if(logOutPrompt == JOptionPane.YES_OPTION) {
+			ConnectDB.getInstance().disconnectDatabase();
 			UI_Login.newUI_LoginInstance();
 			this.dispose();
 		}
@@ -286,6 +291,7 @@ public class UI_Main extends JFrame implements ActionListener{
 		
 		if(o == btnPhong) {
 			showUI(UI_Phong.getUI_PhongInstance());
+			UI_Phong.getUI_PhongInstance().addAllTableData(DAO_Phong.getDanhSachPhong());
 		}
 		if(o == btnTiepTan) {
 			showUI(UI_TiepTan.getUI_TiepTanInstance());

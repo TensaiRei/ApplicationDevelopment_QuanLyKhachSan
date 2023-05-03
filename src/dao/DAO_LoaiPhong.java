@@ -11,11 +11,10 @@ import connectDB.ConnectDB;
 import entity.LoaiPhong;
 
 public class DAO_LoaiPhong {
-
 	public static ArrayList<LoaiPhong> getAllLoaiPhong() {
-		ArrayList<LoaiPhong> cacLoaiPhong = new ArrayList<LoaiPhong>();
+		ArrayList<LoaiPhong> listLP = new ArrayList<LoaiPhong>();
 		try {
-			ConnectDB.getInstance().connectDatabase();;
+			;
 			Connection connection = ConnectDB.getConnection();
 			
 			String sql = "select * from LoaiPhong";
@@ -27,20 +26,19 @@ public class DAO_LoaiPhong {
 				String tenLoaiPhong = rs.getString("tenLoaiPhong");
 				double donGia = rs.getDouble("donGia");
 				LoaiPhong loaiPhong = new LoaiPhong(maLoaiPhong, tenLoaiPhong, donGia);
-				cacLoaiPhong.add(loaiPhong);			
+				listLP.add(loaiPhong);			
 			}
 			
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			System.out.println(e);
 		}
-	
-		return cacLoaiPhong;
+		return listLP;
 	}
-
+	
 	public static LoaiPhong getLoaiPhongTheoMaLoaiPhong(String maLoaiPhongCanTim) {
-		LoaiPhong loaiPhong = new LoaiPhong();
 		try {
-			ConnectDB.getInstance().connectDatabase();
+			
 			Connection connect = ConnectDB.getConnection();
 			String sql = ""
 					+ "SELECT * "
@@ -54,17 +52,18 @@ public class DAO_LoaiPhong {
 				String maLoaiPhong = result.getString("MaLoaiPhong");
 				String tenLoaiPhong = result.getString("TenLoaiPhong");
 				double donGia = result.getDouble("DonGia");
-				loaiPhong = new LoaiPhong(maLoaiPhong, tenLoaiPhong, donGia);
+				LoaiPhong loaiPhong = new LoaiPhong(maLoaiPhong, tenLoaiPhong, donGia);
 				return loaiPhong;
 			}
 			if(rowCount == 0) return null;
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 		finally {
-			ConnectDB.getInstance().disconnectDatabase();
+			
 		}
-		return loaiPhong;
+		return null;
 	}
 }

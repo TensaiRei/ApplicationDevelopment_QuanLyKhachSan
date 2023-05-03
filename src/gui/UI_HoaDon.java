@@ -3,6 +3,8 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -25,7 +27,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 	private javax.swing.JButton btnChiTiet;
     private javax.swing.ButtonGroup btnGroupLoc;
     private javax.swing.ButtonGroup btnGroupTim;
-    private javax.swing.JButton btnHuyHD;
+//    private javax.swing.JButton btnHuyHD;
     private javax.swing.JButton btnLoc;
     private javax.swing.JButton btnTaiLai;
     private javax.swing.JButton btnTim;
@@ -61,7 +63,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
         lblTitle = new javax.swing.JLabel();
         pnlFunc = new javax.swing.JPanel();
         btnChiTiet = new javax.swing.JButton();
-        btnHuyHD = new javax.swing.JButton();
+//        btnHuyHD = new javax.swing.JButton();
         btnTim = new javax.swing.JButton();
         pnlTim = new javax.swing.JPanel();
         radMHD = new javax.swing.JRadioButton();
@@ -101,13 +103,13 @@ public class UI_HoaDon extends JPanel implements ActionListener {
         btnChiTiet.setPreferredSize(new java.awt.Dimension(150, 50));
         pnlFunc.add(btnChiTiet);
 
-        btnHuyHD.setBackground(new java.awt.Color(128, 128, 255));
-        btnHuyHD.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnHuyHD.setForeground(new java.awt.Color(34, 34, 34));
-        btnHuyHD.setText("Hủy Hóa đơn");
-        btnHuyHD.setToolTipText("");
-        btnHuyHD.setPreferredSize(new java.awt.Dimension(150, 50));
-        pnlFunc.add(btnHuyHD);
+//        btnHuyHD.setBackground(new java.awt.Color(128, 128, 255));
+//        btnHuyHD.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+//        btnHuyHD.setForeground(new java.awt.Color(34, 34, 34));
+//        btnHuyHD.setText("Hủy Hóa đơn");
+//        btnHuyHD.setToolTipText("");
+//        btnHuyHD.setPreferredSize(new java.awt.Dimension(150, 50));
+//        pnlFunc.add(btnHuyHD);
 
         btnTim.setBackground(new java.awt.Color(128, 128, 255));
         btnTim.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -176,7 +178,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
         add(pnlTable, java.awt.BorderLayout.CENTER);
     }
     private void addTableModel() {
-		modelHD = new DefaultTableModel(new String [] {"Mã Hóa đơn", "Mã Đơn đặt", "Phụ phí", "Tổng tiền", "Ngày đặt", "Ngày trả"}, 0);
+		modelHD = new DefaultTableModel(new String [] {"Mã Hóa đơn", "Mã Đơn đặt", "Phụ phí / Phòng", "Tổng tiền", "Ngày đặt", "Ngày trả"}, 0);
 		
 		tblHD.setModel(modelHD);
 		
@@ -184,7 +186,8 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 	}
     private void addActionListener() {
 		btnChiTiet.addActionListener(this);
-		btnHuyHD.addActionListener(this);
+//		btnHuyHD.addActionListener(this);
+		btnTim.addActionListener(this);
 		btnLoc.addActionListener(this);
 		btnTaiLai.addActionListener(this);
 	}
@@ -203,8 +206,8 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     		for(HoaDon thisHoaDon : listHD) {
         		modelHD.addRow(new String[] {
         			Integer.toString(thisHoaDon.getMaHoaDon()),
-        			Integer.toString(thisHoaDon.getMaDonDat()),
-        			nf_vn.format(thisHoaDon.getPhuPhi()),
+        			Integer.toString(thisHoaDon.getDonDatPhong().getMaDonDat()),
+        			nf_vn.format(thisHoaDon.getPhuPhiMoiPhong()),
         			nf_vn.format(thisHoaDon.getTongThanhTien()),
         			thisHoaDon.getNgayDatPhong().toString(),
         			thisHoaDon.getNgayTraPhong().toString()
@@ -214,7 +217,7 @@ public class UI_HoaDon extends JPanel implements ActionListener {
     }
 	private void setDecorateButton() {
 		btnChiTiet.setFocusPainted(false);
-		btnHuyHD.setFocusPainted(false);
+//		btnHuyHD.setFocusPainted(false);
 		btnLoc.setFocusPainted(false);
 		btnTaiLai.setFocusPainted(false);
 	}
@@ -237,9 +240,141 @@ public class UI_HoaDon extends JPanel implements ActionListener {
 		
 		if(o.equals(btnChiTiet))
 			xemChiTiet();
-		if(o.equals(btnHuyHD));
-		if(o.equals(btnLoc));
+//		if(o.equals(btnHuyHD));
+		if(o.equals(btnTim))
+			timHoaDon();
+		if(o.equals(btnLoc))
+			locHoaDon();
 		if(o.equals(btnTaiLai))
 			reloadTable();
+	}
+	
+	public void locHoaDon() {
+		if(radND.isSelected()) {
+			String stringND = JOptionPane.showInputDialog(this, "Nhập Ngày đặt phòng (dd/MM/yyyy): ", "Lọc theo Ngày đặt phòng", JOptionPane.PLAIN_MESSAGE);
+			if(stringND == null || stringND.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate ngayCanLoc = LocalDate.parse(stringND, dtf);
+			
+			NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
+			
+	        modelHD.getDataVector().removeAllElements();
+	        ArrayList<HoaDon> listHoaDon = DAO_HoaDon.getDanhSachHoaDon();
+	        for(HoaDon thisHoaDon : listHoaDon) {
+	        	LocalDate ngayDatPhong = thisHoaDon.getNgayDatPhong().toLocalDateTime().toLocalDate();
+	        	if(ngayCanLoc.isEqual(ngayDatPhong)) {
+	        		modelHD.addRow(new String[] {
+            			Integer.toString(thisHoaDon.getMaHoaDon()),
+            			Integer.toString(thisHoaDon.getDonDatPhong().getMaDonDat()),
+            			nf_vn.format(thisHoaDon.getPhuPhiMoiPhong()),
+            			nf_vn.format(thisHoaDon.getTongThanhTien()),
+            			thisHoaDon.getNgayDatPhong().toString(),
+            			thisHoaDon.getNgayTraPhong().toString()
+            		});
+	        	}
+	        }
+		}
+		else if(radNT.isSelected()) {
+			String stringNT = JOptionPane.showInputDialog(this, "Nhập Ngày trả phòng (dd/MM/yyyy): ", "Lọc theo Ngày trả phòng", JOptionPane.PLAIN_MESSAGE);
+			if(stringNT == null || stringNT.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate ngayCanLoc = LocalDate.parse(stringNT, dtf);
+			
+			NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
+			
+	        modelHD.getDataVector().removeAllElements();
+	        ArrayList<HoaDon> listHoaDon = DAO_HoaDon.getDanhSachHoaDon();
+	        for(HoaDon thisHoaDon : listHoaDon) {
+	        	LocalDate ngayTraPhong = thisHoaDon.getNgayTraPhong().toLocalDateTime().toLocalDate();
+	        	if(ngayCanLoc.isEqual(ngayTraPhong)) {
+	        		modelHD.addRow(new String[] {
+            			Integer.toString(thisHoaDon.getMaHoaDon()),
+            			Integer.toString(thisHoaDon.getDonDatPhong().getMaDonDat()),
+            			nf_vn.format(thisHoaDon.getPhuPhiMoiPhong()),
+            			nf_vn.format(thisHoaDon.getTongThanhTien()),
+            			thisHoaDon.getNgayDatPhong().toString(),
+            			thisHoaDon.getNgayTraPhong().toString()
+            		});
+	        	}
+	        }
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn một lựa chọn lọc");
+		}
+	}
+	
+	public void timHoaDon() {
+		if(radMHD.isSelected()) {
+			String stringMaHoaDon = JOptionPane.showInputDialog(this, "Nhập Mã hóa đơn: ", "Tìm theo Mã hóa đơn", JOptionPane.PLAIN_MESSAGE);
+			if(stringMaHoaDon == null || stringMaHoaDon.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			int maHoaDon = 0;
+			try {
+				maHoaDon = Integer.parseInt(stringMaHoaDon);
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng dạng", "Lỗi thao tác", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			HoaDon hoadon = DAO_HoaDon.getHoaDonTheoMaHoaDon(maHoaDon);
+			if(hoadon == null) {
+				JOptionPane.showMessageDialog(this, "Hóa đơn không tồn tại");
+				return;
+			}
+			else {
+				NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
+				modelHD.getDataVector().removeAllElements();
+				modelHD.addRow(new String[] {
+	        			Integer.toString(hoadon.getMaHoaDon()),
+	        			Integer.toString(hoadon.getDonDatPhong().getMaDonDat()),
+	        			nf_vn.format(hoadon.getPhuPhiMoiPhong()),
+	        			nf_vn.format(hoadon.getTongThanhTien()),
+	        			hoadon.getNgayDatPhong().toString(),
+	        			hoadon.getNgayTraPhong().toString()
+	        		});
+			}
+		}
+		else if(radCCCD.isSelected()) {
+			String stringCCCD = JOptionPane.showInputDialog(this, "Nhập Căn cước công dân: ", "Tìm theo Căn Cước Công Dân", JOptionPane.PLAIN_MESSAGE);
+			if(stringCCCD == null || stringCCCD.isBlank()) {
+				JOptionPane.showMessageDialog(this, "Hủy thao tác");
+				return;
+			}
+			ArrayList<HoaDon> listHoaDon = DAO_HoaDon.getDanhSachHoaDon();
+			ArrayList<HoaDon> listFilter = new ArrayList<HoaDon>();
+			for(HoaDon thisHoaDon : listHoaDon) {
+				if(thisHoaDon.getDonDatPhong().getKhachHang().getCccd().equals(stringCCCD))
+					listFilter.add(thisHoaDon);
+			}
+			if(listFilter.size() == 0) {
+				JOptionPane.showMessageDialog(this, "Hóa đơn có Khách hàng có Căn Cước Công Dân này không tồn tại");
+			}
+			else {
+				NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
+				modelHD.getDataVector().removeAllElements();
+				for(HoaDon hoadon : listFilter) {
+					modelHD.addRow(new String[] {
+		        			Integer.toString(hoadon.getMaHoaDon()),
+		        			Integer.toString(hoadon.getDonDatPhong().getMaDonDat()),
+		        			nf_vn.format(hoadon.getPhuPhiMoiPhong()),
+		        			nf_vn.format(hoadon.getTongThanhTien()),
+		        			hoadon.getNgayDatPhong().toString(),
+		        			hoadon.getNgayTraPhong().toString()
+		        		});
+				}
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Vui lòng chọn một lựa chọn tìm");
+		}
 	}
 }
