@@ -105,8 +105,7 @@ public class UI_ChiTietDonPhong extends JPanel implements ActionListener, MouseL
 		cboDichVu.addItemListener(this);
 		tblDV.addMouseListener(this);
     }
-    //
- // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    //                         
     private void initComponents() {
 
         pnlTitle = new javax.swing.JPanel();
@@ -558,6 +557,7 @@ public class UI_ChiTietDonPhong extends JPanel implements ActionListener, MouseL
 					Double.toString(donDatPhong_DichVu.getDichVu().getDonGia()),
 					Double.toString(donDatPhong_DichVu.getSoLuong()*donDatPhong_DichVu.getDichVu().getDonGia())
 				});
+				txtSoLuong.setText("");
 			}
 			else {
 				JOptionPane.showMessageDialog(

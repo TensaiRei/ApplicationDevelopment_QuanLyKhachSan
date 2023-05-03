@@ -15,7 +15,6 @@ public class DAO_Phong {
 	public DAO_Phong() {}
 	public static ArrayList<Phong> getDanhSachPhong(){
 		ArrayList<Phong> listP = new ArrayList<Phong>();
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""
@@ -119,7 +118,6 @@ public class DAO_Phong {
 		return listFilterLoaiPhong;
 	}
 	public static boolean updatePhongToBooked(Phong phong) {
-		
 		Connection connection = ConnectDB.getConnection();
 		int n = 0;
 		try {
@@ -130,13 +128,11 @@ public class DAO_Phong {
 			statement.setString(1, phong.getMaPhong());
 			n = statement.executeUpdate();
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
-
 		return n>0;
 	}
 	public static boolean updatePhongToAvailable(Phong phong) {
-		
 		Connection connection = ConnectDB.getConnection();
 		int n = 0;
 		try {
@@ -147,9 +143,8 @@ public class DAO_Phong {
 			statement.setString(1, phong.getMaPhong());
 			n = statement.executeUpdate();
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
-
 		return n>0;
 	}
 }

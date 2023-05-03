@@ -18,7 +18,6 @@ public class DAO_TaiKhoan {
 		taiKhoanHienHanh = thisTaiKhoan;
 	}
 	public static boolean kiemTraTaiKhoan(String username, String password) {
-		
 		Connection connect = ConnectDB.getConnection();
 		boolean tonTai = false;
 		try {
@@ -42,10 +41,7 @@ public class DAO_TaiKhoan {
 		finally {
 			
 		}
-		if(tonTai)
-			return true;
-		else
-			return false;
+		return tonTai;
 	}
 	public static TaiKhoan getTaiKhoanTheoMaTaiKhoan(String thisMaTaiKhoan) {
 		Connection connect = ConnectDB.getConnection();

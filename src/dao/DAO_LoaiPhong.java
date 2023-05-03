@@ -11,16 +11,14 @@ import connectDB.ConnectDB;
 import entity.LoaiPhong;
 
 public class DAO_LoaiPhong {
+	public DAO_LoaiPhong() {}
 	public static ArrayList<LoaiPhong> getAllLoaiPhong() {
 		ArrayList<LoaiPhong> listLP = new ArrayList<LoaiPhong>();
+		Connection connection = ConnectDB.getConnection();
 		try {
-			;
-			Connection connection = ConnectDB.getConnection();
-			
 			String sql = "select * from LoaiPhong";
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
-
 			while (rs.next()) {
 				String maLoaiPhong = rs.getString("maLoaiPhong");
 				String tenLoaiPhong = rs.getString("tenLoaiPhong");
@@ -28,7 +26,6 @@ public class DAO_LoaiPhong {
 				LoaiPhong loaiPhong = new LoaiPhong(maLoaiPhong, tenLoaiPhong, donGia);
 				listLP.add(loaiPhong);			
 			}
-			
 		} 
 		catch (Exception e) {
 			System.out.println(e);
@@ -37,9 +34,8 @@ public class DAO_LoaiPhong {
 	}
 	
 	public static LoaiPhong getLoaiPhongTheoMaLoaiPhong(String maLoaiPhongCanTim) {
+		Connection connect = ConnectDB.getConnection();
 		try {
-			
-			Connection connect = ConnectDB.getConnection();
 			String sql = ""
 					+ "SELECT * "
 					+ "FROM LoaiPhong "

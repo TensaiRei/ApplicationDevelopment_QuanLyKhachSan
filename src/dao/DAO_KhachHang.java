@@ -14,7 +14,6 @@ public class DAO_KhachHang {
 	public DAO_KhachHang() {}
 	public static ArrayList<KhachHang> getDanhSachKhachHang(){
 		ArrayList<KhachHang> listKH = new ArrayList<KhachHang>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -65,7 +64,6 @@ public class DAO_KhachHang {
 	}
 	
 	public static boolean createKhachHang(KhachHang khachHang) {
-		
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
@@ -78,14 +76,13 @@ public class DAO_KhachHang {
 			statement.setString(4, khachHang.getSdt());
 			statement.setString(5, khachHang.getQuocTich());
 			n = statement.executeUpdate();
-			
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		finally {
 			try {
 				statement.close();
-				
 			} catch ( SQLException e) {
 				e.printStackTrace();
 			}
@@ -94,7 +91,6 @@ public class DAO_KhachHang {
 	}
 	
 	public static int getNewKhachHang() {
-		
 		int maKhachHang=0;
 		try {
 			Connection connection = ConnectDB.getConnection();
@@ -106,14 +102,14 @@ public class DAO_KhachHang {
 			if (rs.next()) {
 				maKhachHang = rs.getInt(1);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println(e);
 		}
 		return maKhachHang;
 	}
 	
 	public boolean updateKhachHang(KhachHang khachHang) {
-		
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement statement = null;
 		int n =0;
@@ -132,8 +128,8 @@ public class DAO_KhachHang {
 		finally {
 			try {
 				statement.close();
-				
-			} catch ( SQLException e) {
+			}
+			catch ( SQLException e) {
 				e.printStackTrace();
 			}
 		}
@@ -141,7 +137,6 @@ public class DAO_KhachHang {
 	}
 	
 	public static boolean kiemTraKhachHangDaTonTai(String cccd) {
-		
 		Connection connect = ConnectDB.getConnection();
 		try {
 			String sql = ""

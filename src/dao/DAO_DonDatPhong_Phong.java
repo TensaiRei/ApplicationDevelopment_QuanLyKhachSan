@@ -16,7 +16,6 @@ public class DAO_DonDatPhong_Phong {
 	DAO_DonDatPhong_Phong(){}
 	public static ArrayList<DonDatPhong_Phong> getDanhSachPhongDat(){
 		ArrayList<DonDatPhong_Phong> listDP = new ArrayList<DonDatPhong_Phong>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -41,7 +40,8 @@ public class DAO_DonDatPhong_Phong {
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -53,7 +53,6 @@ public class DAO_DonDatPhong_Phong {
 	
 	public static ArrayList<DonDatPhong_Phong> getDanhSachPhongDatTheoMaDonDat(int thisMaDonDat){
 		ArrayList<DonDatPhong_Phong> listDP = new ArrayList<DonDatPhong_Phong>();
-		
 		Connection connect = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -80,7 +79,8 @@ public class DAO_DonDatPhong_Phong {
 				rowCount++;
 			}
 			if(rowCount == 0) return null;
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -116,7 +116,6 @@ public class DAO_DonDatPhong_Phong {
 	}
 	
 	public static boolean createDonDatPhong_Phong(DonDatPhong_Phong donDatPhong_Phong) {
-		
 		Connection connection = ConnectDB.getConnection();
 		int n = 0;
 		try {
@@ -127,14 +126,14 @@ public class DAO_DonDatPhong_Phong {
 			statement.setInt(1, donDatPhong_Phong.getDonDatPhong().getMaDonDat());
 			statement.setString(2, donDatPhong_Phong.getPhongDat().getMaPhong());
 			n = statement.executeUpdate();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println(e);
 		}
 		return n>0;
 	}
 	
 	public static boolean deleteDonDatPhong_Phong(int maDonDat) {
-		
 		Connection connection = ConnectDB.getConnection();
 		int rowCount = 0;
 		try {
@@ -146,8 +145,8 @@ public class DAO_DonDatPhong_Phong {
 			rowCount = prpStm.executeUpdate();
 			if(rowCount == 0) return false;
 			else return true;
-			
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

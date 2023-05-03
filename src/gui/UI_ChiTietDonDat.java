@@ -112,9 +112,7 @@ public class UI_ChiTietDonDat extends JPanel implements ActionListener {
     	initComponents();
     	addModel();
     	addActionListener();
-    }
-    //
- // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    }                          
     private void initComponents() {
 
         pnlNorth = new javax.swing.JPanel();
