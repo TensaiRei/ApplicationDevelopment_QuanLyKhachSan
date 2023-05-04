@@ -207,7 +207,7 @@ public class UI_Phong extends JPanel implements ActionListener{
 		JPanel pnlTinhTrang = new JPanel();
 		pnlTinhTrang.add(cboTrangThai = new JComboBox<String>());
 		cboTrangThai.setPreferredSize(new Dimension(150, 30));
-		String[] tinhTrang = {"Tất cả", "Available", "Booked", "Not Available"};
+		String[] tinhTrang = {"Tất cả", "Available", "Booked", "Not_Available"};
 		cboTrangThai.setModel(new DefaultComboBoxModel<String>(tinhTrang));;
 		panel.add(cboTrangThai);
 		
