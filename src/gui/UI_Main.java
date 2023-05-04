@@ -249,6 +249,9 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(panel instanceof UI_HoaDon) {
 			btnHoaDon.setBackground(Color.decode("#3333FF"));
 		}
+		if(panel instanceof UI_ThongKe) {
+			btnThongKe.setBackground(Color.decode("#3333FF"));
+		}
 	}
     public void showUI(JPanel panel) {
 		pnlTask.removeAll();

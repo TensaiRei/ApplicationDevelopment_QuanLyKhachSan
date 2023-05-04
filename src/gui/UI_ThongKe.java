@@ -438,7 +438,14 @@ public class UI_ThongKe extends JPanel implements ActionListener {
         	}
     	}
     	else {
+    		lblITongSoHoaDonThang.setText("");
+    		lblITongSoPhongThang.setText("");
+    		lblITongDoanhThuThang.setText("");
+    		modelTheoThang.getDataVector().removeAllElements();
+    		tblHoaDonThang.revalidate();
+    		tblHoaDonThang.repaint();
     		JOptionPane.showMessageDialog(this, "Không có dữ liệu Thống kê");
+    		return;
     	}
     }
     public void thongKeTheoNam() {
@@ -471,7 +478,12 @@ public class UI_ThongKe extends JPanel implements ActionListener {
     		setKetQuaThongKeNam(tongHoaDon, tongSoPhong, tongDoanhThu);
     	}
     	else {
+    		lblITongSoHoaDonNam.setText("");
+    		lblITongSoPhongNam.setText("");
+    		lblITongDoanhThuNam.setText("");
+    		modelTheoNam.getDataVector().removeAllElements();
     		JOptionPane.showMessageDialog(this, "Không có dữ liệu thống kê");
+    		return;
     	}
     }
     public void showKhachHangTrongNgay() {
@@ -564,6 +576,12 @@ public class UI_ThongKe extends JPanel implements ActionListener {
 	}
 	
 	public void resetModel() {
+		lblITongSoHoaDonThang.setText("");
+		lblITongSoPhongThang.setText("");
+		lblITongDoanhThuThang.setText("");
+		lblITongSoHoaDonNam.setText("");
+		lblITongSoPhongNam.setText("");
+		lblITongDoanhThuNam.setText("");
 		modelTheoThang.getDataVector().removeAllElements();
 		modelTheoNam.getDataVector().removeAllElements();
 	}
