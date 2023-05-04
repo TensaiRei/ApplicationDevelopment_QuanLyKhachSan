@@ -139,9 +139,117 @@ public class Testing {
 //		ConnectDB.getInstance().connectDatabase();
 //		Connection connect = ConnectDB.getConnection();
 //		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
+//		
+//		try {
+//			String sql = ""
+//					+ "SELECT * "
+//					+ "FROM HoaDon";
+//			PreparedStatement prpStm = connect.prepareStatement(sql);
+//			
+//			
+//			
+//			ResultSet result = prpStm.executeQuery();
+//			
+//			while(result.next()) {
+//				int maHoaDon = result.getInt("MaHoaDon");
+//				int maDonDat = result.getInt("MaDonDat");
+//				double phuPhi = result.getDouble("PhuPhi");
+//				double tongThanhTien = result.getDouble("TongThanhTien");
+//				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+//				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
+//				
+//				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+//				
+//				HoaDon tempHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+//				
+//				listHD.add(tempHoaDon);
+//			}
+//		} 
+//		catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		for(HoaDon thisHD : listHD) {
+//			double tongTien = 0;
+//			double phuPhi = 50000;
+//			double tiLeGioThue = 0.07;
+//			
+//			Enum_HinhThucThue enumHinhThucThue = thisHD.getDonDatPhong().getHinhThucThue();
+//			ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(thisHD.getDonDatPhong().getMaDonDat());
+//			double thoiGianDatPhong = thisHD.getNgayDatPhong().getTime();
+//			double thoiGianTraPhong = thisHD.getNgayTraPhong().getTime();
+//			long thoiGianThue = 0;
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
+//				thoiGianThue = Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/86400000));
+//			}
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
+//				thoiGianThue = Math.round(Math.ceil((thoiGianTraPhong-thoiGianDatPhong)/3600000));
+//			}
+//			if(enumHinhThucThue.equals(Enum_HinhThucThue.Days)) {
+//        		for(DonDatPhong_Phong thisDP : listDP) {
+//        			Phong thisPhong = thisDP.getPhongDat();
+//        			double donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+//        			tongTien += donGiaPhong*thoiGianThue;
+//        		}
+//        	}
+//        	if(enumHinhThucThue.equals(Enum_HinhThucThue.Hours)) {
+//        		for(DonDatPhong_Phong thisDP : listDP) {
+//        			Phong thisPhong = thisDP.getPhongDat();
+//        			double donGiaPhong = thisPhong.getLoaiPhong().getDonGia();
+//        			tongTien+= donGiaPhong*tiLeGioThue*thoiGianThue;
+//        		}
+//        	}
+//        	
+//        	ArrayList<DonDatPhong_DichVu> listDDV = DAO_DonDatPhong_DichVu.getDanhSachDichVuDatTheoMaDonDat(thisHD.getDonDatPhong().getMaDonDat());
+//        	
+//        	double tongTienDichVu = 0;
+//        	if(listDDV != null) {
+//        		for(DonDatPhong_DichVu thisDDV : listDDV) {
+//            		DichVu thisDichVu = thisDDV.getDichVu();
+//            		tongTienDichVu += thisDichVu.getDonGia() * thisDDV.getSoLuong();
+//            	}
+//        	}
+//        	
+//        	tongTien = tongTien + tongTienDichVu + listDP.size()*phuPhi;
+//        	
+//        	NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+//        	System.out.println(nf.format(tongTien));
+//        	
+//        	try {
+//				String sqlUpdate = ""
+//						+ "UPDATE HoaDon "
+//						+ "SET TongThanhTien = ? "
+//						+ "WHERE MaHoaDon = ?";
+//				PreparedStatement prpStm = connect.prepareStatement(sqlUpdate);
+//				prpStm.setDouble(1, tongTien);
+//				prpStm.setInt(2, thisHD.getMaHoaDon());
+//				
+//				int n = prpStm.executeUpdate();
+//				
+//				String sqlUpdate2 = ""
+//						+ "UPDATE DonDatPhong "
+//						+ "SET NgayDatPhong = ? "
+//						+ "WHERE MaDonDat = ?";
+//				
+//				PreparedStatement prpStm2 = connect.prepareStatement(sqlUpdate2);
+//				prpStm2.setTimestamp(1, thisHD.getNgayDatPhong());
+//				prpStm2.setInt(2, thisHD.getDonDatPhong().getMaDonDat());
+//				
+//				int n2 = prpStm2.executeUpdate();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		System.out.println("Done");
+//		ConnectDB.getInstance().disconnectDatabase();
+	}
+	
+//	public static void tinhTongTienTheoPhong() {
+//		ConnectDB.getInstance().connectDatabase();
+//		Connection connect = ConnectDB.getConnection();
+//		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
 //		int thang = 5;
 //		int nam = 2023;
-//		double tongTien = 0;
+//		
 //		try {
 //			String sql = ""
 //					+ "SELECT * "
@@ -173,6 +281,7 @@ public class Testing {
 //			e.printStackTrace();
 //		}
 //		for(HoaDon thisHD : listHD) {
+//			double tongTien = 0;
 //			double tiLeGioThue = 0.07;
 //			Enum_HinhThucThue enumHinhThucThue = thisHD.getDonDatPhong().getHinhThucThue();
 //			ArrayList<DonDatPhong_Phong> listDP = DAO_DonDatPhong_Phong.getDanhSachPhongDatTheoMaDonDat(thisHD.getDonDatPhong().getMaDonDat());
@@ -199,8 +308,9 @@ public class Testing {
 //        			tongTien+= donGiaPhong*tiLeGioThue*thoiGianThue;
 //        		}
 //        	}
+//        	NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
+//        	System.out.println(nf.format(tongTien));
 //		}
-//		NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-//		System.out.println(nf.format(tongTien));
-	}
+//	}
 }
+
