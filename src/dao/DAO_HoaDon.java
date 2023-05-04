@@ -140,4 +140,81 @@ public class DAO_HoaDon {
 			
 		}
 	}
+	public static ArrayList<HoaDon> getDanhSachHoaDonTheoThangVaNam(int thang, int nam){
+		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM HoaDon "
+					+ "WHERE MONTH(NgayTraPhong) = ? AND YEAR(NgayTraPhong) = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setInt(1, thang);
+			prpStm.setInt(2, nam);
+			ResultSet result = prpStm.executeQuery();
+			int rowCount = 0;
+			while(result.next()) {
+				int maHoaDon = result.getInt("MaHoaDon");
+				int maDonDat = result.getInt("MaDonDat");
+				double phuPhi = result.getDouble("PhuPhi");
+				double tongThanhTien = result.getDouble("TongThanhTien");
+				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
+				
+				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+				
+				HoaDon thisHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				
+				listHD.add(thisHoaDon);
+				
+				rowCount++;
+			}
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+		return listHD;
+	}
+	public static ArrayList<HoaDon> getDanhSachHoaDonTheoNam(int nam){
+		ArrayList<HoaDon> listHD = new ArrayList<HoaDon>();
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM HoaDon "
+					+ "WHERE YEAR(NgayTraPhong) = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setInt(1, nam);
+			ResultSet result = prpStm.executeQuery();
+			int rowCount = 0;
+			while(result.next()) {
+				int maHoaDon = result.getInt("MaHoaDon");
+				int maDonDat = result.getInt("MaDonDat");
+				double phuPhi = result.getDouble("PhuPhi");
+				double tongThanhTien = result.getDouble("TongThanhTien");
+				Timestamp ngayDatPhong = result.getTimestamp("NgayDatPhong");
+				Timestamp ngayTraPhong = result.getTimestamp("NgayTraPhong");
+				
+				DonDatPhong donDatPhong = DAO_DonDatPhong.getDonDatPhongTheoMaDonDat(maDonDat);
+				
+				HoaDon thisHoaDon = new HoaDon(maHoaDon, donDatPhong, phuPhi, tongThanhTien, ngayDatPhong, ngayTraPhong);
+				
+				listHD.add(thisHoaDon);
+				
+				rowCount++;
+			}
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+		return listHD;
+	}
 }

@@ -156,4 +156,35 @@ public class DAO_KhachHang {
 			return false;
 		}
 	}
+	
+	public static ArrayList<KhachHang> getDanhSachKhachHangDatPhongTrongNgay(){
+		ArrayList<KhachHang> listKH = new ArrayList<KhachHang>();
+		Connection connect = ConnectDB.getConnection();
+		int rowCount = 0;
+		try {
+			String sql = ""
+					+ "SELECT DISTINCT MaKhachHang "
+					+ "FROM DonDatPhong "
+					+ "WHERE DAY(NgayDatPhong) = DAY(GETDATE()) AND MONTH(NgayDatPhong) = MONTH(GETDATE()) AND YEAR(NgayDatPhong) = YEAR(GETDATE())";
+			Statement stm = connect.createStatement();
+			ResultSet result = stm.executeQuery(sql);
+			
+			while(result.next()) {
+				int maKhachHang = result.getInt("MaKhachHang");
+				KhachHang khachHang = getKhachHangTheoMaKhachHang(maKhachHang);
+				listKH.add(khachHang);
+				
+				rowCount++;
+			}
+			if(rowCount == 0) return null;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally {
+			
+		}
+		return listKH;
+	}
 }

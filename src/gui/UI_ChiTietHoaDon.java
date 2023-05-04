@@ -370,7 +370,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     	lblIKHQT.setText(khachHang.getQuocTich());
     }
     private void addChiTietHoaDon(HoaDon hoaDon) {
-    	NumberFormat nf_vn = NumberFormat.getInstance(new Locale("vi","VN"));
+    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
     	lblIMHD.setText(Integer.toString(hoaDon.getMaHoaDon()));
     	lblIHDMDD.setText(Integer.toString(hoaDon.getDonDatPhong().getMaDonDat()));
     	lblIHDPP.setText(nf_vn.format(hoaDon.getPhuPhiMoiPhong()));
@@ -379,18 +379,20 @@ public class UI_ChiTietHoaDon extends JPanel {
     	lblIHDNT.setText(hoaDon.getNgayTraPhong().toString());
     }
     private void addDanhSachDichVu(ArrayList<DonDatPhong_DichVu> listDDV) {
+    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
     	for(DonDatPhong_DichVu thisDDV : listDDV) {
     		DichVu thisDichVu = thisDDV.getDichVu();
     		modelDV.addRow(new String[] {
     			thisDichVu.getMaDichVu(),
     			thisDichVu.getTenDichVu(),
-    			Double.toString(thisDichVu.getDonGia()),
+    			nf_vn.format(thisDichVu.getDonGia()),
     			thisDichVu.getLoaiDichVu().toString(),
     			Integer.toString(thisDDV.getSoLuong())
     		});
     	}
     }
     private void addDanhSachPhong(ArrayList<DonDatPhong_Phong> listDP) {
+    	NumberFormat nf_vn = NumberFormat.getCurrencyInstance(new Locale("vi","VN"));
     	for(DonDatPhong_Phong thisDP : listDP) {
     		Phong thisPhong = thisDP.getPhongDat();
     		modelP.addRow(new String[] {
@@ -399,7 +401,7 @@ public class UI_ChiTietHoaDon extends JPanel {
     			Integer.toString(thisPhong.getSoTang()),
     			thisPhong.getLoaiPhong().getMaLoaiPhong(),
     			thisPhong.getLoaiPhong().getTenLoaiPhong(),
-    			Double.toString(thisPhong.getLoaiPhong().getDonGia())
+    			nf_vn.format(thisPhong.getLoaiPhong().getDonGia())
     		});
     	}
     }
