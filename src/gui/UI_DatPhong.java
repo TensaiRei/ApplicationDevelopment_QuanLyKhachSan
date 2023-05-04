@@ -216,7 +216,7 @@ public class UI_DatPhong extends JPanel implements ActionListener, MouseListener
 			txtCCCD.requestFocus();
 			return false;
 		} else if (!txtCCCD.getText().matches("^0\\d{11}$")) {
-			JOptionPane.showMessageDialog(this, "Gồm 12 chữ số và bắt đầu là số 0");
+			JOptionPane.showMessageDialog(this, "Căn cước công dân gồm 12 chữ số và bắt đầu là số 0");
 			txtCCCD.requestFocus();
 			return false;
 		}
@@ -229,7 +229,7 @@ public class UI_DatPhong extends JPanel implements ActionListener, MouseListener
 			txtSDT.requestFocus();
 			return false;
 		} else if (!txtSDT.getText().matches("^0\\d{9}$")) {
-			JOptionPane.showMessageDialog(this, "Gồm 10 chữ số và bắt đầu là số 0");
+			JOptionPane.showMessageDialog(this, "Số điện thoại gồm 10 chữ số và bắt đầu là số 0");
 			txtSDT.requestFocus();
 			return false;
 		}

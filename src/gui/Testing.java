@@ -241,6 +241,20 @@ public class Testing {
 //		}
 //		System.out.println("Done");
 //		ConnectDB.getInstance().disconnectDatabase();
+//		ConnectDB.getInstance().connectDatabase();
+//		for(HoaDon thisHoaDon : DAO_HoaDon.getDanhSachHoaDonTheoThangVaNam(5, 2023)) {
+//			System.out.println(thisHoaDon);
+//		}
+//		ConnectDB.getInstance().disconnectDatabase();
+//		System.out.println("//");
+//		ConnectDB.getInstance().connectDatabase();
+//		for(HoaDon thisHoaDon : DAO_HoaDon.getDanhSachHoaDonTheoNam(2022)) {
+//			System.out.println(thisHoaDon);
+//		}
+//		for(KhachHang thisKH : DAO_KhachHang.getDanhSachKhachHangDatPhongTrongNgay()) {
+//			System.out.println(thisKH);
+//		}
+//		ConnectDB.getInstance().disconnectDatabase();
 	}
 	
 //	public static void tinhTongTienTheoPhong() {

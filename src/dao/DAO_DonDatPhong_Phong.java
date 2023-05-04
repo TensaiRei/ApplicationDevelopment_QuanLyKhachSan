@@ -151,4 +151,28 @@ public class DAO_DonDatPhong_Phong {
 			return false;
 		}
 	}
+	
+	public static int tongSoPhongTrongMotDonDat(int thisMaDonDat) {
+		int tongSoPhong = 0;
+		Connection connect = ConnectDB.getConnection();
+		try {
+			String sql = ""
+					+ "SELECT * "
+					+ "FROM DonDatPhong_Phong "
+					+ "WHERE MaDonDat = ?";
+			PreparedStatement prpStm = connect.prepareStatement(sql);
+			prpStm.setInt(1, thisMaDonDat);
+			ResultSet result = prpStm.executeQuery();
+			while(result.next())
+				tongSoPhong++;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		finally {
+			
+		}
+		return tongSoPhong;
+	}
 }

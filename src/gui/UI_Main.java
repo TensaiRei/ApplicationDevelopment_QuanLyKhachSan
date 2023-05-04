@@ -264,6 +264,7 @@ public class UI_Main extends JFrame implements ActionListener{
 		btnTiepTan.addActionListener(this);
 		btnDonDat.addActionListener(this);
 		btnHoaDon.addActionListener(this);
+		btnThongKe.addActionListener(this);
 		btnDangXuat.addActionListener(this);
 		
 		this.addWindowListener(new WindowAdapter() {
@@ -304,6 +305,11 @@ public class UI_Main extends JFrame implements ActionListener{
 		if(o == btnHoaDon) {
 			showUI(UI_HoaDon.newUI_HoaDonInstance());
 			UI_HoaDon.getUI_HoaDonInstance().reloadTable();
+		}
+		if(o == btnThongKe) {
+			showUI(UI_ThongKe.getUI_ThongKeInstance());
+			UI_ThongKe.getUI_ThongKeInstance().resetModel();
+			UI_ThongKe.getUI_ThongKeInstance().showKhachHangTrongNgay();
 		}
 		if(o == btnDangXuat) {
 			logOut();
